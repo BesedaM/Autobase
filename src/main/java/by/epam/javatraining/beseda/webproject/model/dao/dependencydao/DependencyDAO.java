@@ -1,9 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao.dependencydao;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.AbstractDAO;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
-import org.apache.log4j.Logger;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +15,6 @@ public abstract class DependencyDAO implements Dependency {
     protected String tableName;
     protected String columnName;
 
-    private Logger log = Logger.getLogger(AbstractDAO.class.getSimpleName());
-
     protected DependencyDAO() {
         this.connector = new WrapperConnector();
     }
@@ -27,7 +23,7 @@ public abstract class DependencyDAO implements Dependency {
         if (entityId > 0 && dependencyId > 0) {
             PreparedStatement st = null;
             try {
-                String statement = setSetStatement();
+                String statement = setStatement();
                 statement.replace(FIRST_PARAMETER, this.tableName);
                 statement.replace(SECOND_PARAMETER, this.columnName);
                 st = connector.prepareStatement(statement);
@@ -42,16 +38,12 @@ public abstract class DependencyDAO implements Dependency {
         }
     }
 
-    protected String setSetStatement(){
-        return UPDATE_DEPENDENCY;
-    }
-
     public int[] getDependencyId(int entityId) throws DAOTechnicalException {
         int[] selection = null;
         if (entityId > 0) {
             PreparedStatement st = null;
             try {
-                String statement = setGetStatement();
+                String statement = getStatement();
                 statement.replace(FIRST_PARAMETER, this.columnName);
                 statement.replace(SECOND_PARAMETER, this.tableName);
                 st = connector.prepareStatement(statement);
@@ -74,7 +66,19 @@ public abstract class DependencyDAO implements Dependency {
         return selection;
     }
 
-    protected String setGetStatement(){
+    /**
+     * String representation of sql set statement
+     * @return string, containing sql query
+     */
+    protected String setStatement(){
+        return UPDATE_DEPENDENCY;
+    }
+
+    /**
+     * String representation of sql get statement
+     * @return string, containing sql query
+     */
+    protected String getStatement(){
         return FIND_DEPENDENCY_ID;
     }
 
@@ -84,6 +88,9 @@ public abstract class DependencyDAO implements Dependency {
         }
     }
 
+    /**
+     * Closes the Wrapper Connection instance
+     */
     public void closeConnection() {
         connector.closeConnection();
     }

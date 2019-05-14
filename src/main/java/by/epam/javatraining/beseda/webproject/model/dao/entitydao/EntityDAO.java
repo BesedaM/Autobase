@@ -6,7 +6,7 @@ import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTe
 import java.util.List;
 
 /**
- * Contains method declarations for entity DAO
+ * Contains methode declarations for entity DAO
  *
  * @param <E>
  */
@@ -27,7 +27,7 @@ public interface EntityDAO<E> {
      * @return the specified object or null if no object was found
      * @throws DAOTechnicalException
      */
-    public abstract E findEntityById(int id) throws DAOTechnicalException;
+    public abstract E findEntityById(int id) throws DAOLayerException;
 
     /**
      *Deletes object specified by id from database

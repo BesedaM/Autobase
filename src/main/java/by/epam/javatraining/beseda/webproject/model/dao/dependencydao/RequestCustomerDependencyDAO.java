@@ -9,7 +9,7 @@ public class RequestCustomerDependencyDAO extends DependencyDAO{
     private RequestCustomerDependencyDAO() {
         super();
         this.tableName=T_REQUESTS;
-        this.tableName=CUSTOMER_ID_REQUESTS;
+        this.columnName=CUSTOMER_ID_REQUESTS;
     }
 
     public static RequestCustomerDependencyDAO getInstance() {

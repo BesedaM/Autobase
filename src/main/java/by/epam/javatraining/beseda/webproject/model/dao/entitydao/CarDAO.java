@@ -6,30 +6,22 @@ import by.epam.javatraining.beseda.webproject.model.entity.car.Truck;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.CarTypeNotPresentException;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
-import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.*;
 import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.*;
 import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.CAR_ID;
 
 public class CarDAO extends AbstractDAO<Car> {
 
-    private Logger log = Logger.getLogger(CarDAO.class.getSimpleName());
     private static CarDAO instance = null;
 
     private CarDAO() {
         super();
-        this.dbTableName = DBEntityTableName.T_CARS;
     }
 
     public static CarDAO getDAO() {
@@ -40,29 +32,7 @@ public class CarDAO extends AbstractDAO<Car> {
     }
 
     @Override
-    public List<Car> getAll() throws DAOLayerException {
-        List<Car> list = new ArrayList<>();
-        Statement st = null;
-        try {
-            st = connector.createStatement();
-            ResultSet result = st.executeQuery(SELECT_ALL_CARS + END_OF_STATEMENT);
-            while (result.next()) {
-                try {
-                    Car car = createCar(result);
-                    list.add(car);
-                } catch (CarTypeNotPresentException e) {
-                    log.error(e);
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Error retrieving data from database", e);
-        } finally {
-            closeStatement(st);
-        }
-        return list;
-    }
-
-    private Car createCar(ResultSet result) throws CarTypeNotPresentException, SQLException {
+    protected Car createEntity(ResultSet result) throws CarTypeNotPresentException, SQLException {
         String carType = result.getString(CAR_TYPE);
         Car car;
         if (carType == BUS) {
@@ -79,28 +49,6 @@ public class CarDAO extends AbstractDAO<Car> {
         car.setNumber(result.getString(CAR_NUMBER));
         car.setState(result.getString(CAR_STATE));
         car.setStatus(result.getString(CAR_STATUS));
-        return car;
-    }
-
-    @Override
-    public Car findEntityById(int id) throws DAOTechnicalException {
-        PreparedStatement st = null;
-        Car car = null;
-        try {
-            st = connector.prepareStatement(SELECT_CAR_BY_ID);
-            st.setInt(1, id);
-            ResultSet res = st.executeQuery();
-            res.first();
-            try {
-                car = createCar(res);
-            } catch (CarTypeNotPresentException e) {
-                log.error(e);
-            }
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Error retrieving data from database", e);
-        } finally {
-            closeStatement(st);
-        }
         return car;
     }
 
@@ -142,11 +90,6 @@ public class CarDAO extends AbstractDAO<Car> {
     }
 
     @Override
-    protected void setDeleteLogic(PreparedStatement st) throws SQLException {
-        st=connector.prepareStatement(DELETE_CAR_BY_ID);
-    }
-
-    @Override
     public void update(Car car) throws DAOLayerException {
         PreparedStatement st = null;
         try {
@@ -157,7 +100,7 @@ public class CarDAO extends AbstractDAO<Car> {
             } else {
                 throw new CarTypeNotPresentException();
             }
-            st.setInt(7, car.getId());
+            st.setInt(updateIdParameterNumber(), car.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error updating database", e);
@@ -180,8 +123,47 @@ public class CarDAO extends AbstractDAO<Car> {
         setDataOnPreparedStatement(st, car);
     }
 
+    @Override
+    protected String getAllStatement() {
+        return SELECT_ALL_CARS;
+    }
 
-    private void setDataOnPreparedStatement(PreparedStatement st, Car car) throws SQLException {
+    @Override
+    protected String findEntityByIdStatement() {
+        return SELECT_CAR_BY_ID;
+    }
+
+    /**
+     * Undefined
+     * @return null
+     */
+    @Override
+    protected String addStatement() {
+        return null;
+    }
+
+    @Override
+    protected String deleteStatement() {
+        return DELETE_CAR_BY_ID;
+    }
+
+
+    /**
+     * Undefined
+     * @return null
+     */
+    @Override
+    protected String updateStatement() {
+        return null;
+    }
+
+    @Override
+    protected int updateIdParameterNumber() {
+        return 7;
+    }
+
+    @Override
+    protected void setDataOnPreparedStatement(PreparedStatement st, Car car) throws SQLException {
         int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(car.getState());
         int carStatusIndex = DatabaseEnumLoader.CAR_STATUS_MAP.getKey(car.getStatus());
         st.setString(3, car.getNumber());

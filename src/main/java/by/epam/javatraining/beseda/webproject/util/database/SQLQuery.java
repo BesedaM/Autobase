@@ -2,12 +2,12 @@ package by.epam.javatraining.beseda.webproject.util.database;
 
 public class SQLQuery {
 
+    //Dependence DAO
     public static final int NULL = 0;
     public static final String FIRST_PARAMETER = "**";
     public static final String SECOND_PARAMETER = "//";
-    public static final String THIRD_PARAMETER = "::";
     public static final String UPDATE_DEPENDENCY
-            = "UPDATE autobase." + FIRST_PARAMETER + " SET " + SECOND_PARAMETER + "=? WHERE ID=?";
+            = "UPDATE autobase." + FIRST_PARAMETER + " SET " + SECOND_PARAMETER + "=? WHERE id=?";
     public static final String ADD_ROUTE_CAR_DEPENDENCY = "INSERT INTO autobase." + FIRST_PARAMETER
             + " (car_id, route_id) VALUES (?,?)";
     public static final String DELETE_ROUTE_CAR_DEPENDENCY = "DELETE from autobase." + FIRST_PARAMETER + " WHERE car_id=? AND route_id=?";
@@ -16,6 +16,9 @@ public class SQLQuery {
 
     public static final String FIND_DEPENDENCY_ID
             = "SELECT " + FIRST_PARAMETER + " FROM autobase." + SECOND_PARAMETER + " WHERE id=?";
+
+    //enum
+    public static final String SELECT_ENUM;
 
     //User DAO
     public static final String USER_ID;
@@ -26,9 +29,6 @@ public class SQLQuery {
     public static final String DELETE_USER_BY_ID;
     public static final String ADD_NEW_USER;
     public static final String UPDATE_USER;
-
-    //enum
-    public static final String SELECT_ENUM;
 
     //Car DAO
     public static final String CAR_ID;
@@ -88,11 +88,14 @@ public class SQLQuery {
     public static final String ADD_NEW_REQUEST;
     public static final String UPDATE_REQUEST;
 
-
     public static final String END_OF_STATEMENT = ";";
 
 
     static {
+
+        //enum
+        SELECT_ENUM = "SELECT * FROM autobase.";
+
         //User DAO
         USER_ID = "users.id";
         SELECT_ALL_USERS = "SELECT u.id, u.login, u.password, r.role_name \n" +
@@ -104,9 +107,6 @@ public class SQLQuery {
         DELETE_USER_BY_ID = "DELETE FROM autobase.users WHERE id=?";
         ADD_NEW_USER = "INSERT INTO autobase.users (login, password, role_id) VALUES (?, ?, ?)";
         UPDATE_USER = "UPDATE autobase.user SET login=?, password=?, role_id=? WHERE users.id=?";
-
-        //enum
-        SELECT_ENUM = "SELECT * FROM autobase.";
 
         //Car DAO
         CAR_ID = "cars.id";
@@ -155,15 +155,15 @@ public class SQLQuery {
                 "LEFT JOIN autobase.customer_type ON customers.type_id=customer_type.id";
         SELECT_CUSTOMER_BY_ID = SELECT_ALL_CUSTOMERS + " WHERE users.id=?";
         DELETE_CUSTOMER_BY_ID = "DELETE FROM autobase.customers WHERE id=?";
-        ADD_NEW_CUSTOMER = "INSERT INTO autobase.customers (type_id, name, surname, phone, email ,company_name) VALUES (?, ?, ?, ?, ?, ?)";
-        UPDATE_CUSTOMER = "UPDATE autobase.customers SET type_id=?, name=?, surname=?, phone=?, email=? ,company_name=?) WHERE customers.id=?";
+        ADD_NEW_CUSTOMER = "INSERT INTO autobase.customers (type_id, name, surname, phone, email ,company_name, id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        UPDATE_CUSTOMER = "UPDATE autobase.customers SET type_id=?, name=?, surname=?, phone=?, email=? ,company_name=? WHERE customers.id=?";
 
         //Driver DAO
         DRIVER_ID = "drivers.id";
         SELECT_ALL_DRIVERS = "SELECT * FROM autobase.drivers";
         SELECT_DRIVER_BY_ID = SELECT_ALL_DRIVERS + " WHERE drivers.id=?";
         DELETE_DRIVER_BY_ID = "DELETE FROM autobase.drivers WHERE id=?";
-        ADD_NEW_DRIVER = "INSERT INTO autobase.drivers (surname, name, phone) VALUES (?, ?, ?)";
+        ADD_NEW_DRIVER = "INSERT INTO autobase.drivers (surname, name, phone, id) VALUES (?, ?, ?, ?)";
         UPDATE_DRIVER = "UPDATE autobase.drivers SET surname=?, name=?, phone=? WHERE drivers.id=?";
 
         //Request DAO

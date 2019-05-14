@@ -24,12 +24,12 @@ public class RouteCarDependencyDAO extends DependencyDAO{
     }
 
     @Override
-    protected String setSetStatement() {
+    protected String setStatement() {
         return ADD_ROUTE_CAR_DEPENDENCY;
     }
 
     @Override
-    protected String setGetStatement(){
+    protected String getStatement(){
         return FIND_CAR_DEPENDENCY_ID;
     }
 

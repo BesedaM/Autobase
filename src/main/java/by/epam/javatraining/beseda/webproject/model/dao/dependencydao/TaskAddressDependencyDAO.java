@@ -10,8 +10,8 @@ public class TaskAddressDependencyDAO extends DependencyDAO {
 
     private TaskAddressDependencyDAO() {
         super();
-        tableName = T_TASKS;
-        columnName = ADDRESS_ID_TASKS;
+        this.tableName = T_TASKS;
+        this.columnName = ADDRESS_ID_TASKS;
     }
 
     public static TaskAddressDependencyDAO getDAO() {
