@@ -2,6 +2,7 @@ package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
@@ -31,7 +32,7 @@ public class UserDAO extends AbstractDAO<User> {
 
     public User getUserByLoginAndPassword(String login, byte[] password) throws DAOTechnicalException {
         PreparedStatement st = null;
-        User user;
+        User user = null;
         try {
             st = connector.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD);
             st.setString(1, login);
@@ -41,6 +42,8 @@ public class UserDAO extends AbstractDAO<User> {
             user = createEntity(res);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
+        } catch (EntityLogicException e) {
+            throw new DAOTechnicalException("Error creating entity " + user.getClass().getSimpleName(), e);
         } finally {
             closeStatement(st);
         }
@@ -49,7 +52,7 @@ public class UserDAO extends AbstractDAO<User> {
 
     public User getUserByLogin(String login) throws DAOTechnicalException {
         PreparedStatement st = null;
-        User user;
+        User user=null;
         try {
             st = connector.prepareStatement(SELECT_USER_BY_LOGIN);
             st.setString(1, login);
@@ -58,6 +61,8 @@ public class UserDAO extends AbstractDAO<User> {
             user = createEntity(res);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
+        } catch (EntityLogicException e) {
+            throw new DAOTechnicalException("Error creating entity " + user.getClass().getSimpleName(), e);
         } finally {
             closeStatement(st);
         }
@@ -65,7 +70,7 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     @Override
-    protected User createEntity(ResultSet result) throws SQLException {
+    protected User createEntity(ResultSet result) throws SQLException, EntityLogicException {
         User user = new User();
         user.setRole(result.getString(USER_ROLE));
         user.setId(result.getInt(USER_ID));
@@ -85,7 +90,7 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     @Override
-    protected String deleteStatement(){
+    protected String deleteStatement() {
         return DELETE_USER_BY_ID;
     }
 

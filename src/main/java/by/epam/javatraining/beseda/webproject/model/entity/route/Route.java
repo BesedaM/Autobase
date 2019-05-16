@@ -2,6 +2,8 @@ package by.epam.javatraining.beseda.webproject.model.entity.route;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.route.IllegalRouteNameException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.route.IllegalRouteStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,40 +29,40 @@ public class Route extends BaseEntity {
         this.name = name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws IllegalRouteNameException {
+        if (name != null) {
+            this.name = name;
+        } else {
+            throw new IllegalRouteNameException();
+        }
     }
 
-    public void setTasksList(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public void setCarsList(List<Car> cars) {
-        this.cars = cars;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(String status) throws IllegalRouteStatusException {
+        if(status!=null) {
+            this.status = status;
+        }else{
+            throw new IllegalRouteStatusException();
+        }
     }
 
     public void addTask(Task task) {
-        this.tasks.add(task);
+        if (task != null) {
+            this.tasks.add(task);
+        }
     }
 
     public void deleteTask(Task task) {
-        if (this.tasks.contains(task)) {
-            this.tasks.remove(task);
-        }
+        this.tasks.remove(task);
     }
 
     public void addCar(Car car) {
-        this.cars.add(car);
+        if (car != null) {
+            this.cars.add(car);
+        }
     }
 
     public void deleteCar(Car car) {
-        if (this.cars.contains(car)) {
-            this.cars.remove(car);
-        }
+        this.cars.remove(car);
     }
 
     public String getName() {
@@ -97,7 +99,7 @@ public class Route extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Route{" +"id='" + id +
+        return "Route{" + "id='" + id +
                 ", name='" + name + '\'' +
                 ", tasks=" + tasks +
                 ", cars=" + cars +

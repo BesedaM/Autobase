@@ -3,6 +3,7 @@ package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
@@ -47,7 +48,7 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     @Override
-    protected Customer createEntity(ResultSet result) throws SQLException {
+    protected Customer createEntity(ResultSet result) throws SQLException, EntityLogicException {
         Customer customer = new Customer();
         customer.setRole(USER_CUSTOMER);
         customer.setId(result.getInt(CUSTOMER_ID));

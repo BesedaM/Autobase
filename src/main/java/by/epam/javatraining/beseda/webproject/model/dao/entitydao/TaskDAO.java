@@ -2,6 +2,7 @@ package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.SQLQuery;
 
 import java.sql.PreparedStatement;
@@ -30,7 +31,7 @@ public class TaskDAO extends AbstractDAO<Task> {
     }
 
     @Override
-    protected Task createEntity(ResultSet result) throws SQLException, DAOTechnicalException {
+    protected Task createEntity(ResultSet result) throws SQLException, EntityLogicException {
         Task task = new Task();
 
         GregorianCalendar time = new GregorianCalendar();

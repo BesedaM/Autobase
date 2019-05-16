@@ -1,5 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.entity.car;
 
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.car.IllegalBusSeatsNumberException;
+
 import java.util.Objects;
 
 public class Bus extends Car{
@@ -15,8 +17,12 @@ public class Bus extends Car{
         this.seats = seats;
     }
 
-    public void setSeats(int seats) {
-        this.seats = seats;
+    public void setSeats(int seats) throws IllegalBusSeatsNumberException {
+        if(seats>0) {
+            this.seats = seats;
+        }else{
+            throw new IllegalBusSeatsNumberException();
+        }
     }
 
     public int getSeats() {

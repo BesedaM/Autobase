@@ -6,6 +6,7 @@ import by.epam.javatraining.beseda.webproject.model.entity.car.Truck;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.CarTypeNotPresentException;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
@@ -32,7 +33,7 @@ public class CarDAO extends AbstractDAO<Car> {
     }
 
     @Override
-    protected Car createEntity(ResultSet result) throws CarTypeNotPresentException, SQLException {
+    protected Car createEntity(ResultSet result) throws CarTypeNotPresentException, SQLException, EntityLogicException {
         String carType = result.getString(CAR_TYPE);
         Car car;
         if (carType == BUS) {

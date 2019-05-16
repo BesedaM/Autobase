@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.entity.route;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.address.*;
 
 import java.util.Objects;
 
@@ -41,28 +42,52 @@ public class Address extends BaseEntity {
         this.building = building;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountry(String country) throws IllegalCountryNameException {
+        if (country != null) {
+            this.country = country;
+        } else {
+            throw new IllegalCountryNameException();
+        }
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setDistrict(String district) throws IllegalDistrictNameException {
+        if(district!=null) {
+            this.district = district;
+        }else{
+            throw new IllegalDistrictNameException();
+        }
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCity(String city) throws IllegalCityNameException {
+        if(city!=null) {
+            this.city = city;
+        }else{
+            throw new IllegalCityNameException();
+        }
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setStreet(String street) throws IllegalStreetNameException {
+        if(street!=null) {
+            this.street = street;
+        }else{
+            throw new IllegalStreetNameException();
+        }
     }
 
-    public void setHouse(int house) {
-        this.house = house;
+    public void setHouse(int house) throws IllegalHouseNumberException {
+        if(house>0) {
+            this.house = house;
+        }else{
+            throw new IllegalHouseNumberException();
+        }
     }
 
-    public void setBuilding(String building) {
-        this.building = building;
+    public void setBuilding(String building) throws IllegalBuildingException {
+        if(building!=null) {
+            this.building = building;
+        }else{
+            throw new IllegalBuildingException();
+        }
     }
 
     public String getCountry() {

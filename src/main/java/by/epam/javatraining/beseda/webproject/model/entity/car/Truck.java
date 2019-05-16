@@ -1,5 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.entity.car;
 
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.car.IllegalTruckCapacityException;
+
 import java.util.Objects;
 
 public class Truck extends Car {
@@ -15,8 +17,12 @@ public class Truck extends Car {
         this.capacity = capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity(int capacity) throws IllegalTruckCapacityException {
+        if(capacity>0) {
+            this.capacity = capacity;
+        }else{
+            throw new IllegalTruckCapacityException();
+        }
     }
 
     public int getCapacity() {

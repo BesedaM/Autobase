@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.SQLQuery;
 
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public class AddressDAO extends AbstractDAO<Address> {
     }
 
     @Override
-    protected Address createEntity(ResultSet result) throws SQLException {
+    protected Address createEntity(ResultSet result) throws SQLException, EntityLogicException {
         Address adr = new Address();
         adr.setId(result.getInt(SQLQuery.ADDRESS_ID));
         adr.setCountry(result.getString(COUNTRY));

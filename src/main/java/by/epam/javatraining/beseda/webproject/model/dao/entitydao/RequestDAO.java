@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
@@ -27,7 +28,7 @@ public class RequestDAO extends AbstractDAO<Request> {
     }
 
     @Override
-    protected Request createEntity(ResultSet res) throws SQLException {
+    protected Request createEntity(ResultSet res) throws SQLException, EntityLogicException {
         Request request = new Request();
         request.setId(res.getInt(REQUEST_ID));
         request.setStatus(res.getString(REQUEST_STATUS));

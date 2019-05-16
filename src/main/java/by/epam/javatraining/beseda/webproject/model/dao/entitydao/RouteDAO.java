@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
@@ -27,7 +28,7 @@ public class RouteDAO extends AbstractDAO<Route>{
     }
 
     @Override
-    protected Route createEntity(ResultSet result) throws SQLException{
+    protected Route createEntity(ResultSet result) throws SQLException, EntityLogicException {
         Route route=new Route();
         route.setId(result.getInt(ROUTE_ID));
         route.setName(result.getString(ROUTE_NAME));

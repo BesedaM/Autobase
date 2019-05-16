@@ -3,6 +3,7 @@ package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName;
 
 import java.sql.PreparedStatement;
@@ -46,7 +47,7 @@ public class DriverDAO extends AbstractDAO<Driver> {
     }
 
     @Override
-    protected Driver createEntity(ResultSet res) throws SQLException {
+    protected Driver createEntity(ResultSet res) throws SQLException, EntityLogicException {
         Driver driver = new Driver();
         driver.setId(res.getInt(DBEntityTableName.DRIVER_ID));
         driver.setName(res.getString(NAME));

@@ -1,6 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalCompanyNameException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalCustomerEmailException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalCustomerTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,7 @@ public class Customer extends Person {
 
     {
         companyName = "-";
-        requests=new ArrayList<>();
+        requests = new ArrayList<>();
     }
 
     public Customer() {
@@ -34,16 +37,44 @@ public class Customer extends Person {
         this.companyName = companyName;
     }
 
-    public void setCustomerType(String type) {
-        this.customerType = type;
+    public void setCustomerType(String type) throws IllegalCustomerTypeException {
+        if(type!=null) {
+            this.customerType = type;
+        }else{
+            throw new IllegalCustomerTypeException();
+        }
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String email) throws IllegalCustomerEmailException {
+        if(email!=null) {
+            this.email = email;
+        }else{
+            throw new IllegalCustomerEmailException();
+        }
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setCompanyName(String companyName) throws IllegalCompanyNameException {
+        if(companyName!=null) {
+            this.companyName = companyName;
+        }else{
+            throw new IllegalCompanyNameException();
+        }
+    }
+
+    public void addRequest(Request request) {
+        if (request != null) {
+            this.requests.add(request);
+        }
+    }
+
+    public void deleteRequest(Request request) {
+        if (request != null) {
+            this.requests.remove(request);
+        }
+    }
+
+    public List<Request> getRequestsList() {
+        return requests;
     }
 
     public String getCustomerType() {

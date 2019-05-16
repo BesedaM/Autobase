@@ -3,6 +3,7 @@ package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 import org.apache.log4j.Logger;
 
@@ -34,15 +35,18 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
     public List<E> getAll() throws DAOLayerException{
         List<E> list = new ArrayList<>();
         Statement st = null;
+        E entity=null;
         try {
             st = connector.createStatement();
             ResultSet result = st.executeQuery(getAllStatement() + END_OF_STATEMENT);
             while (result.next()) {
-                E entity = createEntity(result);
+                entity = createEntity(result);
                 list.add(entity);
             }
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
+        } catch (EntityLogicException e) {
+            throw new DAOTechnicalException("Error creating entity " + entity.getClass().getSimpleName(), e);
         } finally {
             closeStatement(st);
         }
@@ -64,6 +68,8 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
             entity = createEntity(res);
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
+        } catch (EntityLogicException e) {
+            throw new DAOTechnicalException("Error creating entity " + entity.getClass().getSimpleName(), e);
         } finally {
             closeStatement(st);
         }
@@ -75,7 +81,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
      */
     protected abstract String findEntityByIdStatement();
 
-    protected abstract E createEntity(ResultSet res) throws DAOLayerException, SQLException;
+    protected abstract E createEntity(ResultSet res) throws DAOLayerException, SQLException, EntityLogicException;
 
     public void delete(int id) {
         PreparedStatement st = null;

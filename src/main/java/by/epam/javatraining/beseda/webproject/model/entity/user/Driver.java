@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalCarException;
 
 import java.util.Objects;
 
@@ -18,8 +19,12 @@ public class Driver extends Person {
         super(login, password, name, surname, phone);
     }
 
-    public void setCar(Car car) {
-        this.car = car;
+    public void setCar(Car car) throws IllegalCarException {
+        if(car!=null) {
+            this.car = car;
+        }else{
+            throw new IllegalCarException();
+        }
     }
 
     public Car getCar() {

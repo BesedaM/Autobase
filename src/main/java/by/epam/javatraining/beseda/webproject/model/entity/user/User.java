@@ -1,6 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalLoginException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalPasswordException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalUserRoleException;
 
 import java.util.Objects;
 
@@ -32,16 +35,28 @@ public class User extends BaseEntity {
         this.role = other.role;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setLogin(String login) throws IllegalLoginException {
+        if(login!=null) {
+            this.login = login;
+        }else{
+            throw new IllegalLoginException();
+        }
     }
 
-    public void setPassword(byte[] password) {
-        this.password = password;
+    public void setPassword(byte[] password) throws IllegalPasswordException {
+        if(password!=null) {
+            this.password = password;
+        }else{
+            throw new IllegalPasswordException();
+        }
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(String role) throws IllegalUserRoleException {
+        if(role!=null) {
+            this.role = role;
+        }else{
+            throw new IllegalUserRoleException();
+        }
     }
 
     public String getLogin() {

@@ -1,5 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalUserNameException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalUserPhoneNumberException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalUserSurnameException;
+
 import java.util.Objects;
 
 public class Person extends User {
@@ -29,16 +33,28 @@ public class Person extends User {
         this.phone = phone;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws IllegalUserNameException {
+        if(name!=null) {
+            this.name = name;
+        }else{
+            throw new IllegalUserNameException();
+        }
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setSurname(String surname) throws IllegalUserSurnameException {
+        if(surname!=null) {
+            this.surname = surname;
+        }else{
+            throw new IllegalUserSurnameException();
+        }
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhone(String phone) throws IllegalUserPhoneNumberException {
+        if(phone!=null) {
+            this.phone = phone;
+        }else{
+            throw new IllegalUserPhoneNumberException();
+        }
     }
 
     public String getName() {

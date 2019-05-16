@@ -1,6 +1,10 @@
 package by.epam.javatraining.beseda.webproject.model.entity.car;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.car.IllegalCarModelException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.car.IllegalCarNumberException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.car.IllegalCarStateException;
+import by.epam.javatraining.beseda.webproject.model.exception.EntityException.car.IllegalCarStatusException;
 
 import java.util.Objects;
 
@@ -21,20 +25,36 @@ public class Car extends BaseEntity {
         this.model = model;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setNumber(String number) throws IllegalCarNumberException {
+        if (number != null) {
+            this.number = number;
+        } else {
+            throw new IllegalCarNumberException();
+        }
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setModel(String model) throws IllegalCarModelException {
+        if (model != null) {
+            this.model = model;
+        } else {
+            throw new IllegalCarModelException();
+        }
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(String status) throws IllegalCarStatusException {
+        if (status != null) {
+            this.status = status;
+        } else {
+            throw new IllegalCarStatusException();
+        }
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setState(String state) throws IllegalCarStateException {
+        if (state != null) {
+            this.state = state;
+        } else {
+            throw new IllegalCarStateException();
+        }
     }
 
     public String getNumber() {
