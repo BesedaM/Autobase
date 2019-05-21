@@ -2,8 +2,8 @@ package by.epam.javatraining.beseda.webproject.model.entity.route;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.route.IllegalRouteNameException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.route.IllegalRouteStatusException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.route.IllegalRouteNameException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.route.IllegalRouteStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,11 @@ public class Route extends BaseEntity {
         this.name = name;
     }
 
+    public Route(String name, String status) {
+        this.name = name;
+        this.status = status;
+    }
+
     public void setName(String name) throws IllegalRouteNameException {
         if (name != null) {
             this.name = name;
@@ -38,9 +43,9 @@ public class Route extends BaseEntity {
     }
 
     public void setStatus(String status) throws IllegalRouteStatusException {
-        if(status!=null) {
+        if (status != null) {
             this.status = status;
-        }else{
+        } else {
             throw new IllegalRouteStatusException();
         }
     }

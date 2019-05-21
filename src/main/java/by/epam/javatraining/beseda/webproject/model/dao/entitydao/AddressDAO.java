@@ -1,7 +1,8 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.SQLQuery;
 
 import java.sql.PreparedStatement;
@@ -28,15 +29,18 @@ public class AddressDAO extends AbstractDAO<Address> {
 
     @Override
     protected Address createEntity(ResultSet result) throws SQLException, EntityLogicException {
-        Address adr = new Address();
-        adr.setId(result.getInt(SQLQuery.ADDRESS_ID));
-        adr.setCountry(result.getString(COUNTRY));
-        adr.setDistrict(result.getString(DISTRICT));
-        adr.setCity(result.getString(CITY));
-        adr.setHouse(result.getInt(HOUSE_NUMBER));
-        adr.setStreet(result.getString(STREET));
-        adr.setBuilding(result.getString(BUILDING));
-        return adr;
+        Address addr = null;
+        if (result != null) {
+            addr = new Address();
+            addr.setId(result.getInt(SQLQuery.ADDRESS_ID));
+            addr.setCountry(result.getString(COUNTRY));
+            addr.setDistrict(result.getString(DISTRICT));
+            addr.setCity(result.getString(CITY));
+            addr.setHouse(result.getInt(HOUSE_NUMBER));
+            addr.setStreet(result.getString(STREET));
+            addr.setBuilding(result.getString(BUILDING));
+        }
+        return addr;
     }
 
     @Override
@@ -45,12 +49,12 @@ public class AddressDAO extends AbstractDAO<Address> {
     }
 
     @Override
-    protected String findEntityByIdStatement() {
+    protected String getEntityByIdStatement() {
         return SELECT_ADDRESS_BY_ID;
     }
 
     @Override
-    protected String deleteStatement(){
+    protected String deleteStatement() {
         return DELETE_ADDRESS_BY_ID;
     }
 
@@ -70,13 +74,17 @@ public class AddressDAO extends AbstractDAO<Address> {
     }
 
     @Override
-    protected void setDataOnPreparedStatement(PreparedStatement st, Address addr) throws SQLException {
-        st.setString(1, addr.getCountry());
-        st.setString(2, addr.getDistrict());
-        st.setString(3, addr.getCity());
-        st.setString(4, addr.getStreet());
-        st.setInt(5, addr.getHouse());
-        st.setString(6, addr.getBuilding());
+    protected void setDataOnPreparedStatement(PreparedStatement st, Address addr) throws SQLException, NotEnoughArgumentsException {
+        if (st != null && addr != null) {
+            st.setString(1, addr.getCountry());
+            st.setString(2, addr.getDistrict());
+            st.setString(3, addr.getCity());
+            st.setString(4, addr.getStreet());
+            st.setInt(5, addr.getHouse());
+            st.setString(6, addr.getBuilding());
+        }else{
+            throw new NotEnoughArgumentsException();
+        }
     }
 
 }

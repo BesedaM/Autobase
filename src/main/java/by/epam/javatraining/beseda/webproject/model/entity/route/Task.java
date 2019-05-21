@@ -1,9 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.entity.route;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.task.IllegalAddressException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.task.IllegalDetailException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.task.IllegalTimeException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.task.IllegalAddressException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.task.IllegalDetailException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.task.IllegalTimeException;
 
 import java.util.GregorianCalendar;
 import java.util.Objects;
@@ -12,38 +12,48 @@ public class Task extends BaseEntity {
 
     private Address address;
     private GregorianCalendar time;
-    private String detail;
+    private String details;
+
 
     public Task() {
         super();
     }
 
-    public Task(Address address, GregorianCalendar time, String detail) {
+    public Task(GregorianCalendar time, String details) {
+        this.time = time;
+        this.details = details;
+    }
+
+    public Task(Address address, GregorianCalendar time, String details) {
         this.address = address;
         this.time = time;
-        this.detail = detail;
+        this.details = details;
     }
 
     public void setAddress(Address address) throws IllegalAddressException {
-        if(address!=null) {
+        if (address != null) {
             this.address = address;
-        }else{
+        } else {
             throw new IllegalAddressException();
         }
     }
 
+    public void deleteAddress() {
+        this.address = null;
+    }
+
     public void setTime(GregorianCalendar time) throws IllegalTimeException {
-        if(time!=null) {
+        if (time != null) {
             this.time = time;
-        }else{
+        } else {
             throw new IllegalTimeException();
         }
     }
 
-    public void setDetail(String detail) throws IllegalDetailException {
-        if(detail!=null) {
-            this.detail = detail;
-        }else{
+    public void setDetails(String details) throws IllegalDetailException {
+        if (details != null) {
+            this.details = details;
+        } else {
             throw new IllegalDetailException();
         }
     }
@@ -56,8 +66,8 @@ public class Task extends BaseEntity {
         return time;
     }
 
-    public String getDetail() {
-        return detail;
+    public String getDetails() {
+        return details;
     }
 
     @Override
@@ -68,12 +78,12 @@ public class Task extends BaseEntity {
         Task task = (Task) o;
         return Objects.equals(address, task.address) &&
                 Objects.equals(time, task.time) &&
-                Objects.equals(detail, task.detail);
+                Objects.equals(details, task.details);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), address, time, detail);
+        return Objects.hash(super.hashCode(), address, time, details);
     }
 
     @Override
@@ -81,7 +91,7 @@ public class Task extends BaseEntity {
         return "Task{" +
                 "address=" + address +
                 ", time=" + time +
-                ", detail='" + detail + '\'' +
+                ", details='" + details + '\'' +
                 '}';
     }
 }

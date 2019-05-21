@@ -58,7 +58,6 @@ public class DatabaseEnumLoader {
 
     private static void closeConnection() {
         try {
-            st.close();
             conn.close();
         } catch (SQLException e) {
             log.error("Exception thrown while closing connection: " + e);

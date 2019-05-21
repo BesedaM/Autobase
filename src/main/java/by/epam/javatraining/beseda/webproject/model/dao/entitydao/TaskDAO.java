@@ -1,8 +1,8 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.SQLQuery;
 
 import java.sql.PreparedStatement;
@@ -32,14 +32,16 @@ public class TaskDAO extends AbstractDAO<Task> {
 
     @Override
     protected Task createEntity(ResultSet result) throws SQLException, EntityLogicException {
-        Task task = new Task();
+        Task task = null;
+        if (result != null) {
+            task = new Task();
+            GregorianCalendar time = new GregorianCalendar();
+            time.setTimeInMillis(result.getTime(TIME).getTime());
 
-        GregorianCalendar time = new GregorianCalendar();
-        time.setTimeInMillis(result.getTime(TIME).getTime());
-
-        task.setTime(time);
-        task.setId(result.getInt(SQLQuery.TASK_ID));
-        task.setDetail(result.getString(DETAIL));
+            task.setTime(time);
+            task.setId(result.getInt(SQLQuery.TASK_ID));
+            task.setDetails(result.getString(DETAIL));
+        }
         return task;
     }
 
@@ -49,12 +51,12 @@ public class TaskDAO extends AbstractDAO<Task> {
     }
 
     @Override
-    protected String findEntityByIdStatement() {
+    protected String getEntityByIdStatement() {
         return SELECT_TASK_BY_ID;
     }
 
     @Override
-    protected String deleteStatement(){
+    protected String deleteStatement() {
         return DELETE_TASK_BY_ID;
     }
 
@@ -74,8 +76,12 @@ public class TaskDAO extends AbstractDAO<Task> {
     }
 
     @Override
-    protected void setDataOnPreparedStatement(PreparedStatement st, Task task) throws SQLException {
-        st.setTime(1, new Time(task.getTime().getTimeInMillis()));
-        st.setString(2, task.getDetail());
+    protected void setDataOnPreparedStatement(PreparedStatement st, Task task) throws SQLException, NotEnoughArgumentsException {
+        if(st!=null&&task!=null) {
+            st.setTime(1, new Time(task.getTime().getTimeInMillis()));
+            st.setString(2, task.getDetails());
+        }else{
+            throw new NotEnoughArgumentsException();
+        }
     }
 }

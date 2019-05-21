@@ -1,12 +1,12 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
 
 import java.util.List;
 
 /**
- * Contains methode declarations for entity DAO
+ * Contains method declarations for entity DAO
  *
  * @param <E>
  */
@@ -27,7 +27,16 @@ public interface EntityDAO<E> {
      * @return the specified object or null if no object was found
      * @throws DAOTechnicalException
      */
-    public abstract E findEntityById(int id) throws DAOLayerException;
+    public abstract E getEntityById(int id) throws DAOLayerException;
+
+    /**
+     * Returns entities list, consisting oа entities with id values from idArr
+     *
+     * @param idArr array with id values
+     * @return entities list
+     * @throws DAOLayerException
+     */
+    public List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException;
 
     /**
      *Deletes object specified by id from database

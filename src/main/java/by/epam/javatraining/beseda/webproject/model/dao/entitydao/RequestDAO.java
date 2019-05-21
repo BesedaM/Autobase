@@ -1,7 +1,8 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
@@ -29,10 +30,13 @@ public class RequestDAO extends AbstractDAO<Request> {
 
     @Override
     protected Request createEntity(ResultSet res) throws SQLException, EntityLogicException {
-        Request request = new Request();
-        request.setId(res.getInt(REQUEST_ID));
-        request.setStatus(res.getString(REQUEST_STATUS));
-        request.setComment(res.getString(COMMENT));
+        Request request = null;
+        if(res!=null) {
+            request = new Request();
+            request.setId(res.getInt(REQUEST_ID));
+            request.setStatus(res.getString(REQUEST_STATUS));
+            request.setComment(res.getString(COMMENT));
+        }
         return request;
     }
 
@@ -42,7 +46,7 @@ public class RequestDAO extends AbstractDAO<Request> {
     }
 
     @Override
-    protected String findEntityByIdStatement() {
+    protected String getEntityByIdStatement() {
         return SELECT_REQUEST_BY_ID;
     }
 
@@ -67,9 +71,13 @@ public class RequestDAO extends AbstractDAO<Request> {
     }
 
     @Override
-    protected void setDataOnPreparedStatement(PreparedStatement st, Request request) throws SQLException {
-        int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
-        st.setInt(1, statusId);
-        st.setString(2, request.getComment());
+    protected void setDataOnPreparedStatement(PreparedStatement st, Request request) throws SQLException, NotEnoughArgumentsException {
+        if(st!=null&&request!=null) {
+            int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
+            st.setInt(1, statusId);
+            st.setString(2, request.getComment());
+        }else{
+            throw new NotEnoughArgumentsException();
+        }
     }
 }

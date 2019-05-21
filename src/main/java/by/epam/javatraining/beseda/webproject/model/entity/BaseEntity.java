@@ -1,11 +1,11 @@
 package by.epam.javatraining.beseda.webproject.model.entity;
 
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.IllegalEntityIdException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.IllegalEntityIdException;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable, Comparable<BaseEntity> {
     protected int id = 0;
 
     public BaseEntity() {
@@ -16,15 +16,20 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public void setId(int id) throws IllegalEntityIdException {
-        if(id>0) {
+        if (id > 0) {
             this.id = id;
-        }else{
+        } else {
             throw new IllegalEntityIdException();
         }
     }
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(BaseEntity o) {
+        return this.id - o.id;
     }
 
     @Override

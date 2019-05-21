@@ -1,9 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalCompanyNameException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalCustomerEmailException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalCustomerTypeException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalCompanyNameException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalCustomerEmailException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalCustomerTypeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,25 +38,25 @@ public class Customer extends Person {
     }
 
     public void setCustomerType(String type) throws IllegalCustomerTypeException {
-        if(type!=null) {
+        if (type != null) {
             this.customerType = type;
-        }else{
+        } else {
             throw new IllegalCustomerTypeException();
         }
     }
 
     public void setEmail(String email) throws IllegalCustomerEmailException {
-        if(email!=null) {
+        if (email != null) {
             this.email = email;
-        }else{
+        } else {
             throw new IllegalCustomerEmailException();
         }
     }
 
     public void setCompanyName(String companyName) throws IllegalCompanyNameException {
-        if(companyName!=null) {
+        if (companyName != null) {
             this.companyName = companyName;
-        }else{
+        } else {
             throw new IllegalCompanyNameException();
         }
     }

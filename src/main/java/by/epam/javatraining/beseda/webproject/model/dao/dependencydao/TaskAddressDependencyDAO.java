@@ -1,9 +1,12 @@
 package by.epam.javatraining.beseda.webproject.model.dao.dependencydao;
 
+import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
+import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
+
 import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.ADDRESS_ID_TASKS;
 import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.T_TASKS;
 
-public class TaskAddressDependencyDAO extends DependencyDAO {
+public class TaskAddressDependencyDAO extends OneToOneDependencyDAO<Address, Task> {
 
 
     private static TaskAddressDependencyDAO ourInstance = new TaskAddressDependencyDAO();
@@ -17,5 +20,4 @@ public class TaskAddressDependencyDAO extends DependencyDAO {
     public static TaskAddressDependencyDAO getDAO() {
         return ourInstance;
     }
-
 }

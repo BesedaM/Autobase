@@ -15,7 +15,10 @@ public class SQLQuery {
             = "SELECT " + FIRST_PARAMETER + " FROM autobase." + SECOND_PARAMETER + " WHERE route_id=?";
 
     public static final String FIND_DEPENDENCY_ID
+            = "SELECT id FROM autobase." + FIRST_PARAMETER + " WHERE " + SECOND_PARAMETER + "=?";      //"SELECT " + FIRST_PARAMETER + " FROM autobase." + SECOND_PARAMETER + " WHERE id=?";
+    public static final String FIND_ONE_TO_ONE_DEPENDENCY_ID
             = "SELECT " + FIRST_PARAMETER + " FROM autobase." + SECOND_PARAMETER + " WHERE id=?";
+
 
     //enum
     public static final String SELECT_ENUM;
@@ -29,6 +32,7 @@ public class SQLQuery {
     public static final String DELETE_USER_BY_ID;
     public static final String ADD_NEW_USER;
     public static final String UPDATE_USER;
+    public static final String UPDATE_USER_PASSWORD;
 
     //Car DAO
     public static final String CAR_ID;
@@ -106,7 +110,8 @@ public class SQLQuery {
         SELECT_USER_BY_LOGIN = SELECT_ALL_USERS + " WHERE login=?";
         DELETE_USER_BY_ID = "DELETE FROM autobase.users WHERE id=?";
         ADD_NEW_USER = "INSERT INTO autobase.users (login, password, role_id) VALUES (?, ?, ?)";
-        UPDATE_USER = "UPDATE autobase.user SET login=?, password=?, role_id=? WHERE users.id=?";
+        UPDATE_USER_PASSWORD = "UPDATE autobase.users SET password=? WHERE users.login=?";
+        UPDATE_USER = "UPDATE autobase.users SET login=?, password=?, role_id=? WHERE users.id=?";
 
         //Car DAO
         CAR_ID = "cars.id";

@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao.dependencydao;
 
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 
 import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
-public abstract class DependencyDAO implements Dependency {
+public abstract class DependencyDAO<M extends BaseEntity, K extends BaseEntity> implements Dependency<M, K> {
 
     protected volatile WrapperConnector connector;
     protected String tableName;
@@ -19,16 +20,17 @@ public abstract class DependencyDAO implements Dependency {
         this.connector = new WrapperConnector();
     }
 
-    public void setDependency(int entityId, int dependencyId) throws DAOTechnicalException {
-        if (entityId > 0 && dependencyId > 0) {
+    @Override
+    public void setDependency(M entity, K dependency) throws DAOTechnicalException {
+        if (entity != null && dependency != null) {
             PreparedStatement st = null;
             try {
-                String statement = setStatement();
-                statement.replace(FIRST_PARAMETER, this.tableName);
-                statement.replace(SECOND_PARAMETER, this.columnName);
-                st = connector.prepareStatement(statement);
-                st.setInt(1, dependencyId);
-                st.setInt(2, entityId);
+                String str = setStatement();
+                str = str.replace(FIRST_PARAMETER, this.tableName);
+                str = str.replace(SECOND_PARAMETER, this.columnName);
+                st = connector.prepareStatement(str);
+                st.setInt(1, entity.getId());
+                st.setInt(2, dependency.getId());
                 st.executeUpdate();
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
@@ -38,53 +40,31 @@ public abstract class DependencyDAO implements Dependency {
         }
     }
 
-    public int[] getDependencyId(int entityId) throws DAOTechnicalException {
-        int[] selection = null;
-        if (entityId > 0) {
+    /**
+     * String representation of sql set statement
+     *
+     * @return string, containing sql query
+     */
+    protected String setStatement() {
+        return UPDATE_DEPENDENCY;
+    }
+
+    public void deleteDependency(M entity, K dependency) throws DAOTechnicalException {
+        if (entity != null && dependency != null) {
             PreparedStatement st = null;
             try {
-                String statement = getStatement();
-                statement.replace(FIRST_PARAMETER, this.columnName);
-                statement.replace(SECOND_PARAMETER, this.tableName);
-                st = connector.prepareStatement(statement);
-                st.setInt(1, entityId);
-
-                ResultSet res = st.executeQuery();
-                res.last();
-                selection = new int[res.getRow()];
-                res.first();
-                for (int i = 0; i < selection.length; i++) {
-                    selection[i] = res.getInt(1);
-                    res.next();
-                }
+                String str = setStatement();
+                str = str.replace(FIRST_PARAMETER, this.tableName);
+                str = str.replace(SECOND_PARAMETER, this.columnName);
+                st = connector.prepareStatement(str);
+                st.setInt(1, NULL);
+                st.setInt(2, dependency.getId());
+                st.executeUpdate();
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
                 connector.closeStatement(st);
             }
-        }
-        return selection;
-    }
-
-    /**
-     * String representation of sql set statement
-     * @return string, containing sql query
-     */
-    protected String setStatement(){
-        return UPDATE_DEPENDENCY;
-    }
-
-    /**
-     * String representation of sql get statement
-     * @return string, containing sql query
-     */
-    protected String getStatement(){
-        return FIND_DEPENDENCY_ID;
-    }
-
-    public void deleteDependency(int entityId, int dependencyId) throws DAOTechnicalException {
-        if (entityId > 0 && dependencyId > 0) {
-            setDependency(entityId, NULL);
         }
     }
 

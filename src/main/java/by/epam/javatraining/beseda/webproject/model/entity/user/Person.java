@@ -1,8 +1,8 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalUserNameException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalUserPhoneNumberException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalUserSurnameException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalUserNameException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalUserPhoneNumberException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalUserSurnameException;
 
 import java.util.Objects;
 

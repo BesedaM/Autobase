@@ -1,7 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.entity.route;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.address.*;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.address.*;
 
 import java.util.Objects;
 
@@ -19,6 +19,7 @@ public class Address extends BaseEntity {
         district = "Минский";
         street = "";
         house = 0;
+        building = "";
     }
 
     public Address() {
@@ -37,9 +38,15 @@ public class Address extends BaseEntity {
         this.country = country;
         this.district = district;
         this.city = city;
-        this.street = street;
-        this.house = house;
-        this.building = building;
+        if (street != null) {
+            this.street = street;
+        }
+        if (house > 0) {
+            this.house = house;
+        }
+        if (building != null) {
+            this.building = building;
+        }
     }
 
     public void setCountry(String country) throws IllegalCountryNameException {
@@ -51,41 +58,41 @@ public class Address extends BaseEntity {
     }
 
     public void setDistrict(String district) throws IllegalDistrictNameException {
-        if(district!=null) {
+        if (district != null) {
             this.district = district;
-        }else{
+        } else {
             throw new IllegalDistrictNameException();
         }
     }
 
     public void setCity(String city) throws IllegalCityNameException {
-        if(city!=null) {
+        if (city != null) {
             this.city = city;
-        }else{
+        } else {
             throw new IllegalCityNameException();
         }
     }
 
     public void setStreet(String street) throws IllegalStreetNameException {
-        if(street!=null) {
+        if (street != null) {
             this.street = street;
-        }else{
+        } else {
             throw new IllegalStreetNameException();
         }
     }
 
     public void setHouse(int house) throws IllegalHouseNumberException {
-        if(house>0) {
+        if (house >= 0) {
             this.house = house;
-        }else{
+        } else {
             throw new IllegalHouseNumberException();
         }
     }
 
     public void setBuilding(String building) throws IllegalBuildingException {
-        if(building!=null) {
+        if (building != null) {
             this.building = building;
-        }else{
+        } else {
             throw new IllegalBuildingException();
         }
     }

@@ -1,7 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalCarException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalCarException;
 
 import java.util.Objects;
 

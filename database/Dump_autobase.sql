@@ -416,7 +416,7 @@ CREATE TABLE `tasks` (
   `route_id` int(11) NOT NULL,
   `address_id` int(11) NOT NULL,
   `time` datetime NOT NULL,
-  `detail` varchar(100) NOT NULL,
+  `details` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_Task_Adress1` (`address_id`),
   KEY `fk_Task_Route1` (`route_id`),
@@ -483,7 +483,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','\\b@K¬Ў\0ч­\ngoІ\н',1),(2,'d.mihailov','Z¶Nъ-ІA™„њ\б!‚¬',2),(3,'s.petrov','ћ8^ЯЌ\С/Зёnы=|¬',2),(4,'e.vrubel','юL·j°Vi]ЈА\ЖrЎ®~',2),(5,'m.panasiuk','TPБ{z;«‘iІєub',2),(6,'d.mereshko','\ИЪЈ[А*`\п{ѕш;&„ў',2),(7,'santexgarant',']\З;\иy?CіјЦЏ—З±',3),(8,'outerHouse','ьgЭё\ZGтђ±(\nК‡\Ч',3),(9,'sergey009','\К\Д\У?Є]™»\С\Ш+…–',3),(10,'tatianaA','Р‹\Чт’2\ВOАt^\С\У\Х',3);
+INSERT INTO `users` VALUES (1,'admin','\\b@KпїЅпїЅ\0пїЅпїЅ\ngoпїЅ\пїЅ',1),(2,'d.mihailov','ZпїЅNпїЅ-пїЅAпїЅпїЅпїЅ\пїЅ!пїЅпїЅ',2),(3,'s.petrov','пїЅ8^ЯЌ\пїЅ/ЗёnпїЅ=|пїЅ',2),(4,'e.vrubel','пїЅLпїЅjпїЅVi]пїЅпїЅ\пїЅrпїЅпїЅ~',2),(5,'m.panasiuk','TPпїЅ{z;пїЅпїЅiпїЅпїЅub',2),(6,'d.mereshko','\пїЅЪЈ[пїЅ*`\пїЅ{пїЅпїЅ;&пїЅпїЅ',2),(7,'santexgarant',']\пїЅ;\пїЅy?CпїЅпїЅЦЏпїЅЗ±',3),(8,'outerHouse','пїЅgЭё\ZGпїЅпїЅ(\nК‡\пїЅ',3),(9,'sergey009','\пїЅ\пїЅ\пїЅ?пїЅпїЅ]пїЅпїЅ\пїЅ\пїЅ+пїЅпїЅ',3),(10,'tatianaA','Р‹\пїЅпїЅ2\пїЅOпїЅt^\пїЅ\пїЅ\пїЅ',3);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

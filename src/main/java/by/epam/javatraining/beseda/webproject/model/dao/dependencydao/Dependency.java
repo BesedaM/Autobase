@@ -1,36 +1,38 @@
 package by.epam.javatraining.beseda.webproject.model.dao.dependencydao;
 
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
 
 /**
  * Interface, defining methods for dependency DAO
  */
-public interface Dependency {
+public interface Dependency<M extends BaseEntity, K extends BaseEntity> {
 
     /**
      * Sets the dependency to the object
      *
-     * @param entityId     object id
-     * @param dependencyId dependency object id
+     * @param entity     object
+     * @param dependency dependency object
      * @throws DAOLayerException
      */
-    void setDependency(int entityId, int dependencyId) throws DAOLayerException;
+    void setDependency(M entity, K dependency) throws DAOTechnicalException;
 
     /**
      * Returns all the dependencies id for the specified object
      *
-     * @param entityId object id
+     * @param entity object
      * @return int array, containing all the dependencies id
      * @throws DAOLayerException
      */
-    int[] getDependencyId(int entityId) throws DAOLayerException;
+    int[] getDependencyId(M entity, K dependency) throws DAOTechnicalException;
 
     /**
      * Deletes the specified dependency
      *
-     * @param entityId     object id
-     * @param dependencyId dependency object id
+     * @param entity     object
+     * @param dependency dependency object
      * @throws DAOLayerException
      */
-    void deleteDependency(int entityId, int dependencyId) throws DAOLayerException;
+    void deleteDependency(M entity, K dependency) throws DAOTechnicalException;
 }

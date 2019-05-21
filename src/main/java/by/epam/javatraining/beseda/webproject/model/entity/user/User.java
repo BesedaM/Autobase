@@ -1,9 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalLoginException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalPasswordException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.user.IllegalUserRoleException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalLoginException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalPasswordException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalUserRoleException;
 
 import java.util.Objects;
 

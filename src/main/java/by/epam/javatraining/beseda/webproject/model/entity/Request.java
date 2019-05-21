@@ -1,10 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.entity;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
-import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.request.IllegalRequestCommentException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.request.IllegalRequestRouteException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.request.IllegalRequestStatusException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestCommentException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestRouteException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestStatusException;
 
 import java.util.Objects;
 
@@ -16,6 +15,11 @@ public class Request extends BaseEntity {
 
     public Request() {
         super();
+    }
+
+    public Request(String comment, String status) {
+        this.comment = comment;
+        this.status = status;
     }
 
     public Request(Route route, String comment, String status) {

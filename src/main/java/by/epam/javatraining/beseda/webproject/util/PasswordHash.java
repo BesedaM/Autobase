@@ -27,7 +27,7 @@ public class PasswordHash {
         byte[] salt = new byte[]{8,45,95,4,-5,88,4};
 //        random.nextBytes(salt);
         byte[] hash=null;
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 512, 128);        //65536, 128
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 512, 128);
 
         SecretKeyFactory factory = null;
         try {

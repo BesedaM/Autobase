@@ -1,9 +1,10 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName;
 
 import java.sql.PreparedStatement;
@@ -31,31 +32,37 @@ public class DriverDAO extends AbstractDAO<Driver> {
 
     @Override
     public int add(Driver user) throws DAOLayerException {
-        PreparedStatement st = null;
         int id = -1;
-        try {
-            st = connector.prepareStatement(addStatement());
-            setDataOnPreparedStatement(st, user);
-            st.setInt(4,user.getId());
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Error updating database", e);
-        } finally {
-            closeStatement(st);
+        if (user != null) {
+            PreparedStatement st = null;
+            try {
+                st = connector.prepareStatement(addStatement());
+                setDataOnPreparedStatement(st, user);
+                id = user.getId();
+                st.setInt(4, id);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DAOTechnicalException("Error updating database", e);
+            } finally {
+                closeStatement(st);
+            }
         }
         return id;
     }
 
     @Override
     protected Driver createEntity(ResultSet res) throws SQLException, EntityLogicException {
-        Driver driver = new Driver();
-        driver.setId(res.getInt(DBEntityTableName.DRIVER_ID));
-        driver.setName(res.getString(NAME));
-        driver.setSurname(res.getString(SURNAME));
-        driver.setPhone(res.getString(PHONE));
-        driver.setLogin(res.getString(LOGIN));
-        driver.setPassword(res.getBytes(PASSWORD));
-        driver.setRole(USER_DRIVER);
+        Driver driver = null;
+        if(res!=null) {
+            driver = new Driver();
+            driver.setId(res.getInt(DBEntityTableName.DRIVER_ID));
+            driver.setName(res.getString(NAME));
+            driver.setSurname(res.getString(SURNAME));
+            driver.setPhone(res.getString(PHONE));
+            driver.setLogin(res.getString(LOGIN));
+            driver.setPassword(res.getBytes(PASSWORD));
+            driver.setRole(USER_DRIVER);
+        }
         return driver;
     }
 
@@ -65,12 +72,12 @@ public class DriverDAO extends AbstractDAO<Driver> {
     }
 
     @Override
-    protected String findEntityByIdStatement() {
+    protected String getEntityByIdStatement() {
         return SELECT_DRIVER_BY_ID;
     }
 
     @Override
-    protected String deleteStatement(){
+    protected String deleteStatement() {
         return DELETE_DRIVER_BY_ID;
     }
 
@@ -90,9 +97,13 @@ public class DriverDAO extends AbstractDAO<Driver> {
     }
 
     @Override
-    protected void setDataOnPreparedStatement(PreparedStatement st, Driver driver) throws SQLException {
-        st.setString(1, driver.getName());
-        st.setString(2, driver.getSurname());
-        st.setString(3, driver.getPhone());
+    protected void setDataOnPreparedStatement(PreparedStatement st, Driver driver) throws SQLException, NotEnoughArgumentsException {
+        if(st!=null&&driver!=null) {
+            st.setString(1, driver.getName());
+            st.setString(2, driver.getSurname());
+            st.setString(3, driver.getPhone());
+        }else{
+            throw new NotEnoughArgumentsException();
+        }
     }
 }

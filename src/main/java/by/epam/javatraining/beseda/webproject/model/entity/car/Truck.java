@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.entity.car;
 
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.car.IllegalTruckCapacityException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.car.IllegalTruckCapacityException;
 
 import java.util.Objects;
 

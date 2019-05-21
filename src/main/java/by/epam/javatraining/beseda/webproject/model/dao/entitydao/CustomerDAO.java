@@ -1,9 +1,10 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.DAOexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.model.exception.EntityException.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
@@ -32,31 +33,37 @@ public class CustomerDAO extends AbstractDAO<Customer> {
 
     @Override
     public int add(Customer user) throws DAOLayerException {
-        PreparedStatement st = null;
         int id = -1;
-        try {
-            st = connector.prepareStatement(addStatement());
-            setDataOnPreparedStatement(st, user);
-            st.setInt(7, user.getId());
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Error updating database", e);
-        } finally {
-            closeStatement(st);
+        if (user != null) {
+            PreparedStatement st = null;
+            try {
+                st = connector.prepareStatement(addStatement());
+                setDataOnPreparedStatement(st, user);
+                id = user.getId();
+                st.setInt(7, id);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DAOTechnicalException("Error updating database", e);
+            } finally {
+                closeStatement(st);
+            }
         }
         return id;
     }
 
     @Override
     protected Customer createEntity(ResultSet result) throws SQLException, EntityLogicException {
-        Customer customer = new Customer();
-        customer.setRole(USER_CUSTOMER);
-        customer.setId(result.getInt(CUSTOMER_ID));
-        customer.setLogin(result.getString(LOGIN));
-        customer.setPassword(result.getBytes(PASSWORD));
-        customer.setCustomerType(result.getString(CUSTOMER_TYPE));
-        customer.setCompanyName(result.getString(COMPANY_NAME));
-        customer.setEmail(result.getString(EMAIL));
+        Customer customer = null;
+        if (result != null) {
+            customer = new Customer();
+            customer.setRole(USER_CUSTOMER);
+            customer.setId(result.getInt(CUSTOMER_ID));
+            customer.setLogin(result.getString(LOGIN));
+            customer.setPassword(result.getBytes(PASSWORD));
+            customer.setCustomerType(result.getString(CUSTOMER_TYPE));
+            customer.setCompanyName(result.getString(COMPANY_NAME));
+            customer.setEmail(result.getString(EMAIL));
+        }
         return customer;
     }
 
@@ -66,7 +73,7 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     @Override
-    protected String findEntityByIdStatement() {
+    protected String getEntityByIdStatement() {
         return SELECT_CUSTOMER_BY_ID;
     }
 
@@ -91,13 +98,17 @@ public class CustomerDAO extends AbstractDAO<Customer> {
     }
 
     @Override
-    protected void setDataOnPreparedStatement(PreparedStatement st, Customer user) throws SQLException {
-        int roleIndex = DatabaseEnumLoader.USER_ROLE_MAP.getKey(user.getRole());
-        st.setInt(1, roleIndex);
-        st.setString(2, user.getName());
-        st.setString(3, user.getSurname());
-        st.setString(4, user.getPhone());
-        st.setString(5, user.getEmail());
-        st.setString(6, user.getCompanyName());
+    protected void setDataOnPreparedStatement(PreparedStatement st, Customer user) throws SQLException, NotEnoughArgumentsException {
+        if (st != null && user != null) {
+            int typeIndex = DatabaseEnumLoader.CUSTOMER_TYPE_MAP.getKey(user.getCustomerType());
+            st.setInt(1, typeIndex);
+            st.setString(2, user.getName());
+            st.setString(3, user.getSurname());
+            st.setString(4, user.getPhone());
+            st.setString(5, user.getEmail());
+            st.setString(6, user.getCompanyName());
+        } else {
+            throw new NotEnoughArgumentsException();
+        }
     }
 }
