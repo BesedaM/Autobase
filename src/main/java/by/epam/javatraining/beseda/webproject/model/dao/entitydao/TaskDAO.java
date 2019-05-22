@@ -4,6 +4,7 @@ import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.SQLQuery;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,17 +18,26 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class TaskDAO extends AbstractDAO<Task> {
 
-    private static TaskDAO instance = null;
+//    private static TaskDAO instance = null;
+//
+//    private TaskDAO() {
+//        super();
+//    }
+//
+//    public static TaskDAO getDAO() {
+//        if (instance == null) {
+//            instance = new TaskDAO();
+//        }
+//        return instance;
+//    }
 
-    private TaskDAO() {
+
+    public TaskDAO() {
         super();
     }
 
-    public static TaskDAO getDAO() {
-        if (instance == null) {
-            instance = new TaskDAO();
-        }
-        return instance;
+    public TaskDAO(WrapperConnector connector) {
+        super(connector);
     }
 
     @Override

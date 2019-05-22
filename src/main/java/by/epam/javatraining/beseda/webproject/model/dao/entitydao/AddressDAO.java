@@ -4,6 +4,7 @@ import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.SQLQuery;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,17 +15,26 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class AddressDAO extends AbstractDAO<Address> {
 
-    private static AddressDAO instance = null;
+//    private static AddressDAO instance = null;
+//
+//    private AddressDAO() {
+//        super();
+//    }
+//
+//    public static AddressDAO getDAO() {
+//        if (instance == null) {
+//            instance = new AddressDAO();
+//        }
+//        return instance;
+//    }
 
-    private AddressDAO() {
+
+    public AddressDAO() {
         super();
     }
 
-    public static AddressDAO getDAO() {
-        if (instance == null) {
-            instance = new AddressDAO();
-        }
-        return instance;
+    public AddressDAO(WrapperConnector connector) {
+        super(connector);
     }
 
     @Override

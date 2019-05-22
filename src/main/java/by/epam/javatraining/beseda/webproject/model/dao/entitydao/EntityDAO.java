@@ -69,10 +69,10 @@ public interface EntityDAO<E> {
      */
     public abstract void update(E entity) throws DAOLayerException;
 
-    /**
-     * Method for closing DAO connection
-     */
-    public void closeConnection();
+//    /**
+//     * Method for closing DAO connection
+//     */
+//    public void closeConnector();
 
 
 }

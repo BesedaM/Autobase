@@ -6,6 +6,7 @@ import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTe
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,17 +19,26 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class CustomerDAO extends AbstractDAO<Customer> {
 
-    private static CustomerDAO instance = null;
+//    private static CustomerDAO instance = null;
+//
+//    private CustomerDAO() {
+//        super();
+//    }
+//
+//    public static CustomerDAO getDAO() {
+//        if (instance == null) {
+//            instance = new CustomerDAO();
+//        }
+//        return instance;
+//    }
 
-    private CustomerDAO() {
+
+    public CustomerDAO() {
         super();
     }
 
-    public static CustomerDAO getDAO() {
-        if (instance == null) {
-            instance = new CustomerDAO();
-        }
-        return instance;
+    public CustomerDAO(WrapperConnector connector) {
+        super(connector);
     }
 
     @Override

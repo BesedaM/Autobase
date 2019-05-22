@@ -1,7 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.service;
 
-import by.epam.javatraining.beseda.webproject.model.dao.dependencydao.Dependency;
-import by.epam.javatraining.beseda.webproject.model.dao.dependencydao.RouteTaskDependencyDAO;
+import by.epam.javatraining.beseda.webproject.model.dao.dependencedao.Dependency;
+import by.epam.javatraining.beseda.webproject.model.dao.dependencedao.TaskRouteToOneDependencyDAO;
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.RouteDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
@@ -12,7 +12,7 @@ import static by.epam.javatraining.beseda.webproject.util.resourceloader.Databas
 
 public class RouteService extends AbstractService<Route> {
 
-    private Dependency<Route, Task> taskDependencyDAO = RouteTaskDependencyDAO.getDAO();
+    private Dependency<Route, Task> taskDependencyDAO = TaskRouteToOneDependencyDAO.getDAO();
 
     public RouteService() {
         entityDAO = RouteDAO.getDAO();

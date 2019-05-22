@@ -51,7 +51,7 @@ public class DBEntityTableName {
     public static final String HOUSE_NUMBER = "houseNum";
     public static final String BUILDING = "building";
 
-    public static final String T_CARS_IN_ROUTES = "cars_in_rotes";
+    public static final String T_CARS_IN_ROUTES = "cars_in_routes";
     public static final String CAR_ID_ROUTES = "car_id";
     public static final String ROUTE_ID_CARS = "route_id";
 

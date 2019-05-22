@@ -1,7 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.service;
 
-import by.epam.javatraining.beseda.webproject.model.dao.dependencydao.Dependency;
-import by.epam.javatraining.beseda.webproject.model.dao.dependencydao.TaskAddressDependencyDAO;
+import by.epam.javatraining.beseda.webproject.model.dao.dependencedao.TaskAddressDependenceDAO;
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.AddressDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
@@ -10,7 +9,7 @@ import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.S
 
 public class AddressService extends AbstractService<Address> {
 
-    private Dependency<Address, Task> dependencyDAO = TaskAddressDependencyDAO.getDAO();
+    private TaskAddressDependenceDAO dependencyDAO = TaskAddressDependenceDAO.getDAO();
 
     public AddressService() {
         entityDAO = AddressDAO.getDAO();
@@ -32,8 +31,8 @@ public class AddressService extends AbstractService<Address> {
         Address addr = null;
         if (task != null) {
             try {
-                int[] addrId = dependencyDAO.getDependencyId(null,task);
-                addr = getEntityById(addrId[0]);
+                int addrId = dependencyDAO.getDependenceId(task);
+                addr = getEntityById(addrId);
             } catch (DAOLayerException e) {
                 throw new ServiceLayerException();
             }

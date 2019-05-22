@@ -1,19 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.service;
 
-import by.epam.javatraining.beseda.webproject.model.dao.dependencydao.RequestCustomerDependencyDAO;
+import by.epam.javatraining.beseda.webproject.model.dao.dependencedao.RequestCustomerDependencyDAO;
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.CustomerDAO;
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.UserDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceTechnicalException;
-
-import java.util.Comparator;
-import java.util.List;
-
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.USER_CUSTOMER;
 
 public class CustomerService extends AbstractService<Customer> {
 

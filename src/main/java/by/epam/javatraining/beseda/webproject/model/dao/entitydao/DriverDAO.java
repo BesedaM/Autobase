@@ -6,6 +6,7 @@ import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTe
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,17 +18,26 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class DriverDAO extends AbstractDAO<Driver> {
 
-    private static DriverDAO instance = null;
+//    private static DriverDAO instance = null;
+//
+//    private DriverDAO() {
+//        super();
+//    }
+//
+//    public static DriverDAO getDAO() {
+//        if (instance == null) {
+//            instance = new DriverDAO();
+//        }
+//        return instance;
+//    }
 
-    private DriverDAO() {
+
+    public DriverDAO() {
         super();
     }
 
-    public static DriverDAO getDAO() {
-        if (instance == null) {
-            instance = new DriverDAO();
-        }
-        return instance;
+    public DriverDAO(WrapperConnector connector) {
+        super(connector);
     }
 
     @Override

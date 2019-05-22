@@ -6,6 +6,7 @@ import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTe
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,18 +19,26 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class UserDAO extends AbstractDAO<User> {
 
-    private static UserDAO instance = null;
+//    private static UserDAO instance = null;
+//
+//    private UserDAO() {
+//        super();
+//    }
+//
+//    public static UserDAO getDAO() {
+//        if (instance == null) {
+//            instance = new UserDAO();
+//        }
+//        return instance;
+//    }
 
 
-    private UserDAO() {
+    public UserDAO() {
         super();
     }
 
-    public static UserDAO getDAO() {
-        if (instance == null) {
-            instance = new UserDAO();
-        }
-        return instance;
+    public UserDAO(WrapperConnector connector) {
+        super(connector);
     }
 
     public User getUserByLoginAndPassword(String login, byte[] password) throws DAOTechnicalException {

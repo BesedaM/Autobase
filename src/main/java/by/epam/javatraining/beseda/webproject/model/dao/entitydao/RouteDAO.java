@@ -4,6 +4,7 @@ import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,17 +16,26 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class RouteDAO extends AbstractDAO<Route> {
 
-    private static RouteDAO instance = null;
+//    private static RouteDAO instance = null;
+//
+//    private RouteDAO() {
+//        super();
+//    }
+//
+//    public static RouteDAO getDAO() {
+//        if (instance == null) {
+//            instance = new RouteDAO();
+//        }
+//        return instance;
+//    }
 
-    private RouteDAO() {
+
+    public RouteDAO() {
         super();
     }
 
-    public static RouteDAO getDAO() {
-        if (instance == null) {
-            instance = new RouteDAO();
-        }
-        return instance;
+    public RouteDAO(WrapperConnector connector) {
+        super(connector);
     }
 
     @Override

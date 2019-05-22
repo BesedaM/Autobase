@@ -2,22 +2,40 @@ package by.epam.javatraining.beseda.webproject.util.database;
 
 public class SQLQuery {
 
-    //Dependence DAO
     public static final int NULL = 0;
-    public static final String FIRST_PARAMETER = "**";
-    public static final String SECOND_PARAMETER = "//";
-    public static final String UPDATE_DEPENDENCY
-            = "UPDATE autobase." + FIRST_PARAMETER + " SET " + SECOND_PARAMETER + "=? WHERE id=?";
-    public static final String ADD_ROUTE_CAR_DEPENDENCY = "INSERT INTO autobase." + FIRST_PARAMETER
-            + " (car_id, route_id) VALUES (?,?)";
-    public static final String DELETE_ROUTE_CAR_DEPENDENCY = "DELETE from autobase." + FIRST_PARAMETER + " WHERE car_id=? AND route_id=?";
-    public static final String FIND_CAR_DEPENDENCY_ID
-            = "SELECT " + FIRST_PARAMETER + " FROM autobase." + SECOND_PARAMETER + " WHERE route_id=?";
+    public static final String SEMICOLON = ";";
 
-    public static final String FIND_DEPENDENCY_ID
-            = "SELECT id FROM autobase." + FIRST_PARAMETER + " WHERE " + SECOND_PARAMETER + "=?";      //"SELECT " + FIRST_PARAMETER + " FROM autobase." + SECOND_PARAMETER + " WHERE id=?";
-    public static final String FIND_ONE_TO_ONE_DEPENDENCY_ID
-            = "SELECT " + FIRST_PARAMETER + " FROM autobase." + SECOND_PARAMETER + " WHERE id=?";
+    //Dependence DAO
+    //CarDriver
+    public static final String CAR_DRIVER_GET_DEPENDENCE_ID;
+    public static final String CAR_DRIVER_GET_ENTITIES_ID;
+    public static final String CAR_DRIVER_UPDATE_DEPENDENCE;
+
+    //RequestRoute
+    public static final String REQUEST_ROUTE_GET_DEPENDENCE_ID;
+    public static final String REQUEST_ROUTE_GET_ENTITIES;
+    public static final String REQUEST_ROUTE_UPDATE_DEPENDENCE;
+
+    //TaskAddress
+    public static final String TASK_ADDRESS_GET_DEPENDENCE_ID;
+    public static final String TASK_ADDRESS_GET_ENTITIES;
+    public static final String TASK_ADDRESS_UPDATE_DEPENDENCE;
+
+    //RequestCustomer
+    public static final String REQUEST_CUSTOMER_GET_DEPENDENCE_ID;
+    public static final String REQUEST_CUSTOMER_GET_ENTITIES;
+    public static final String REQUEST_CUSTOMER_UPDATE_DEPENDENCE;
+
+    //TaskRoute
+    public static final String TASK_ROUTE_GET_DEPENDENCE_ID;
+    public static final String TASK_ROUTE_GET_ENTITIES;
+    public static final String TASK_ROUTE_UPDATE_DEPENDENCE;
+
+    //CarRoute
+    public static final String CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID;
+    public static final String CAR_ROUTE_GET_DEPENDENCE_CAR_ID;
+    public static final String CAR_ROUTE_UPDATE_DEPENDENCE;
+    public static final String CAR_ROUTE_DELETE_DEPENDENCE;
 
 
     //enum
@@ -99,6 +117,38 @@ public class SQLQuery {
 
         //enum
         SELECT_ENUM = "SELECT * FROM autobase.";
+
+        //CarDriver DependenceDAO
+        CAR_DRIVER_GET_DEPENDENCE_ID = "SELECT driver_id FROM autobase.cars WHERE id=?";
+        CAR_DRIVER_GET_ENTITIES_ID = "SELECT id FROM autobase.cars WHERE driver_id=?";
+        CAR_DRIVER_UPDATE_DEPENDENCE = "UPDATE autobase.cars SET driver_id=? WHERE id=?";
+
+        //RequestRoute DependenceDAO
+        REQUEST_ROUTE_GET_DEPENDENCE_ID = "SELECT route_id FROM autobase.requests WHERE id=?";
+        REQUEST_ROUTE_GET_ENTITIES = "SELECT id FROM autobase.requests WHERE route_id=?";
+        REQUEST_ROUTE_UPDATE_DEPENDENCE = "UPDATE autobase.requests SET route_id=? WHERE id=?";
+
+        //TaskAddress DependenceDAO
+        TASK_ADDRESS_GET_DEPENDENCE_ID = "SELECT address_id FROM autobase.tasks WHERE id=?";
+        TASK_ADDRESS_GET_ENTITIES = "SELECT id FROM autobase.tasks WHERE address_id=?";
+        TASK_ADDRESS_UPDATE_DEPENDENCE = "UPDATE autobase.tasks SET address_id=? WHERE id=?";
+
+        //RequestCustomer DependenceDAO
+        REQUEST_CUSTOMER_GET_DEPENDENCE_ID = "SELECT customer_id FROM autobase.requests WHERE id=?";
+        REQUEST_CUSTOMER_GET_ENTITIES = "SELECT id FROM autobase.requests WHERE customer_id=?";
+        REQUEST_CUSTOMER_UPDATE_DEPENDENCE = "UPDATE autobase.requests SET customer_id=? WHERE id=?";
+
+        //TaskRoute DependenceDAO
+        TASK_ROUTE_GET_DEPENDENCE_ID = "SELECT route_id FROM autobase.tasks WHERE id=?";
+        TASK_ROUTE_GET_ENTITIES = "SELECT id FROM autobase.tasks WHERE route_id=?";
+        TASK_ROUTE_UPDATE_DEPENDENCE = "UPDATE autobase.tasks SET route_id=? WHERE id=?";
+
+        //CarRoute DependenceDAO
+        CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID = "SELECT route_id FROM autobase.cars_in_routes WHERE car_id=?";
+        CAR_ROUTE_GET_DEPENDENCE_CAR_ID = "SELECT car_id FROM autobase.cars_in_routes WHERE route_id=?";
+        CAR_ROUTE_UPDATE_DEPENDENCE = "INSERT INTO autobase.cars_in_routes (car_id, route_id) VALUES (?,?)";
+        CAR_ROUTE_DELETE_DEPENDENCE = "DELETE FROM autobase.cars_in_routes WHERE car_id=? AND route_id=?";
+
 
         //User DAO
         USER_ID = "users.id";

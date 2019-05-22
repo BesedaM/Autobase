@@ -33,6 +33,10 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         this.connector = new WrapperConnector();
     }
 
+    public AbstractDAO(WrapperConnector connector) {
+        this.connector = connector;
+    }
+
     public List<E> getAll() throws DAOLayerException {
         List<E> list = new ArrayList<>();
         Statement st = null;
@@ -47,7 +51,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
         } catch (EntityLogicException e) {
-            throw new DAOTechnicalException("Error creating entity " + entity.getClass().getSimpleName(), e);
+            throw new DAOTechnicalException("Error creating entity", e);
         } finally {
             closeStatement(st);
         }
@@ -70,7 +74,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
         } catch (EntityLogicException e) {
-            throw new DAOTechnicalException("Error creating entity " + entity.getClass().getSimpleName(), e);
+            throw new DAOTechnicalException("Error creating entity", e);
         } finally {
             closeStatement(st);
         }
@@ -94,7 +98,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } catch (EntityLogicException e) {
-                throw new DAOTechnicalException("Error creating entity " + entity.getClass().getSimpleName(), e);
+                throw new DAOTechnicalException("Error creating entity", e);
             } finally {
                 closeStatement(st);
             }
@@ -188,14 +192,14 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
 
     protected abstract int updateIdParameterNumber();
 
-    /**
-     * Method for getting the WrapperConnector object
-     *
-     * @return WrapperConnector object
-     */
-    public WrapperConnector getWrapperConnector() {
-        return connector;
-    }
+//    /**
+//     * Method for getting the WrapperConnector object
+//     *
+//     * @return WrapperConnector object
+//     */
+//    public WrapperConnector getWrapperConnector() {
+//        return connector;
+//    }
 
     /**
      * Closes the specified statement
@@ -208,8 +212,8 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         }
     }
 
-    public void closeConnection() {
-        connector.closeConnection();
-    }
-
+//    public void closeConnector() {
+//        connector.closeConnector();
+//    }
+//
 }

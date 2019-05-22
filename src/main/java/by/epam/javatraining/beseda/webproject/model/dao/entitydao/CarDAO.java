@@ -9,6 +9,7 @@ import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTe
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,17 +21,26 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class CarDAO extends AbstractDAO<Car> {
 
-    private static CarDAO instance = null;
+//    private static CarDAO instance = null;
+//
+//    private CarDAO() {
+//        super();
+//    }
+//
+//    public static CarDAO getDAO() {
+//        if (instance == null) {
+//            instance = new CarDAO();
+//        }
+//        return instance;
+//    }
 
-    private CarDAO() {
+
+    public CarDAO() {
         super();
     }
 
-    public static CarDAO getDAO() {
-        if (instance == null) {
-            instance = new CarDAO();
-        }
-        return instance;
+    public CarDAO(WrapperConnector connector) {
+        super(connector);
     }
 
     @Override

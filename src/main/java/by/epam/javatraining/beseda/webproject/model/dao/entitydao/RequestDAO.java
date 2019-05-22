@@ -4,6 +4,7 @@ import by.epam.javatraining.beseda.webproject.model.entity.Request;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,17 +16,25 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class RequestDAO extends AbstractDAO<Request> {
 
-    private static RequestDAO instance = null;
+//    private static RequestDAO instance = null;
+//
+//    private RequestDAO() {
+//        super();
+//    }
+//
+//    public static RequestDAO getDAO() {
+//        if (instance == null) {
+//            instance = new RequestDAO();
+//        }
+//        return instance;
+//    }
 
-    private RequestDAO() {
-        super();
+
+    public RequestDAO() {
     }
 
-    public static RequestDAO getDAO() {
-        if (instance == null) {
-            instance = new RequestDAO();
-        }
-        return instance;
+    public RequestDAO(WrapperConnector connector) {
+        super(connector);
     }
 
     @Override
