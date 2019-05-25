@@ -2,31 +2,23 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.REQUEST_CUSTOMER_GET_DEPENDENCE_ID;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.REQUEST_CUSTOMER_GET_ENTITIES;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.REQUEST_CUSTOMER_UPDATE_DEPENDENCE;
+import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class RequestCustomerDependenceDAO extends ManyToOneDependenceDAO<Request, Customer> {
-//    private static RequestCustomerDependenceDAO ourInstance = new RequestCustomerDependenceDAO();
-//
-//    private RequestCustomerDependenceDAO() {
-//        super();
-//    }
-//
-//    public static RequestCustomerDependenceDAO getDAO() {
-//        return ourInstance;
-//    }
 
-
-    public RequestCustomerDependenceDAO() {
+    private RequestCustomerDependenceDAO() {
         super();
     }
 
-    public RequestCustomerDependenceDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final RequestCustomerDependenceDAO instance = new RequestCustomerDependenceDAO();
     }
+
+    public static RequestCustomerDependenceDAO getDAO() {
+        return SingletonHolder.instance;
+    }
+
 
     @Override
     protected String getDependenceIdStatement() {

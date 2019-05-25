@@ -1,8 +1,9 @@
-package by.epam.javatraining.beseda.webproject.model.service;
+package by.epam.javatraining.beseda.webproject.model.service.entityService;
 
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.AbstractDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.IllegalEntityIdException;
 import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
@@ -71,9 +72,24 @@ public abstract class AbstractService<E extends BaseEntity> implements Service<E
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws ServiceLogicException {
         if (id > 0) {
-            entityDAO.delete(id);
+            try {
+                entityDAO.delete(id);
+            } catch (DAOTechnicalException e) {
+                throw new ServiceLogicException(e);
+            }
+        }
+    }
+
+    @Override
+    public void delete(E entity) throws ServiceLogicException {
+        if (entity != null) {
+            try {
+                entityDAO.delete(entity.getId());
+            } catch (DAOTechnicalException e) {
+                throw new ServiceLogicException(e);
+            }
         }
     }
 }

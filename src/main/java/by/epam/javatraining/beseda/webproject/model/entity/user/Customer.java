@@ -61,13 +61,19 @@ public class Customer extends Person {
         }
     }
 
+    public void setRequestList(List<Request> list) {
+        if (list != null) {
+            requests = list;
+        }
+    }
+
     public void addRequest(Request request) {
         if (request != null) {
             this.requests.add(request);
         }
     }
 
-    public void deleteRequest(Request request) {
+    public void removeRequest(Request request) {
         if (request != null) {
             this.requests.remove(request);
         }

@@ -1,6 +1,7 @@
-package by.epam.javatraining.beseda.webproject.model.service;
+package by.epam.javatraining.beseda.webproject.model.service.entityService;
 
 import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
+import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
 
 import java.util.List;
 
@@ -49,5 +50,13 @@ public interface Service<E> {
      *
      * @param id entities id
      */
-    void delete(int id);
+    void delete(int id) throws ServiceLogicException;
+
+    /**
+     * Deletes entity
+     *
+     * @param entity entity to delete
+     */
+    void delete(E entity) throws ServiceLogicException;
+
 }

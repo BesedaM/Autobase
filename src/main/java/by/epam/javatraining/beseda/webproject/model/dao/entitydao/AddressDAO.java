@@ -15,27 +15,18 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class AddressDAO extends AbstractDAO<Address> {
 
-//    private static AddressDAO instance = null;
-//
-//    private AddressDAO() {
-//        super();
-//    }
-//
-//    public static AddressDAO getDAO() {
-//        if (instance == null) {
-//            instance = new AddressDAO();
-//        }
-//        return instance;
-//    }
-
-
-    public AddressDAO() {
+    private AddressDAO() {
         super();
     }
 
-    public AddressDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final AddressDAO instance = new AddressDAO();
     }
+
+    public static AddressDAO getDAO() {
+        return SingletonHolder.instance;
+    }
+
 
     @Override
     protected Address createEntity(ResultSet result) throws SQLException, EntityLogicException {
@@ -92,7 +83,7 @@ public class AddressDAO extends AbstractDAO<Address> {
             st.setString(4, addr.getStreet());
             st.setInt(5, addr.getHouse());
             st.setString(6, addr.getBuilding());
-        }else{
+        } else {
             throw new NotEnoughArgumentsException();
         }
     }

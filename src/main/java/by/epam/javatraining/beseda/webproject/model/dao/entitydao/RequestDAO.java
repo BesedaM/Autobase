@@ -16,25 +16,16 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class RequestDAO extends AbstractDAO<Request> {
 
-//    private static RequestDAO instance = null;
-//
-//    private RequestDAO() {
-//        super();
-//    }
-//
-//    public static RequestDAO getDAO() {
-//        if (instance == null) {
-//            instance = new RequestDAO();
-//        }
-//        return instance;
-//    }
-
-
-    public RequestDAO() {
+    private RequestDAO() {
+        super();
     }
 
-    public RequestDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final RequestDAO instance = new RequestDAO();
+    }
+
+    public static RequestDAO getDAO() {
+        return SingletonHolder.instance;
     }
 
     @Override

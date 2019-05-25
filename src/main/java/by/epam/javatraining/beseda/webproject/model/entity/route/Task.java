@@ -38,7 +38,7 @@ public class Task extends BaseEntity {
         }
     }
 
-    public void deleteAddress() {
+    public void removeAddress() {
         this.address = null;
     }
 

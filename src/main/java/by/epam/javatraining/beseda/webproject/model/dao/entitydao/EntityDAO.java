@@ -18,7 +18,7 @@ public interface EntityDAO<E> {
      * @return list of E type objects
      * @throws DAOLayerException
      */
-    public abstract List<E> getAll() throws DAOLayerException;
+    List<E> getAll() throws DAOLayerException;
 
     /**
      * Method for finding the specified entity by id
@@ -27,7 +27,7 @@ public interface EntityDAO<E> {
      * @return the specified object or null if no object was found
      * @throws DAOTechnicalException
      */
-    public abstract E getEntityById(int id) throws DAOLayerException;
+    E getEntityById(int id) throws DAOLayerException;
 
     /**
      * Returns entities list, consisting oа entities with id values from idArr
@@ -36,21 +36,21 @@ public interface EntityDAO<E> {
      * @return entities list
      * @throws DAOLayerException
      */
-    public List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException;
+    List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException;
 
     /**
      *Deletes object specified by id from database
      *
      * @param id entity id
      */
-    public void delete(int id);
+    void delete(int id) throws DAOTechnicalException;
 
     /**
      * Deletes specified object from database
      *
      * @param entity the object to delete
      */
-    public void delete(E entity);
+    void delete(E entity) throws DAOTechnicalException;
 
     /**
      * Method for adding object to database
@@ -59,7 +59,7 @@ public interface EntityDAO<E> {
      * @return database-generated entity id
      * @throws DAOLayerException
      */
-    public abstract int add(E entity) throws DAOLayerException;
+    int add(E entity) throws DAOLayerException;
 
     /**
      * Updates data of specified object
@@ -67,12 +67,7 @@ public interface EntityDAO<E> {
      * @param entity the object to update
      * @throws DAOLayerException
      */
-    public abstract void update(E entity) throws DAOLayerException;
-
-//    /**
-//     * Method for closing DAO connection
-//     */
-//    public void closeConnector();
+    void update(E entity) throws DAOLayerException;
 
 
 }

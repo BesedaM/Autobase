@@ -1,7 +1,5 @@
-package by.epam.javatraining.beseda.webproject.model.service;
+package by.epam.javatraining.beseda.webproject.model.service.entityService;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.CustomerDAO;
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.DriverDAO;
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.UserDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
@@ -13,7 +11,6 @@ import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.S
 import by.epam.javatraining.beseda.webproject.util.PasswordHash;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static by.epam.javatraining.beseda.webproject.model.service.ServiceConstants.*;
@@ -70,7 +67,7 @@ public class UserService extends AbstractService<User>{
     }
 
     /**
-     * Creates entity with the given data without id
+     * Creates entity with the given data WITHOUT id
      */
     public User createEntity(String login, String password, String user_role) throws ServiceLayerException {
         User user = new User();

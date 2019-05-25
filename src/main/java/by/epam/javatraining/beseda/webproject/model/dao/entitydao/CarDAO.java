@@ -21,26 +21,16 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class CarDAO extends AbstractDAO<Car> {
 
-//    private static CarDAO instance = null;
-//
-//    private CarDAO() {
-//        super();
-//    }
-//
-//    public static CarDAO getDAO() {
-//        if (instance == null) {
-//            instance = new CarDAO();
-//        }
-//        return instance;
-//    }
-
-
-    public CarDAO() {
+    private CarDAO() {
         super();
     }
 
-    public CarDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final CarDAO instance = new CarDAO();
+    }
+
+    public static CarDAO getDAO() {
+        return SingletonHolder.instance;
     }
 
     @Override
@@ -67,7 +57,7 @@ public class CarDAO extends AbstractDAO<Car> {
     }
 
     @Override
-    public int add(Car car) throws DAOLayerException {
+    public synchronized int add(Car car) throws DAOLayerException {
         int id = -1;
         if (car != null) {
             PreparedStatement st = null;
@@ -114,7 +104,7 @@ public class CarDAO extends AbstractDAO<Car> {
     }
 
     @Override
-    public void update(Car car) throws DAOLayerException {
+    public synchronized void update(Car car) throws DAOLayerException {
         if (car != null) {
             PreparedStatement st = null;
             try {

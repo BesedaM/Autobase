@@ -19,30 +19,19 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class UserDAO extends AbstractDAO<User> {
 
-//    private static UserDAO instance = null;
-//
-//    private UserDAO() {
-//        super();
-//    }
-//
-//    public static UserDAO getDAO() {
-//        if (instance == null) {
-//            instance = new UserDAO();
-//        }
-//        return instance;
-//    }
-
-
-    public UserDAO() {
+    private UserDAO() {
         super();
     }
 
-    public UserDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final UserDAO instance = new UserDAO();
     }
 
-    public User getUserByLoginAndPassword(String login, byte[] password) throws DAOTechnicalException {
+    public static UserDAO getDAO() {
+        return SingletonHolder.instance;
+    }
 
+    public synchronized User getUserByLoginAndPassword(String login, byte[] password) throws DAOTechnicalException {
         User user = null;
         if (login != null && password != null) {
             PreparedStatement st = null;
@@ -65,7 +54,7 @@ public class UserDAO extends AbstractDAO<User> {
         return user;
     }
 
-    public User getUserByLogin(String login) throws DAOTechnicalException {
+    public synchronized User getUserByLogin(String login) throws DAOTechnicalException {
         User user = null;
         if (login != null) {
             PreparedStatement st = null;
@@ -87,8 +76,8 @@ public class UserDAO extends AbstractDAO<User> {
         return user;
     }
 
-    public boolean updatePassword(String login, byte[] password) throws DAOTechnicalException {
-        boolean succeed=false;
+    public synchronized boolean updatePassword(String login, byte[] password) throws DAOTechnicalException {
+        boolean succeed = false;
         if (login != null && password != null) {
             PreparedStatement st = null;
             try {
@@ -96,7 +85,7 @@ public class UserDAO extends AbstractDAO<User> {
                 st.setString(1, login);
                 st.setBytes(2, password);
                 st.executeUpdate();
-                succeed=true;
+                succeed = true;
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {

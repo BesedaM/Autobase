@@ -18,26 +18,16 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class TaskDAO extends AbstractDAO<Task> {
 
-//    private static TaskDAO instance = null;
-//
-//    private TaskDAO() {
-//        super();
-//    }
-//
-//    public static TaskDAO getDAO() {
-//        if (instance == null) {
-//            instance = new TaskDAO();
-//        }
-//        return instance;
-//    }
-
-
-    public TaskDAO() {
+    private TaskDAO() {
         super();
     }
 
-    public TaskDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final TaskDAO instance = new TaskDAO();
+    }
+
+    public static TaskDAO getDAO() {
+        return SingletonHolder.instance;
     }
 
     @Override

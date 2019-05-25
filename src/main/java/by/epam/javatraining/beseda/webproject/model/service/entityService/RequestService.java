@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.model.service;
+package by.epam.javatraining.beseda.webproject.model.service.entityService;
 
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.RequestDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.Request;

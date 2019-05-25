@@ -2,32 +2,23 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.CAR_DRIVER_GET_DEPENDENCE_ID;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.CAR_DRIVER_GET_ENTITIES_ID;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.CAR_DRIVER_UPDATE_DEPENDENCE;
+import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class CarDriverDependenceDAO extends OneToOneDependenceDAO<Car,Driver> {
 
-//    private static CarDriverDependenceDAO instance = new CarDriverDependenceDAO();
-//
-//    private CarDriverDependenceDAO() {
-//        super();
-//    }
-//
-//    public static CarDriverDependenceDAO getDAO() {
-//        return instance;
-//    }
-
-
-    public CarDriverDependenceDAO() {
+    private CarDriverDependenceDAO() {
         super();
     }
 
-    public CarDriverDependenceDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final CarDriverDependenceDAO instance = new CarDriverDependenceDAO();
     }
+
+    public static CarDriverDependenceDAO getDAO() {
+        return SingletonHolder.instance;
+    }
+
 
     @Override
     protected String getDependenceIdStatement() {

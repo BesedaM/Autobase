@@ -20,11 +20,15 @@ public class Driver extends Person {
     }
 
     public void setCar(Car car) throws IllegalCarException {
-        if(car!=null) {
+        if (car != null) {
             this.car = car;
-        }else{
+        } else {
             throw new IllegalCarException();
         }
+    }
+
+    public void removeCar() {
+        car = null;
     }
 
     public Car getCar() {

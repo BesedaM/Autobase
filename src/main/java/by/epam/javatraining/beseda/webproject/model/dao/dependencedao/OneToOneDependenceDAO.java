@@ -2,7 +2,6 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,10 +21,6 @@ public abstract class OneToOneDependenceDAO<M extends BaseEntity, K extends Base
         super();
     }
 
-    protected OneToOneDependenceDAO(WrapperConnector connector) {
-        super(connector);
-    }
-
     /**
      * Returns entity id according to dependence
      *
@@ -33,7 +28,7 @@ public abstract class OneToOneDependenceDAO<M extends BaseEntity, K extends Base
      * @return
      * @throws DAOTechnicalException
      */
-    public int getEntityIdByDependence(K dependence) throws DAOTechnicalException {
+    public synchronized int getEntityIdByDependence(K dependence) throws DAOTechnicalException {
         int entityId = NULL;
         if (dependence != null) {
             PreparedStatement st = null;

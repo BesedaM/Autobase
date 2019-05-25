@@ -16,26 +16,16 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class RouteDAO extends AbstractDAO<Route> {
 
-//    private static RouteDAO instance = null;
-//
-//    private RouteDAO() {
-//        super();
-//    }
-//
-//    public static RouteDAO getDAO() {
-//        if (instance == null) {
-//            instance = new RouteDAO();
-//        }
-//        return instance;
-//    }
-
-
-    public RouteDAO() {
+    private RouteDAO() {
         super();
     }
 
-    public RouteDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final RouteDAO instance = new RouteDAO();
+    }
+
+    public static RouteDAO getDAO() {
+        return SingletonHolder.instance;
     }
 
     @Override

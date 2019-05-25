@@ -3,29 +3,21 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
 
-//    private static CarRouteDependenceDAO instance = new CarRouteDependenceDAO();
-//
-//    private CarRouteDependenceDAO() {
-//        super();
-//    }
-//
-//    public static CarRouteDependenceDAO getDAO() {
-//        return instance;
-//    }
-
-
-    public CarRouteDependenceDAO() {
+    private CarRouteDependenceDAO() {
         super();
     }
 
-    public CarRouteDependenceDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final CarRouteDependenceDAO instance = new CarRouteDependenceDAO();
+    }
+
+    public static CarRouteDependenceDAO getDAO() {
+        return SingletonHolder.instance;
     }
 
     @Override

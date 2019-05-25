@@ -19,30 +19,25 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class CustomerDAO extends AbstractDAO<Customer> {
 
-//    private static CustomerDAO instance = null;
-//
-//    private CustomerDAO() {
-//        super();
-//    }
-//
-//    public static CustomerDAO getDAO() {
-//        if (instance == null) {
-//            instance = new CustomerDAO();
-//        }
-//        return instance;
-//    }
-
-
-    public CustomerDAO() {
+    private CustomerDAO() {
         super();
     }
 
-    public CustomerDAO(WrapperConnector connector) {
-        super(connector);
+
+    private static class SingletonHolder {
+        public static final CustomerDAO instance = new CustomerDAO();
     }
 
+    public static CustomerDAO getDAO() {
+        return SingletonHolder.instance;
+    }
+
+//    public CustomerDAO(WrapperConnector connector) {
+//        super(connector);
+//    }
+
     @Override
-    public int add(Customer user) throws DAOLayerException {
+    public synchronized int add(Customer user) throws DAOLayerException {
         int id = -1;
         if (user != null) {
             PreparedStatement st = null;

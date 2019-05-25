@@ -29,27 +29,31 @@ public class Request extends BaseEntity {
     }
 
     public void setRoute(Route route) throws IllegalRequestRouteException {
-        if(route!=null) {
+        if (route != null) {
             this.route = route;
-        }else{
+        } else {
             throw new IllegalRequestRouteException();
         }
     }
 
     public void setStatus(String status) throws IllegalRequestStatusException {
-        if(status!=null) {
+        if (status != null) {
             this.status = status;
-        }else{
+        } else {
             throw new IllegalRequestStatusException();
         }
     }
 
     public void setComment(String comment) throws IllegalRequestCommentException {
-        if(comment!=null) {
+        if (comment != null) {
             this.comment = comment;
-        }else{
+        } else {
             throw new IllegalRequestCommentException();
         }
+    }
+
+    public void removeRoute() {
+        route = null;
     }
 
     public Route getRoute() {
@@ -70,7 +74,7 @@ public class Request extends BaseEntity {
         if (!(o instanceof Request)) return false;
         if (!super.equals(o)) return false;
         Request request = (Request) o;
-        return  Objects.equals(route, request.route) &&
+        return Objects.equals(route, request.route) &&
                 Objects.equals(comment, request.comment);
     }
 

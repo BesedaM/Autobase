@@ -50,13 +50,25 @@ public class Route extends BaseEntity {
         }
     }
 
+    public void setTasksList(List<Task> list) {
+        if (list != null) {
+            tasks = list;
+        }
+    }
+
+    public void setCarsList(List<Car> list) {
+        if (list != null) {
+            cars = list;
+        }
+    }
+
     public void addTask(Task task) {
         if (task != null) {
             this.tasks.add(task);
         }
     }
 
-    public void deleteTask(Task task) {
+    public void removeTask(Task task) {
         this.tasks.remove(task);
     }
 
@@ -66,7 +78,7 @@ public class Route extends BaseEntity {
         }
     }
 
-    public void deleteCar(Car car) {
+    public void removeCar(Car car) {
         this.cars.remove(car);
     }
 

@@ -2,31 +2,21 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.TASK_ROUTE_GET_DEPENDENCE_ID;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.TASK_ROUTE_GET_ENTITIES;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.TASK_ROUTE_UPDATE_DEPENDENCE;
+import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class TaskRouteDependenceDAO extends ManyToOneDependenceDAO<Task, Route> {
 
-//    private static TaskRouteDependenceDAO ourInstance = new TaskRouteDependenceDAO();
-//
-//    private TaskRouteDependenceDAO() {
-//        super();
-//    }
-//
-//    public static TaskRouteDependenceDAO getDAO() {
-//        return ourInstance;
-//    }
-
-
-    public TaskRouteDependenceDAO() {
+    private TaskRouteDependenceDAO() {
         super();
     }
 
-    public TaskRouteDependenceDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final TaskRouteDependenceDAO instance = new TaskRouteDependenceDAO();
+    }
+
+    public static TaskRouteDependenceDAO getDAO() {
+        return SingletonHolder.instance;
     }
 
     @Override

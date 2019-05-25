@@ -6,7 +6,6 @@ import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTe
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,37 +17,27 @@ import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
 public class DriverDAO extends AbstractDAO<Driver> {
 
-//    private static DriverDAO instance = null;
-//
-//    private DriverDAO() {
-//        super();
-//    }
-//
-//    public static DriverDAO getDAO() {
-//        if (instance == null) {
-//            instance = new DriverDAO();
-//        }
-//        return instance;
-//    }
-
-
-    public DriverDAO() {
+    private DriverDAO() {
         super();
     }
 
-    public DriverDAO(WrapperConnector connector) {
-        super(connector);
+    private static class SingletonHolder {
+        public static final DriverDAO instance = new DriverDAO();
+    }
+
+    public static DriverDAO getDAO() {
+        return SingletonHolder.instance;
     }
 
     @Override
-    public int add(Driver user) throws DAOLayerException {
+    public synchronized int add(Driver driver) throws DAOLayerException {
         int id = -1;
-        if (user != null) {
+        if (driver != null) {
             PreparedStatement st = null;
             try {
                 st = connector.prepareStatement(addStatement());
-                setDataOnPreparedStatement(st, user);
-                id = user.getId();
+                setDataOnPreparedStatement(st, driver);
+                id = driver.getId();
                 st.setInt(4, id);
                 st.executeUpdate();
             } catch (SQLException e) {

@@ -2,7 +2,6 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,9 +21,6 @@ public abstract class DependenceToOneDAO<M extends BaseEntity, K extends BaseEnt
         super();
     }
 
-    protected DependenceToOneDAO(WrapperConnector connector) {
-        super(connector);
-    }
 
     /**
      * Returns dependence id
@@ -33,7 +29,7 @@ public abstract class DependenceToOneDAO<M extends BaseEntity, K extends BaseEnt
      * @return dependence id according to entity id
      * @throws DAOTechnicalException
      */
-    public int getDependenceId(M entity) throws DAOTechnicalException {
+    public synchronized int getDependenceId(M entity) throws DAOTechnicalException {
         int dependenceId = 0;
         if (entity != null) {
             PreparedStatement st = null;
@@ -63,7 +59,7 @@ public abstract class DependenceToOneDAO<M extends BaseEntity, K extends BaseEnt
      * @param entity the specified entity
      * @throws DAOTechnicalException
      */
-    public void deleteDependence(M entity) throws DAOTechnicalException {
+    public synchronized void deleteDependence(M entity) throws DAOTechnicalException {
         if (entity != null) {
             PreparedStatement st = null;
             try {

@@ -2,7 +2,6 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,10 +19,6 @@ public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends Ba
         super();
     }
 
-    protected ManyToManyDependenceDAO(WrapperConnector connector) {
-        super(connector);
-    }
-
     /**
      * Returns dependence ids according to specified entity
      *
@@ -31,7 +26,7 @@ public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends Ba
      * @return array, containing all the dependence ids
      * @throws DAOTechnicalException
      */
-    public int[] getDependencesId(BaseEntity entity) throws DAOTechnicalException {
+    public synchronized int[] getDependencesId(BaseEntity entity) throws DAOTechnicalException {
         int[] dependencyId = null;
         if (entity != null) {
             PreparedStatement st = null;
@@ -66,7 +61,7 @@ public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends Ba
 
     protected abstract String updateDependenceStatement();
 
-    public void deleteDependence(M entity, K dependency) throws DAOTechnicalException {
+    public synchronized void deleteDependence(M entity, K dependency) throws DAOTechnicalException {
         if (entity != null) {
             PreparedStatement st = null;
             try {

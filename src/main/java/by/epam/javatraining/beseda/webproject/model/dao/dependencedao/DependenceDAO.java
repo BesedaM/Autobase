@@ -15,14 +15,10 @@ import java.sql.SQLException;
  */
 public abstract class DependenceDAO<M extends BaseEntity, K extends BaseEntity> {
 
-    protected volatile WrapperConnector connector;
+    protected WrapperConnector connector;
 
     protected DependenceDAO() {
         this.connector = new WrapperConnector();
-    }
-
-    protected DependenceDAO(WrapperConnector connector) {
-        this.connector = connector;
     }
 
     /**
@@ -32,7 +28,7 @@ public abstract class DependenceDAO<M extends BaseEntity, K extends BaseEntity> 
      * @param dependency dependency object
      * @throws DAOTechnicalException
      */
-    public void setDependence(M entity, K dependency) throws DAOTechnicalException {
+    public synchronized void setDependence(M entity, K dependency) throws DAOTechnicalException {
         if (entity != null && dependency != null) {
             PreparedStatement st = null;
             try {
@@ -54,10 +50,4 @@ public abstract class DependenceDAO<M extends BaseEntity, K extends BaseEntity> 
      */
     protected abstract String updateDependenceStatement();
 
-//    /**
-//     * Closes the Wrapper Connection instance
-//     */
-//    public void closeConnection() {
-//        connector.closeConnector();
-//    }
 }
