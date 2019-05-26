@@ -226,7 +226,7 @@ public class SQLQuery {
         SELECT_ALL_REQUESTS = "SELECT * FROM autobase.requests LEFT JOIN autobase.request_status ON requests.status_id=request_status.id";
         SELECT_REQUEST_BY_ID = SELECT_ALL_REQUESTS + " WHERE requests.id=?";
         DELETE_REQUEST_BY_ID = "DELETE FROM autobase.requests WHERE id=?";
-        ADD_NEW_REQUEST = "INSERT INTO autobase.requests (status_id, comment) VALUES (?,?)";
-        UPDATE_REQUEST = "UPDATE autobase.requests SET status_id=?, comment=? WHERE id=?";
+        ADD_NEW_REQUEST = "INSERT INTO autobase.requests (status_id, request_date, comment) VALUES (?,?,?)";
+        UPDATE_REQUEST = "UPDATE autobase.requests SET status_id=?, request_date=?, comment=? WHERE id=?";
     }
 }

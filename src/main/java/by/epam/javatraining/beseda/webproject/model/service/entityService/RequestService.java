@@ -7,8 +7,16 @@ import static by.epam.javatraining.beseda.webproject.util.resourceloader.Databas
 
 public class RequestService extends AbstractService<Request> {
 
-    public RequestService() {
+    private RequestService() {
         entityDAO = RequestDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final RequestService instance = new RequestService();
+    }
+
+    public static RequestService getService() {
+        return SingletonHolder.instance;
     }
 
     /**

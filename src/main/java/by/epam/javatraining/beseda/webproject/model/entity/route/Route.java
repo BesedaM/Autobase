@@ -63,7 +63,7 @@ public class Route extends BaseEntity {
     }
 
     public void addTask(Task task) {
-        if (task != null) {
+        if (task != null && !this.tasks.contains(task)) {
             this.tasks.add(task);
         }
     }
@@ -73,7 +73,7 @@ public class Route extends BaseEntity {
     }
 
     public void addCar(Car car) {
-        if (car != null) {
+        if (car != null && !this.cars.contains(car)) {
             this.cars.add(car);
         }
     }

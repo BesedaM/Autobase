@@ -9,15 +9,17 @@ import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.S
 
 public class CustomerService extends AbstractService<Customer> {
 
-    public CustomerService() {
+    private CustomerService() {
         entityDAO = CustomerDAO.getDAO();
     }
 
-//    public static void sortCustomers(List<Customer> list, Comparator<? super Customer> comparator) {
-//        if (list != null && comparator != null) {
-//            list.sort(comparator);
-//        }
-//    }
+    private static class SingletonHolder {
+        public static final CustomerService instance = new CustomerService();
+    }
+
+    public static CustomerService getService() {
+        return SingletonHolder.instance;
+    }
 
     /**
      * Creates entity with the given data

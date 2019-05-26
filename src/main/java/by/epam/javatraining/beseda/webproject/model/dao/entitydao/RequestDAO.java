@@ -9,8 +9,11 @@ import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConne
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.GregorianCalendar;
 
 import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.COMMENT;
+import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.REQUEST_DATE;
 import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.REQUEST_STATUS;
 import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
 
@@ -31,11 +34,16 @@ public class RequestDAO extends AbstractDAO<Request> {
     @Override
     protected Request createEntity(ResultSet res) throws SQLException, EntityLogicException {
         Request request = null;
-        if(res!=null) {
+        if (res != null) {
             request = new Request();
             request.setId(res.getInt(REQUEST_ID));
             request.setStatus(res.getString(REQUEST_STATUS));
             request.setComment(res.getString(COMMENT));
+
+            GregorianCalendar time = new GregorianCalendar();
+            time.setTimeInMillis(res.getTime(REQUEST_DATE).getTime());
+
+            request.setDate(time);
         }
         return request;
     }
@@ -72,11 +80,12 @@ public class RequestDAO extends AbstractDAO<Request> {
 
     @Override
     protected void setDataOnPreparedStatement(PreparedStatement st, Request request) throws SQLException, NotEnoughArgumentsException {
-        if(st!=null&&request!=null) {
+        if (st != null && request != null) {
             int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
             st.setInt(1, statusId);
-            st.setString(2, request.getComment());
-        }else{
+            st.setTime(2, new Time(request.getDate().getTimeInMillis()));
+            st.setString(3, request.getComment());
+        } else {
             throw new NotEnoughArgumentsException();
         }
     }

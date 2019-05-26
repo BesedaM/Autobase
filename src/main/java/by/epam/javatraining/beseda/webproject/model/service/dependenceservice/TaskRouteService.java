@@ -14,9 +14,21 @@ import java.util.List;
 
 public class TaskRouteService {
 
-    private static TaskRouteDependenceDAO taskRouteDependenceDAO = TaskRouteDependenceDAO.getDAO();
+    private TaskRouteDependenceDAO taskRouteDependenceDAO;
 
-    public static boolean addDependence(Task task, Route route) throws ServiceLayerException {
+    private TaskRouteService(){
+        taskRouteDependenceDAO = TaskRouteDependenceDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final TaskRouteService instance = new TaskRouteService();
+    }
+
+    public static TaskRouteService getService() {
+        return SingletonHolder.instance;
+    }
+
+    public boolean addDependence(Task task, Route route) throws ServiceLayerException {
         boolean succeed = false;
         if (task != null && route != null) {
             try {
@@ -30,7 +42,7 @@ public class TaskRouteService {
         return succeed;
     }
 
-    public static boolean deleteDependence(Task task, Route route) throws ServiceLayerException {
+    public boolean deleteDependence(Task task, Route route) throws ServiceLayerException {
         boolean succeed = false;
         if (task != null && route != null) {
             try {
@@ -44,7 +56,7 @@ public class TaskRouteService {
         return succeed;
     }
 
-    public static Route getRoute(Task task) throws ServiceLayerException {
+    public Route getRoute(Task task) throws ServiceLayerException {
         Route route = null;
         if (task != null) {
             try {
@@ -58,7 +70,7 @@ public class TaskRouteService {
         return route;
     }
 
-    public static List<Task> getTaskList(Route route) throws ServiceLayerException {
+    public List<Task> getTaskList(Route route) throws ServiceLayerException {
         List<Task> taskList = null;
         if (route != null) {
             try {

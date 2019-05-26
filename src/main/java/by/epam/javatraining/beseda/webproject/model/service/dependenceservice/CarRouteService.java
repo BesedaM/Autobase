@@ -14,9 +14,22 @@ import java.util.List;
 
 public class CarRouteService {
 
-    private static CarRouteDependenceDAO carRouteDependenceDAO = CarRouteDependenceDAO.getDAO();
+    private CarRouteDependenceDAO carRouteDependenceDAO;
 
-    public static boolean addDependence(Car car, Route route) throws ServiceLayerException {
+    private CarRouteService() {
+        carRouteDependenceDAO = CarRouteDependenceDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final CarRouteService instance = new CarRouteService();
+    }
+
+    public static CarRouteService getService() {
+        return SingletonHolder.instance;
+    }
+
+
+    public boolean addDependence(Car car, Route route) throws ServiceLayerException {
         boolean succeed = false;
         if (car != null && route != null) {
             try {
@@ -30,7 +43,7 @@ public class CarRouteService {
         return succeed;
     }
 
-    public static boolean deleteDependence(Car car, Route route) throws ServiceLayerException {
+    public boolean deleteDependence(Car car, Route route) throws ServiceLayerException {
         boolean succeed = false;
         if (car != null && route != null) {
             try {
@@ -44,7 +57,7 @@ public class CarRouteService {
         return succeed;
     }
 
-    public static List<Car> getCars(Route route) throws ServiceLayerException {
+    public List<Car> getCars(Route route) throws ServiceLayerException {
         List<Car> carList = null;
         if (route != null) {
             try {
@@ -58,7 +71,7 @@ public class CarRouteService {
         return carList;
     }
 
-    public static List<Route> getRoutes(Car car) throws ServiceLayerException {
+    public List<Route> getRoutes(Car car) throws ServiceLayerException {
         List<Route> routeList = null;
         if (car != null) {
             try {

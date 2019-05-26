@@ -1,5 +1,8 @@
 package by.epam.javatraining.beseda.webproject.util.database;
 
+/**
+ * In this class tables and column names of tables in the corresponding database represented
+ */
 public class DBEntityTableName {
 
     public static final String T_USERS = "users";
@@ -19,7 +22,7 @@ public class DBEntityTableName {
 
     public static final String T_CARS = "cars";
     public static final String CAR_NUMBER = "car_number";
-    public static final String CAR_TYPE_ID_CARS= "type_id";
+    public static final String CAR_TYPE_ID_CARS = "type_id";
     public static final String MODEL = "model";
     public static final String SEATS_NUMBER = "seatsNumber";
     public static final String TRUCK_CAPACITY_ID_CARS = "capacity_id";
@@ -32,6 +35,7 @@ public class DBEntityTableName {
     public static final String ROUTE_ID_REQUESTS = "route_id";
     public static final String REQUEST_STATUS_ID_REQUESTS = "status_id";
     public static final String COMMENT = "comment";
+    public static final String REQUEST_DATE = "request_date";
 
     public static final String T_ROUTES = "routes";
     public static final String ROUTE_NAME = "name";

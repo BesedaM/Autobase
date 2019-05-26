@@ -1,22 +1,24 @@
 package by.epam.javatraining.beseda.webproject.model.service.entityService;
 
-import by.epam.javatraining.beseda.webproject.model.dao.dependencedao.CarDriverDependenceDAO;
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.DriverDAO;
-import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.entityexception.IllegalEntityIdException;
 import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceTechnicalException;
 
 public class DriverService extends AbstractService<Driver> {
 
-    private CarDriverDependenceDAO carDriverDependenceDAO = CarDriverDependenceDAO.getDAO();
-
-    public DriverService() {
+    private DriverService() {
         entityDAO = DriverDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final DriverService instance = new DriverService();
+    }
+
+    public static DriverService getService() {
+        return SingletonHolder.instance;
     }
 
     /**

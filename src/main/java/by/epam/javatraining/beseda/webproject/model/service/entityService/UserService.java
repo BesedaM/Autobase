@@ -17,10 +17,19 @@ import static by.epam.javatraining.beseda.webproject.model.service.ServiceConsta
 
 public class UserService extends AbstractService<User>{
 
-    public UserService() {
+    private UserService() {
         super();
         entityDAO = UserDAO.getDAO();
     }
+
+    private static class SingletonHolder {
+        public static final UserService instance = new UserService();
+    }
+
+    public static UserService getService() {
+        return SingletonHolder.instance;
+    }
+
 
     public boolean loginExists(String login) throws ServiceTechnicalException {
         return getUserByLogin(login) != null;

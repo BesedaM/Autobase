@@ -1,10 +1,13 @@
 package by.epam.javatraining.beseda.webproject.model.entity;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalDateException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestCommentException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestRouteException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestStatusException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.task.IllegalTimeException;
 
+import java.util.GregorianCalendar;
 import java.util.Objects;
 
 public class Request extends BaseEntity {
@@ -12,9 +15,14 @@ public class Request extends BaseEntity {
     private Route route;
     private String status;
     private String comment;
+    private GregorianCalendar date;
 
     public Request() {
         super();
+    }
+
+    {
+        this.date = new GregorianCalendar();
     }
 
     public Request(String comment, String status) {
@@ -44,6 +52,14 @@ public class Request extends BaseEntity {
         }
     }
 
+    public void setDate(GregorianCalendar date) throws IllegalDateException {
+        if (date != null) {
+            this.date = date;
+        } else {
+            throw new IllegalDateException();
+        }
+    }
+
     public void setComment(String comment) throws IllegalRequestCommentException {
         if (comment != null) {
             this.comment = comment;
@@ -68,6 +84,10 @@ public class Request extends BaseEntity {
         return comment;
     }
 
+    public GregorianCalendar getDate() {
+        return date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,6 +110,7 @@ public class Request extends BaseEntity {
                 ", route=" + route +
                 ", status=" + status +
                 ", comment='" + comment + '\'' +
+                ", set on " + date +
                 '}';
     }
 }

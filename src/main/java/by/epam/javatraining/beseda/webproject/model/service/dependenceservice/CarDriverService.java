@@ -14,9 +14,22 @@ import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.S
 
 public class CarDriverService {
 
-    private static CarDriverDependenceDAO carDriverDependenceDAO = CarDriverDependenceDAO.getDAO();
+    private CarDriverDependenceDAO carDriverDependenceDAO;
 
-    public static boolean addDependence(Car car, Driver driver) throws ServiceLayerException {
+    private CarDriverService() {
+        carDriverDependenceDAO = CarDriverDependenceDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final CarDriverService instance = new CarDriverService();
+    }
+
+    public static CarDriverService getService() {
+        return SingletonHolder.instance;
+    }
+
+
+    public boolean addDependence(Car car, Driver driver) throws ServiceLayerException {
         boolean succeed = false;
         if (car != null && driver != null) {
             try {
@@ -32,7 +45,7 @@ public class CarDriverService {
         return succeed;
     }
 
-    public static boolean deleteDependence(Car car, Driver driver) throws ServiceLayerException {
+    public boolean deleteDependence(Car car, Driver driver) throws ServiceLayerException {
         boolean succeed = false;
         if (car != null && driver != null) {
             try {
@@ -46,7 +59,7 @@ public class CarDriverService {
         return succeed;
     }
 
-    public static Car getCar(Driver driver) throws ServiceLayerException {
+    public Car getCar(Driver driver) throws ServiceLayerException {
         Car car = null;
         if (driver != null) {
             try {
@@ -62,7 +75,7 @@ public class CarDriverService {
         return car;
     }
 
-    public static Driver getDriver(Car car) throws ServiceLayerException {
+    public Driver getDriver(Car car) throws ServiceLayerException {
         Driver driver = null;
         if (car != null) {
             try {

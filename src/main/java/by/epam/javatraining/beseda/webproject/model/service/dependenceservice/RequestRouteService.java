@@ -14,9 +14,21 @@ import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.S
 
 public class RequestRouteService {
 
-    private static RequestRouteDependenceDAO requestRouteDependenceDAO = RequestRouteDependenceDAO.getDAO();
+    private RequestRouteDependenceDAO requestRouteDependenceDAO;
 
-    public static boolean addDependence(Request request, Route route) throws ServiceLayerException {
+    private RequestRouteService(){
+        requestRouteDependenceDAO = RequestRouteDependenceDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final RequestRouteService instance = new RequestRouteService();
+    }
+
+    public static RequestRouteService getService() {
+        return SingletonHolder.instance;
+    }
+
+    public boolean addDependence(Request request, Route route) throws ServiceLayerException {
         boolean succeed = false;
         if (request != null && route != null) {
             try {
@@ -32,7 +44,7 @@ public class RequestRouteService {
         return succeed;
     }
 
-    public static boolean deleteDependence(Request request, Route route) throws ServiceLayerException {
+    public boolean deleteDependence(Request request, Route route) throws ServiceLayerException {
         boolean succeed = false;
         if (request != null && route != null) {
             try {
@@ -46,7 +58,7 @@ public class RequestRouteService {
         return succeed;
     }
 
-    public static Request getRequest(Route route) throws ServiceLayerException {
+    public Request getRequest(Route route) throws ServiceLayerException {
         Request request = null;
         if (route != null) {
             try {
@@ -62,7 +74,7 @@ public class RequestRouteService {
         return request;
     }
 
-    public static Route getRoute(Request request) throws ServiceLayerException {
+    public Route getRoute(Request request) throws ServiceLayerException {
         Route route = null;
         if (request != null) {
             try {

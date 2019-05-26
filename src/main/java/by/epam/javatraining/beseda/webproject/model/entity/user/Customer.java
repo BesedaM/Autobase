@@ -68,7 +68,7 @@ public class Customer extends Person {
     }
 
     public void addRequest(Request request) {
-        if (request != null) {
+        if (request != null && !this.requests.contains(request)) {
             this.requests.add(request);
         }
     }

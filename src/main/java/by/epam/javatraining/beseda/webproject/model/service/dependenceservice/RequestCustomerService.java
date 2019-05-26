@@ -14,9 +14,21 @@ import java.util.List;
 
 public class RequestCustomerService {
 
-    private static RequestCustomerDependenceDAO requestCustomerDependenceDAO = RequestCustomerDependenceDAO.getDAO();
+    private RequestCustomerDependenceDAO requestCustomerDependenceDAO;
 
-    public static boolean addDependence(Request request, Customer customer) throws ServiceLayerException {
+    private RequestCustomerService() {
+        requestCustomerDependenceDAO = RequestCustomerDependenceDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final RequestCustomerService instance = new RequestCustomerService();
+    }
+
+    public static RequestCustomerService getService() {
+        return SingletonHolder.instance;
+    }
+
+    public boolean addDependence(Request request, Customer customer) throws ServiceLayerException {
         boolean succeed = false;
         if (request != null && customer != null) {
             try {
@@ -30,7 +42,7 @@ public class RequestCustomerService {
         return succeed;
     }
 
-    public static boolean deleteDependence(Request request, Customer customer) throws ServiceLayerException {
+    public boolean deleteDependence(Request request, Customer customer) throws ServiceLayerException {
         boolean succeed = false;
         if (request != null && customer != null) {
             try {
@@ -44,7 +56,7 @@ public class RequestCustomerService {
         return succeed;
     }
 
-    public static Customer getCustomer(Request request) throws ServiceLayerException {
+    public Customer getCustomer(Request request) throws ServiceLayerException {
         Customer customer = null;
         if (request != null) {
             try {
@@ -58,7 +70,7 @@ public class RequestCustomerService {
         return customer;
     }
 
-    public static List<Request> getRequestList(Customer customer) throws ServiceLayerException {
+    public List<Request> getRequestList(Customer customer) throws ServiceLayerException {
         List<Request> list = null;
         if (customer != null) {
             try {

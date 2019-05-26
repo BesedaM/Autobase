@@ -15,9 +15,21 @@ import java.util.List;
 
 public class TaskAddressService {
 
-    private static TaskAddressDependenceDAO taskAddressDependenceDAO = TaskAddressDependenceDAO.getDAO();
+    private TaskAddressDependenceDAO taskAddressDependenceDAO;
 
-    public static boolean setDependence(Task task, Address address) throws ServiceLayerException {
+    private TaskAddressService(){
+        taskAddressDependenceDAO = TaskAddressDependenceDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final TaskAddressService instance = new TaskAddressService();
+    }
+
+    public static TaskAddressService getService() {
+        return SingletonHolder.instance;
+    }
+
+    public boolean setDependence(Task task, Address address) throws ServiceLayerException {
         boolean succeed = false;
         if (task != null && address != null) {
             try {
@@ -33,7 +45,7 @@ public class TaskAddressService {
         return succeed;
     }
 
-    public static boolean deleteDependence(Task task, Address address) throws ServiceLayerException {
+    public boolean deleteDependence(Task task, Address address) throws ServiceLayerException {
         boolean succeed = false;
         if (task != null && address != null) {
             try {
@@ -47,7 +59,7 @@ public class TaskAddressService {
         return succeed;
     }
 
-    public static Address getAddress(Task task) throws ServiceLayerException {
+    public Address getAddress(Task task) throws ServiceLayerException {
         Address address = null;
         if (task != null) {
             try {
@@ -63,7 +75,7 @@ public class TaskAddressService {
         return address;
     }
 
-    public static List<Task> getTaskList(Address address) throws ServiceLayerException {
+    public List<Task> getTaskList(Address address) throws ServiceLayerException {
         List<Task> list = null;
         if (address != null) {
             try {

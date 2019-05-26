@@ -1,20 +1,13 @@
 package by.epam.javatraining.beseda.webproject.model.service.entityService;
 
-import by.epam.javatraining.beseda.webproject.model.dao.dependencedao.CarDriverDependenceDAO;
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.CarDAO;
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.DriverDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Truck;
-import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.model.exception.daoexception.CarTypeNotPresentException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalCarException;
 import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceTechnicalException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +17,16 @@ import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.T
 
 public class CarService extends AbstractService<Car> {
 
-    private CarDriverDependenceDAO carDriverDependenceDAO = CarDriverDependenceDAO.getDAO();
-    private DriverDAO driverDAO = DriverDAO.getDAO();
-
-    public CarService() {
+    private CarService() {
         entityDAO = CarDAO.getDAO();
+    }
+
+    private static class SingletonHolder {
+        public static final CarService instance = new CarService();
+    }
+
+    public static CarService getService() {
+        return SingletonHolder.instance;
     }
 
     /**
@@ -78,50 +76,4 @@ public class CarService extends AbstractService<Car> {
         }
         return newList;
     }
-
-//    public Car getCarByDriver(Driver driver) throws ServiceLayerException {
-//        Car car = null;
-//        if(driver!=null) {
-//            try {
-//                int carId=carDriverDependenceDAO.getEntityIdByDependence(driver);
-//                car=entityDAO.getEntityById(carId);
-//                driver.setCar(car);
-//            } catch (DAOLayerException e) {
-//                throw new ServiceLayerException(e);
-//            } catch (IllegalCarException e) {
-//                throw new ServiceLogicException(e);
-//            }
-//        }
-//        return car;
-//    }
-//
-//    public boolean setDriver(Car car, Driver driver) throws ServiceLayerException {
-//        boolean succeed = false;
-//        if (task != null && addr != null) {
-//            try {
-//                task.setAddress(addr);
-//                taskAddressDependenceDAO.setDependence(task, addr);
-//                succeed = true;
-//            } catch (IllegalAddressException e) {
-//                throw new ServiceLogicException(e);
-//            } catch (DAOTechnicalException e) {
-//                throw new ServiceTechnicalException(e);
-//            }
-//        }
-//        return succeed;
-//    }
-//
-//    public boolean removeAddress(Task task, Address address) throws ServiceTechnicalException {
-//        boolean succeed = false;
-//        if (task != null && address != null) {
-//            try {
-//                taskAddressDependenceDAO.deleteDependence(task);
-//                task.removeAddress();
-//                succeed = true;
-//            } catch (DAOTechnicalException e) {
-//                throw new ServiceTechnicalException(e);
-//            }
-//        }
-//        return succeed;
-//    }
 }
