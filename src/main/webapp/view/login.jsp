@@ -10,24 +10,26 @@
 
 <html>
 <head>
-    <title>Title</title>
-    <link rel="stylesheet" customerType="text/css" href="/style/style.css">
+    <title>AUTOBASE authentification</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/style.css">
 </head>
 <body>
-<form action="login" method="post">
-    <p>Login: <input name="login" customerType="text"/></p>
-    <p>Password: <input name="password" customerType="password"></p>
+<form name="LoginForm" method="post" action="controller">
+    <input type="hidden" name="command" value="Login"/>
+    <p>Enter your user's data</p><label>Login:
+        <input name="login" type="text"/>
+    </label><br/>
+    <label>Password:
+        <input name="password" type="password">
+    </label><br/>
     <p class="error">${errorMessage}</p>
-    <input customerType="submit" value="Войти"/>
+    <input type="submit" value="Log in"/>
 </form>
+<br/>
 <div>
-    <form action="RegisterServlet" method="GET">
-        <input customerType="submit" value="Регистрация"/>
-    </form>
+    <p>First time here?</p>
+    <p><a>Register</a></p>
 </div>
-
-<p><a>Register</a></p>
-
 
 </body>
 </html>

@@ -15,7 +15,7 @@ import java.util.List;
 
 import static by.epam.javatraining.beseda.webproject.model.service.ServiceConstants.*;
 
-public class UserService extends AbstractService<User>{
+public class UserService extends AbstractService<User> {
 
     private UserService() {
         super();
@@ -35,17 +35,17 @@ public class UserService extends AbstractService<User>{
         return getUserByLogin(login) != null;
     }
 
-    public boolean illegalPassword(String password) {
-        boolean illegalPassword = false;
+    public boolean legalPassword(String password) {
+        boolean legalPassword = true;
         if (password != null) {
             if (password.length() < PASSWORD_LENGTH
                     || password.matches(IS_WHITESPACE_CHARACTER)
                     || (!password.matches(IS_DIGIT))
                     || (!password.matches(IS_ALPHABETIC_CHARACTER))) {
-                illegalPassword = true;
+                legalPassword = false;
             }
         }
-        return illegalPassword;
+        return legalPassword;
     }
 
     public List<User> getUsersByRole(String role) throws ServiceLayerException {
@@ -67,10 +67,21 @@ public class UserService extends AbstractService<User>{
         User user = null;
         if (login != null) {
             try {
-                user = ((UserDAO)entityDAO).getUserByLogin(login);
+                user = ((UserDAO) entityDAO).getUserByLogin(login);
             } catch (DAOTechnicalException e) {
                 throw new ServiceTechnicalException(e);
             }
+        }
+        return user;
+    }
+
+    public User getUserByLoginAndPassword(String login, String password) throws ServiceTechnicalException {
+        User user = null;
+        byte[] pw = PasswordHash.getHash(password);
+        try {
+            user = ((UserDAO) entityDAO).getUserByLoginAndPassword(login, pw);
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e);
         }
         return user;
     }
@@ -81,7 +92,7 @@ public class UserService extends AbstractService<User>{
     public User createEntity(String login, String password, String user_role) throws ServiceLayerException {
         User user = new User();
         if (login != null && password != null && user_role != null) {
-            if (!loginExists(login) && !illegalPassword(password)) {
+            if (!loginExists(login) && legalPassword(password)) {
                 byte[] pw = PasswordHash.getHash(password);
                 try {
                     user.setLogin(login);
@@ -97,10 +108,10 @@ public class UserService extends AbstractService<User>{
 
     public boolean changePassword(String login, String newPassword) throws ServiceLayerException {
         boolean succeed = false;
-        if (newPassword != null && !illegalPassword(newPassword)) {
+        if (newPassword != null && legalPassword(newPassword)) {
             byte[] pw = PasswordHash.getHash(newPassword);
             try {
-                succeed = ((UserDAO)entityDAO).updatePassword(login, pw);
+                succeed = ((UserDAO) entityDAO).updatePassword(login, pw);
             } catch (DAOLayerException e) {
                 throw new ServiceTechnicalException(e);
             }

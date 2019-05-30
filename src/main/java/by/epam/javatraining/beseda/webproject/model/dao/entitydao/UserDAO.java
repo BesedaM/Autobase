@@ -46,7 +46,7 @@ public class UserDAO extends AbstractDAO<User> {
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } catch (EntityLogicException e) {
-                throw new DAOTechnicalException("Error creating entity " + user.getClass().getSimpleName(), e);
+                throw new DAOTechnicalException("Error creating entity ", e);
             } finally {
                 closeStatement(st);
             }
@@ -68,7 +68,7 @@ public class UserDAO extends AbstractDAO<User> {
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } catch (EntityLogicException e) {
-                throw new DAOTechnicalException("Error creating entity " + user.getClass().getSimpleName(), e);
+                throw new DAOTechnicalException("Error creating entity ", e);
             } finally {
                 closeStatement(st);
             }

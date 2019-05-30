@@ -12,16 +12,14 @@
 </head>
 <body>
 
-<p><font color="red">${errorRegister}</font></p>
+<p class="error_message">${errorRegister}</p>
 
 <form action="RegisterServlet" method="POST">
     <p> Registration form </p>
-    <p> Enter login : <input name="newLoginName" customerType="text"/>
-    </p>
-    <p> Enter password : <input name="newPassword" customerType="password"/>
-    </p>
-    <input customerType="submit" value="Register"/>
-
+<label>Enter login :  <input name="newLoginName" type="text"/></label>
+<label>Enter password : <input name="newPassword" type="password"/></label>
+    <br/>
+    <input type="submit" value="Register"/>
 </form>
 </body>
 </html>

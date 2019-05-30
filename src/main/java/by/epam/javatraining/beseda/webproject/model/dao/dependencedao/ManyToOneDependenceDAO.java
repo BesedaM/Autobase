@@ -22,8 +22,8 @@ public abstract class ManyToOneDependenceDAO<M extends BaseEntity, K extends Bas
     /**
      * Returns array containing entities id having the specified dependency object
      *
-     * @param dependence
-     * @return
+     * @param dependence dependent object
+     * @return array, containing entities id
      * @throws DAOTechnicalException
      */
     public synchronized int[] getEntitiesIdByDependenceId(K dependence) throws DAOTechnicalException {

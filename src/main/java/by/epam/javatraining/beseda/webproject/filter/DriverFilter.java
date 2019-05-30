@@ -5,11 +5,12 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.USER_DRIVER;
 import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPPath.LOGIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPSessionAttribute.IS_VALID_USER;
+import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPSessionAttribute.USER_ROLE;
 
-@WebFilter(filterName = "LoginRequiredFilter", urlPatterns = "/*")
-public class LoginRequiredFilter implements Filter {
+@WebFilter(filterName = "DriverFilter", urlPatterns = "/*")         //change patterns!!!!
+public class DriverFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -17,7 +18,7 @@ public class LoginRequiredFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (req.getSession().getAttribute(IS_VALID_USER) == "true") {
+        if (req.getSession().getAttribute(USER_ROLE) == USER_DRIVER) {
             chain.doFilter(request, response);
         } else {
             req.getSession().invalidate();

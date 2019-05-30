@@ -8,7 +8,7 @@ import java.io.IOException;
 
 @WebFilter(filterName = "CharsetFilter", urlPatterns = "/*",
         initParams = {@WebInitParam(name = "encoding", value = "UTF-8"),
-                @WebInitParam(name="responseContentType",value="text/html; charset=UTF-8")})
+                @WebInitParam(name = "responseContentType", value = "text/html; charset=UTF-8")})
 public class CharsetFilter implements Filter {
 
     private String encoding;
@@ -17,7 +17,7 @@ public class CharsetFilter implements Filter {
     @Override
     public void init(FilterConfig config) throws ServletException {
         encoding = config.getInitParameter("encoding");
-        respContType=config.getInitParameter("responseContentType");
+        respContType = config.getInitParameter("responseContentType");
     }
 
     @Override
@@ -36,6 +36,6 @@ public class CharsetFilter implements Filter {
     @Override
     public void destroy() {
         encoding = null;
-        respContType=null;
+        respContType = null;
     }
 }

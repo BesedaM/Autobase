@@ -17,7 +17,7 @@ public class DBConnector implements ConnectionPool {
     private String user;
     private String password;
     private Queue<Connection> connectionPool;
-    private Queue<Connection> usedConnections;
+    private Queue<Connection> connectionsInUse;
 
     private static volatile DBConnector pool = null;
 
@@ -26,12 +26,12 @@ public class DBConnector implements ConnectionPool {
         this.user = user;
         this.password = password;
         connectionPool = new ConcurrentLinkedQueue<>();
-        usedConnections = new ConcurrentLinkedQueue<>();
+        connectionsInUse = new ConcurrentLinkedQueue<>();
         for (int i = 0; i < GeneralProperties.INITIAL_POOL_SIZE; i++) {
             try {
                 connectionPool.add(createConnection(url, user, password));
             } catch (SQLException e) {
-                log.error("Impossible to create connection to database: " + e);
+                log.error("Impossible to create a connection to database: " + e);
             }
         }
     }
@@ -77,34 +77,36 @@ public class DBConnector implements ConnectionPool {
         if (connection == null) {
             connection = createConnection(url, username, password);
         }
-        usedConnections.add(connection);
+        connectionsInUse.add(connection);
         return connection;
     }
 
     @Override
     public void releaseConnection(Connection connection) {
         connectionPool.add(connection);
-        usedConnections.remove(connection);
+        connectionsInUse.remove(connection);
     }
 
     @Override
     public int size() {
-        return connectionPool.size() + usedConnections.size();
+        return connectionPool.size() + connectionsInUse.size();
     }
 
     @Override
     public int usedConnections() {
-        return usedConnections.size();
+        return connectionsInUse.size();
     }
 
     @Override
     public void closePool() throws SQLException {
-        for (Connection c : usedConnections) {
-            releaseConnection(c);
-        }
+        synchronized (connectionsInUse) {
+            for (Connection c : connectionsInUse) {
+                releaseConnection(c);
+            }
 
-        for (Connection c : connectionPool) {
-            c.close();
+            for (Connection c : connectionPool) {
+                c.close();
+            }
         }
     }
 
