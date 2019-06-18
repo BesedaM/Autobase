@@ -29,7 +29,7 @@ public class AddCustomerServlet extends HttpServlet {
 
     @Override
     public void destroy() {
-        if (pool.usedConnections() == 0) {
+        if (pool.connectionsInUse() == 0) {
             try {
                 pool.closePool();
             } catch (SQLException e) {

@@ -6,11 +6,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+import static by.epam.javatraining.beseda.webproject.util.resourceloader.GeneralProperties.PROJECT_LOCATION;
+
 public class DatabaseProperties {
 
-    private static final Logger log = Logger.getLogger(DatabaseProperties.class.getSimpleName());
+    private static final Logger log = Logger.getLogger(ERROR_LOGGER);
 
-    private static final String DATABASE_PROP_LOCATION = "src\\main\\resources\\database.properties";
+    private static final String DATABASE_PROP_LOCATION;
     private static final Properties DATABASE_PROP;
 
     public static final String JDBC_MYSQL_DRIVER;
@@ -21,10 +24,12 @@ public class DatabaseProperties {
 
     public static final String DATABASE_ENCODING;
 
-    public static final String TIMEZONE_PATCH
-            = "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";     //  вставить вначале, если не работает useUnicode=true&
+    public static final String TIMEZONE_PATCH;
 
     static {
+        DATABASE_PROP_LOCATION = PROJECT_LOCATION +"src/main/resources/database.properties";
+        TIMEZONE_PATCH = "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";     //  вставить вначале, если не работает useUnicode=true&
+
         DATABASE_PROP = new Properties();
         loadProperties();
         JDBC_MYSQL_DRIVER = DATABASE_PROP.getProperty("JDBC_MYSQL_DRIVER").trim();

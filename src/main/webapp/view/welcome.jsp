@@ -11,7 +11,7 @@
     <title>Welcome</title>
 </head>
 <body>
-Welcome ${login}!
+Welcome to register page!
 <p><a href="LogoutServlet">Logout</a></p>
 </body>
 </html>

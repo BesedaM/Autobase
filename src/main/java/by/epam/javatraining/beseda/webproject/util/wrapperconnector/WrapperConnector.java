@@ -16,12 +16,13 @@ import java.sql.Statement;
 
 public class WrapperConnector {
 
-    private Logger log = Logger.getLogger(WrapperConnector.class.getSimpleName());
+    private static Logger log = Logger.getLogger("error");
 
     private Connection connection;
-    private static DBConnector pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+    private static DBConnector pool;
 
     public WrapperConnector() {
+        pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
         try {
             connection = pool.getConnection();
         } catch (SQLException e) {

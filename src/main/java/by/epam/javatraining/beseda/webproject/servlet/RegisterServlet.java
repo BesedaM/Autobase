@@ -1,15 +1,7 @@
 package by.epam.javatraining.beseda.webproject.servlet;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.UserDAO;
-import by.epam.javatraining.beseda.webproject.model.entity.user.User;
-import by.epam.javatraining.beseda.webproject.util.PasswordHash;
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @WebServlet(name = "RegisterServlet", urlPatterns = "/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
@@ -28,7 +20,7 @@ public class RegisterServlet extends HttpServlet {
 ////                    request, response);
 //        } else {
 //            request.setAttribute("errorRegister", "User " + login + " already exists");
-//            request.getRequestDispatcher("/WEB-INF/views/register.jsp")
+//            request.getRequestDispatcher("/WEB-INF/views/customer.jsp")
 //                    .forward(request, response);
 //        }
 //    }
@@ -37,7 +29,7 @@ public class RegisterServlet extends HttpServlet {
 //    protected void doGet(HttpServletRequest request, HttpServletResponse response)
 //            throws ServletException, IOException {
 //
-//        request .getRequestDispatcher("/WEB-INF/views/register.jsp")
+//        request .getRequestDispatcher("/WEB-INF/views/customer.jsp")
 //                .forward(request, response);
 //
 //    }

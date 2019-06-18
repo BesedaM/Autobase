@@ -1,3 +1,4 @@
+<%--@elvariable id="errorMessage" type="java.lang.String"--%>
 <%--
   Created by IntelliJ IDEA.
   User: User
@@ -11,25 +12,42 @@
 <html>
 <head>
     <title>AUTOBASE authentification</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/style.css">
+<%--   <script type="text/javascript" src="../javascript/register.js"></script>--%>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/style.css">
 </head>
 <body>
 <form name="LoginForm" method="post" action="controller">
-    <input type="hidden" name="command" value="Login"/>
-    <p>Enter your user's data</p><label>Login:
-        <input name="login" type="text"/>
-    </label><br/>
-    <label>Password:
-        <input name="password" type="password">
-    </label><br/>
-    <p class="error">${errorMessage}</p>
+    <input type="hidden" name="command" value="login"/>
+    <p>Enter your user's data</p>
+
+    <table>
+        <tr>
+            <td>
+                <label for="login">Login:</label>
+            </td>
+            <td>
+                <input id="login" name="login" type="text" pattern="^[\w]{4,}$"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="password">Password:</label>
+            </td>
+            <td>
+                <input id="password" name="password" type="password" pattern="^[\w]{4,}$">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <p class="error-message">${errorMessage}</p>
+            </td>
+        </tr>
+    </table>
     <input type="submit" value="Log in"/>
 </form>
 <br/>
-<div>
-    <p>First time here?</p>
-    <p><a>Register</a></p>
-</div>
+<p>First time here?</p>
+<a href="${pageContext.request.contextPath}/view/register/customer.jsp"><input type="button" value="Register"/></a>
 
 </body>
 </html>

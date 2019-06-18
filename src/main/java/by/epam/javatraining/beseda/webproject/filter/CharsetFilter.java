@@ -25,7 +25,7 @@ public class CharsetFilter implements Filter {
             throws IOException, ServletException {
 
         String codeRequest = request.getCharacterEncoding();
-        if (encoding != null && !codeRequest.equalsIgnoreCase(codeRequest)) {
+        if (encoding != null && !encoding.equalsIgnoreCase(codeRequest)) {
             request.setCharacterEncoding(encoding);
             response.setContentType(respContType);
             response.setCharacterEncoding(encoding);

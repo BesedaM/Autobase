@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPPath.CUSTOMER_REGISTER_PAGE;
 import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPPath.LOGIN_PAGE;
 import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPSessionAttribute.IS_VALID_USER;
 
@@ -17,11 +18,13 @@ public class LoginRequiredFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (req.getSession().getAttribute(IS_VALID_USER) == "true") {
+        String path = req.getServletPath();
+
+        if (path.equals("/" + CUSTOMER_REGISTER_PAGE) || req.getSession().getAttribute(IS_VALID_USER) == "true") {
             chain.doFilter(request, response);
         } else {
             req.getSession().invalidate();
-            request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+            request.getRequestDispatcher("/" + LOGIN_PAGE).forward(request, response);
         }
 
     }

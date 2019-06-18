@@ -9,7 +9,7 @@ import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.U
 import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPPath.LOGIN_PAGE;
 import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPSessionAttribute.USER_ROLE;
 
-@WebFilter(filterName = "AdminFilter", urlPatterns = "/*")         //change patterns!!!!
+@WebFilter(filterName = "AdminFilter", urlPatterns = "/admin/*")         //change patterns!!!!
 public class AdminFilter implements Filter {
 
     @Override
@@ -22,7 +22,7 @@ public class AdminFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             req.getSession().invalidate();
-            request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+            request.getRequestDispatcher("/"+LOGIN_PAGE).forward(request, response);
         }
     }
 }

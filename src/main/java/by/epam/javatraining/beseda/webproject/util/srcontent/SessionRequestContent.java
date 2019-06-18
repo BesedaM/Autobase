@@ -17,9 +17,6 @@ public class SessionRequestContent {
         sessionAttributes = new HashMap<>();
     }
 
-    public SessionRequestContent() {
-    }
-
     /**
      * Constructor retrieves data from HttpServletRequest object into inner data storage maps
      *
@@ -34,7 +31,7 @@ public class SessionRequestContent {
     /**
      * @param request
      */
-    public final void extractAttributes(HttpServletRequest request) {
+    private void extractAttributes(HttpServletRequest request) {
         Enumeration<String> enumeration = request.getAttributeNames();
         if (enumeration.hasMoreElements()) {
             String key = enumeration.nextElement();
@@ -43,11 +40,11 @@ public class SessionRequestContent {
         }
     }
 
-    public final void extractParameters(HttpServletRequest request) {
+    private void extractParameters(HttpServletRequest request) {
         requestParameters = request.getParameterMap();
     }
 
-    public final void extractSessionAttributes(HttpServletRequest request) {
+    private void extractSessionAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Enumeration<String> enumeration = session.getAttributeNames();
         if (enumeration.hasMoreElements()) {

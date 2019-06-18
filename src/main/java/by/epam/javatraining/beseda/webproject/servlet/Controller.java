@@ -1,13 +1,16 @@
 package by.epam.javatraining.beseda.webproject.servlet;
 
-import by.epam.javatraining.beseda.webproject.model.service.actioncommand.ActionCommandFactory;
-import by.epam.javatraining.beseda.webproject.model.service.commands.ActionCommand;
+import by.epam.javatraining.beseda.webproject.model.command.ActionCommandEnum;
+import by.epam.javatraining.beseda.webproject.model.command.ActionCommandFactory;
+import by.epam.javatraining.beseda.webproject.model.command.ActionCommand;
+import by.epam.javatraining.beseda.webproject.model.command.commands.LoginCommand;
 import by.epam.javatraining.beseda.webproject.util.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.util.connectionpool.DBConnector;
 import by.epam.javatraining.beseda.webproject.util.srcontent.SessionRequestContent;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,12 +28,17 @@ import static by.epam.javatraining.beseda.webproject.util.resourceloader.Databas
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
 
-    private Logger log = Logger.getLogger(Controller.class.getSimpleName());
-    private ConnectionPool pool;
+    private static Logger log;
+    private static ConnectionPool pool;
+
+    static {
+        log = Logger.getLogger("error");
+        pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+    }
 
     @Override
-    public void init() {
-        pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
     }
 
     @Override
@@ -46,19 +54,18 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         SessionRequestContent requestContent = new SessionRequestContent(req);
 
-        ActionCommandFactory client = new ActionCommandFactory();
-        ActionCommand command = client.defineCommand(requestContent);
+        ActionCommand command = ActionCommandFactory.defineCommand(requestContent);
 
         String page = command.execute(requestContent);
 
-        if (!LOGIN_PAGE.equals(page)) {
+        if (!command.getClass().getSimpleName().equals("LoginCommand.class") && !LOGIN_PAGE.equals(page)) {
             requestContent.insertAttributes(req);
             requestContent.insertSessionAttributes(req);
         } else {
             req.getSession().invalidate();
         }
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/" + page);
         dispatcher.forward(req, resp);
     }
 

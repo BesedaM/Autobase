@@ -10,8 +10,8 @@ public class DBEnumTable {
 
     public static final String T_CUSTOMER_TYPE = "customer_type";
     public static final String CUSTOMER_TYPE = "type";
-//    public static final String CUSTOMER_INDIVIDUAL = "физ.лицо";
-//    public static final String CUSTOMER_LEGAL = "юр.лицо";
+    public static final String CUSTOMER_INDIVIDUAL = "физ.лицо";
+    public static final String CUSTOMER_LEGAL = "юр.лицо";
 
     public static final String T_CAR_TYPE = "car_type";
     public static final String CAR_TYPE = "type";

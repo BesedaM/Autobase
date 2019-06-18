@@ -1,9 +1,11 @@
 package by.epam.javatraining.beseda.webproject.util.connectionpool;
 
+import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseProperties;
 import org.apache.log4j.Logger;
 import by.epam.javatraining.beseda.webproject.util.resourceloader.GeneralProperties;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Queue;
@@ -11,22 +13,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class DBConnector implements ConnectionPool {
 
-    private Logger log = Logger.getLogger(DBConnector.class);
+    private static Logger log = Logger.getLogger("error");
 
     private String url;
     private String user;
     private String password;
     private Queue<Connection> connectionPool;
-    private Queue<Connection> connectionsInUse;
+    private Queue<Connection> connectionInUse;
 
-    private static volatile DBConnector pool = null;
+    private static DBConnector pool = null;
 
     private DBConnector(String url, String user, String password) {
         this.url = url;
         this.user = user;
         this.password = password;
         connectionPool = new ConcurrentLinkedQueue<>();
-        connectionsInUse = new ConcurrentLinkedQueue<>();
+        connectionInUse = new ConcurrentLinkedQueue<>();
         for (int i = 0; i < GeneralProperties.INITIAL_POOL_SIZE; i++) {
             try {
                 connectionPool.add(createConnection(url, user, password));
@@ -46,6 +48,12 @@ public class DBConnector implements ConnectionPool {
      */
     public static DBConnector createConnectionPool(String url, String user, String password) {
         if (pool == null) {
+//            try {
+//                Driver d = new com.mysql.cj.jdbc.Driver();
+//                DriverManager.registerDriver(d);
+//            } catch (SQLException e) {
+//                log.error("Error while register mySQL driver: " + e);
+//            }
             pool = new DBConnector(url, user, password);
         }
         return pool;
@@ -77,30 +85,30 @@ public class DBConnector implements ConnectionPool {
         if (connection == null) {
             connection = createConnection(url, username, password);
         }
-        connectionsInUse.add(connection);
+        connectionInUse.add(connection);
         return connection;
     }
 
     @Override
     public void releaseConnection(Connection connection) {
         connectionPool.add(connection);
-        connectionsInUse.remove(connection);
+        connectionInUse.remove(connection);
     }
 
     @Override
     public int size() {
-        return connectionPool.size() + connectionsInUse.size();
+        return connectionPool.size() + connectionInUse.size();
     }
 
     @Override
-    public int usedConnections() {
-        return connectionsInUse.size();
+    public int connectionsInUse() {
+        return connectionInUse.size();
     }
 
     @Override
     public void closePool() throws SQLException {
-        synchronized (connectionsInUse) {
-            for (Connection c : connectionsInUse) {
+        synchronized (this) {
+            for (Connection c : connectionInUse) {
                 releaseConnection(c);
             }
 

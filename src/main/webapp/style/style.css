@@ -1,3 +1,15 @@
-p.error{
+body{
+    background-color: Fuchsia;
+}
+
+p.error-message {
     color: red;
+}
+
+table.registration td {
+    width: 200px;
+}
+
+table p.information {
+    font-size: .7em;
 }

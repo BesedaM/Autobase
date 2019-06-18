@@ -40,7 +40,7 @@ public interface ConnectionPool {
      *
      * @return number of currently used Connections
      */
-    int usedConnections();
+    int connectionsInUse();
 
     /**
      * Closes the pool
