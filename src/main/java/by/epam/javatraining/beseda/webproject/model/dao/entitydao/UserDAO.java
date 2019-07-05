@@ -1,35 +1,34 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLogicException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.LOGIN;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.PASSWORD;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.USER_ROLE;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.LOGIN;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.PASSWORD;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.USER_ROLE;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class UserDAO extends AbstractDAO<User> {
 
-    private UserDAO() {
+    public UserDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final UserDAO instance = new UserDAO();
-    }
-
-    public static UserDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final UserDAO instance = new UserDAO();
+//    }
+//
+//    public static UserDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
     public synchronized User getUserByLoginAndPassword(String login, byte[] password) throws DAOTechnicalException {
         User user = null;

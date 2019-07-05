@@ -1,8 +1,8 @@
 package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

@@ -3,21 +3,21 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class CarDriverDependenceDAO extends OneToOneDependenceDAO<Car,Driver> {
 
-    private CarDriverDependenceDAO() {
+    public CarDriverDependenceDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final CarDriverDependenceDAO instance = new CarDriverDependenceDAO();
-    }
-
-    public static CarDriverDependenceDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final CarDriverDependenceDAO instance = new CarDriverDependenceDAO();
+//    }
+//
+//    public static CarDriverDependenceDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
 
     @Override

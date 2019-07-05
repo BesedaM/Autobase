@@ -4,21 +4,21 @@ import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
 
-    private CarRouteDependenceDAO() {
+    public CarRouteDependenceDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final CarRouteDependenceDAO instance = new CarRouteDependenceDAO();
-    }
-
-    public static CarRouteDependenceDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final CarRouteDependenceDAO instance = new CarRouteDependenceDAO();
+//    }
+//
+//    public static CarRouteDependenceDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
     @Override
     protected String getDependencesStatement(BaseEntity entity) {

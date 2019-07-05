@@ -1,23 +1,23 @@
 package by.epam.javatraining.beseda.webproject.model.service.entity;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.RequestDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
 
-import static by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader.REQUEST_STATUS_MAP;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader.REQUEST_STATUS_MAP;
 
-public class RequestService extends AbstractService<Request> {
+public class RequestService extends AbstractEntityService<Request> {
 
-    private RequestService() {
-        entityDAO = RequestDAO.getDAO();
+    public RequestService() {
+        super();
+        entityDAO = daoEntityFactory.getRequestDAO();
     }
 
-    private static class SingletonHolder {
-        public static final RequestService instance = new RequestService();
-    }
-
-    public static RequestService getService() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final RequestService instance = new RequestService();
+//    }
+//
+//    public static RequestService getService() {
+//        return SingletonHolder.instance;
+//    }
 
     /**
      * Creates entity WITHOUT ID with the given data

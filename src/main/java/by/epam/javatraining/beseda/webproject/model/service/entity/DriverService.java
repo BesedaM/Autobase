@@ -1,25 +1,22 @@
 package by.epam.javatraining.beseda.webproject.model.service.entity;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.DriverDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
 
-public class DriverService extends AbstractService<Driver> {
+public class DriverService extends AbstractEntityService<Driver> {
 
-    private DriverService() {
-        entityDAO = DriverDAO.getDAO();
+    public DriverService() {
+        super();
+        entityDAO = daoEntityFactory.getDriverDAO();
     }
 
-    private static class SingletonHolder {
-        public static final DriverService instance = new DriverService();
-    }
-
-    public static DriverService getService() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final DriverService instance = new DriverService();
+//    }
+//
+//    public static DriverService getService() {
+//        return SingletonHolder.instance;
+//    }
 
     /**
      * Creates entity with the given data
@@ -32,17 +29,6 @@ public class DriverService extends AbstractService<Driver> {
             driver = new Driver(userData, name, surname, phone);
         }
         return driver;
-    }
-
-    @Override
-    public void add(Driver entity) throws ServiceLayerException {
-        if (entity != null) {
-            try {
-                entityDAO.add(entity);
-            } catch (DAOLayerException e) {
-                throw new ServiceLogicException(e);
-            }
-        }
     }
 
 }

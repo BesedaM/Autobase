@@ -1,10 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,24 +11,24 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.GregorianCalendar;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.COMMENT;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.REQUEST_DATE;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.REQUEST_STATUS;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.COMMENT;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.REQUEST_DATE;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.REQUEST_STATUS;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class RequestDAO extends AbstractDAO<Request> {
 
-    private RequestDAO() {
+    public RequestDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final RequestDAO instance = new RequestDAO();
-    }
-
-    public static RequestDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final RequestDAO instance = new RequestDAO();
+//    }
+//
+//    public static RequestDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
     @Override
     protected Request createEntity(ResultSet res) throws SQLException, EntityLogicException {

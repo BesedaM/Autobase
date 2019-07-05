@@ -1,33 +1,33 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName;
+import by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.*;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.USER_DRIVER;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.USER_DRIVER;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class DriverDAO extends AbstractDAO<Driver> {
 
-    private DriverDAO() {
+    public DriverDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final DriverDAO instance = new DriverDAO();
-    }
-
-    public static DriverDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final DriverDAO instance = new DriverDAO();
+//    }
+//
+//    public static DriverDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
     @Override
     public synchronized int add(Driver driver) throws DAOLayerException {
@@ -52,9 +52,9 @@ public class DriverDAO extends AbstractDAO<Driver> {
     @Override
     protected Driver createEntity(ResultSet res) throws SQLException, EntityLogicException {
         Driver driver = null;
-        if(res!=null) {
+        if (res != null) {
             driver = new Driver();
-            driver.setId(res.getInt(DBEntityTableName.DRIVER_ID));
+            driver.setId(res.getInt(DBEntityTable.DRIVER_ID));
             driver.setName(res.getString(NAME));
             driver.setSurname(res.getString(SURNAME));
             driver.setPhone(res.getString(PHONE));
@@ -97,11 +97,11 @@ public class DriverDAO extends AbstractDAO<Driver> {
 
     @Override
     protected void setDataOnPreparedStatement(PreparedStatement st, Driver driver) throws SQLException, NotEnoughArgumentsException {
-        if(st!=null&&driver!=null) {
+        if (st != null && driver != null) {
             st.setString(1, driver.getName());
             st.setString(2, driver.getSurname());
             st.setString(3, driver.getPhone());
-        }else{
+        } else {
             throw new NotEnoughArgumentsException();
         }
     }

@@ -3,21 +3,21 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class RequestCustomerDependenceDAO extends ManyToOneDependenceDAO<Request, Customer> {
 
-    private RequestCustomerDependenceDAO() {
+    public RequestCustomerDependenceDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final RequestCustomerDependenceDAO instance = new RequestCustomerDependenceDAO();
-    }
-
-    public static RequestCustomerDependenceDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final RequestCustomerDependenceDAO instance = new RequestCustomerDependenceDAO();
+//    }
+//
+//    public static RequestCustomerDependenceDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
 
     @Override

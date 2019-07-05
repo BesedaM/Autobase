@@ -1,11 +1,11 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLogicException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.END_OF_STATEMENT;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.END_OF_STATEMENT;
 
 /**
  * Abstract class, containing generic methods for entity DAO

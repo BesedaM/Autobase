@@ -1,25 +1,25 @@
 package by.epam.javatraining.beseda.webproject.model.service.entity;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.CustomerDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
 
-public class CustomerService extends AbstractService<Customer> {
+public class CustomerService extends AbstractEntityService<Customer> {
 
-    private CustomerService() {
-        entityDAO = CustomerDAO.getDAO();
+    public CustomerService() {
+        super();
+        entityDAO = daoEntityFactory.getCustomerDAO();
     }
 
-    private static class SingletonHolder {
-        public static final CustomerService instance = new CustomerService();
-    }
-
-    public static CustomerService getService() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final CustomerService instance = new CustomerService();
+//    }
+//
+//    public static CustomerService getService() {
+//        return SingletonHolder.instance;
+//    }
 
     /**
      * Creates entity with the given data

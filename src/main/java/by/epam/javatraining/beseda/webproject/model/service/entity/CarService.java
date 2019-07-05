@@ -1,33 +1,33 @@
 package by.epam.javatraining.beseda.webproject.model.service.entity;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.CarDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Truck;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.CarTypeNotPresentException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.CarTypeNotPresentException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.BUS;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.TRUCK;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.BUS;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.TRUCK;
 
-public class CarService extends AbstractService<Car> {
+public class CarService extends AbstractEntityService<Car> {
 
-    private CarService() {
-        entityDAO = CarDAO.getDAO();
+    public CarService() {
+        super();
+        entityDAO = daoEntityFactory.getCarDAO();
     }
 
-    private static class SingletonHolder {
-        public static final CarService instance = new CarService();
-    }
-
-    public static CarService getService() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final CarService instance = new CarService();
+//    }
+//
+//    public static CarService getService() {
+//        return SingletonHolder.instance;
+//    }
 
     /**
      * Creates entity WITHOUT ID with the given data

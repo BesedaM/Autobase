@@ -2,12 +2,12 @@ package by.epam.javatraining.beseda.webproject.model.service.entity;
 
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.UserDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLogicException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.logic.PasswordHash;
 
 import java.util.ArrayList;
@@ -15,20 +15,20 @@ import java.util.List;
 
 import static by.epam.javatraining.beseda.webproject.model.service.ServiceConstants.*;
 
-public class UserService extends AbstractService<User> {
+public class UserService extends AbstractEntityService<User> {
 
-    private UserService() {
+    public UserService() {
         super();
-        entityDAO = UserDAO.getDAO();
+        entityDAO = daoEntityFactory.getUserDAO();
     }
 
-    private static class SingletonHolder {
-        public static final UserService instance = new UserService();
-    }
-
-    public static UserService getService() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final UserService instance = new UserService();
+//    }
+//
+//    public static UserService getService() {
+//        return SingletonHolder.instance;
+//    }
 
 
     public boolean loginExists(String login) throws ServiceTechnicalException {
@@ -77,11 +77,13 @@ public class UserService extends AbstractService<User> {
 
     public User getUserByLoginAndPassword(String login, String password) throws ServiceTechnicalException {
         User user = null;
-        byte[] pw = PasswordHash.getHash(password);
-        try {
-            user = ((UserDAO) entityDAO).getUserByLoginAndPassword(login, pw);
-        } catch (DAOTechnicalException e) {
-            throw new ServiceTechnicalException(e);
+        if (login != null && password != null) {
+            byte[] pw = PasswordHash.getHash(password);
+            try {
+                user = ((UserDAO) entityDAO).getUserByLoginAndPassword(login, pw);
+            } catch (DAOTechnicalException e) {
+                throw new ServiceTechnicalException(e);
+            }
         }
         return user;
     }
@@ -108,7 +110,7 @@ public class UserService extends AbstractService<User> {
 
     public boolean changePassword(String login, String newPassword) throws ServiceLayerException {
         boolean succeed = false;
-        if (newPassword != null && legalPassword(newPassword)) {
+        if (login != null && newPassword != null && legalPassword(newPassword)) {
             byte[] pw = PasswordHash.getHash(newPassword);
             try {
                 succeed = ((UserDAO) entityDAO).updatePassword(login, pw);

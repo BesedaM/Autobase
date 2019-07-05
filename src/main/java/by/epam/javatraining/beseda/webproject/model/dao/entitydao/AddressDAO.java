@@ -1,31 +1,30 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.database.SQLQuery;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.*;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class AddressDAO extends AbstractDAO<Address> {
 
-    private AddressDAO() {
+    public AddressDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final AddressDAO instance = new AddressDAO();
-    }
-
-    public static AddressDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final AddressDAO instance = new AddressDAO();
+//    }
+//
+//    public static AddressDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
 
     @Override

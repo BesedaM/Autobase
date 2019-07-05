@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.dao;
 
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.util.ReversableHashMap;
 import org.apache.log4j.Logger;
 
@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.END_OF_STATEMENT;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.SELECT_ENUM;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.END_OF_STATEMENT;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.SELECT_ENUM;
 
 /**
  * Class for getting data from tables, representing enum

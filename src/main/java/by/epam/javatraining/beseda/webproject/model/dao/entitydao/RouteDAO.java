@@ -1,32 +1,31 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.ROUTE_NAME;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.ROUTE_STATUS;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.ROUTE_NAME;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.ROUTE_STATUS;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class RouteDAO extends AbstractDAO<Route> {
 
-    private RouteDAO() {
+    public RouteDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final RouteDAO instance = new RouteDAO();
-    }
-
-    public static RouteDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final RouteDAO instance = new RouteDAO();
+//    }
+//
+//    public static RouteDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
     @Override
     protected Route createEntity(ResultSet result) throws SQLException, EntityLogicException {

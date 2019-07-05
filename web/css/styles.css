@@ -1,0 +1,12 @@
+#login_error-message{
+    color: red;
+}
+
+p.error-message {
+    color: red;
+}
+
+.information{
+    font-size: 0.7em;
+    color: darkgrey;
+}

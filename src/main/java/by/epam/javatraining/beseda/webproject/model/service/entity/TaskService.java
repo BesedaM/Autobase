@@ -1,23 +1,23 @@
 package by.epam.javatraining.beseda.webproject.model.service.entity;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.TaskDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
 
 import java.util.GregorianCalendar;
 
-public class TaskService extends AbstractService<Task> {
+public class TaskService extends AbstractEntityService<Task> {
 
-    private TaskService() {
-        entityDAO = TaskDAO.getDAO();
+    public TaskService() {
+        super();
+        entityDAO = daoEntityFactory.getTaskDAO();
     }
 
-    private static class SingletonHolder {
-        public static final TaskService instance = new TaskService();
-    }
-
-    public static TaskService getService() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final TaskService instance = new TaskService();
+//    }
+//
+//    public static TaskService getService() {
+//        return SingletonHolder.instance;
+//    }
 
     /**
      * Creates entity WITHOUT ID with the given data

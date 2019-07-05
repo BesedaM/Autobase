@@ -1,10 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.database.SQLQuery;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,23 +11,23 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.GregorianCalendar;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.DETAIL;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.TIME;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.DETAIL;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.TIME;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class TaskDAO extends AbstractDAO<Task> {
 
-    private TaskDAO() {
+    public TaskDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final TaskDAO instance = new TaskDAO();
-    }
-
-    public static TaskDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final TaskDAO instance = new TaskDAO();
+//    }
+//
+//    public static TaskDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
     @Override
     protected Task createEntity(ResultSet result) throws SQLException, EntityLogicException {

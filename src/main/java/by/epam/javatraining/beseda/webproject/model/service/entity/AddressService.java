@@ -1,21 +1,21 @@
 package by.epam.javatraining.beseda.webproject.model.service.entity;
 
-import by.epam.javatraining.beseda.webproject.model.dao.entitydao.AddressDAO;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
 
-public class AddressService extends AbstractService<Address> {
+public class AddressService extends AbstractEntityService<Address> {
 
-    private AddressService() {
-        entityDAO = AddressDAO.getDAO();
+    public AddressService() {
+        super();
+        entityDAO = daoEntityFactory.getAddressDAO();
     }
 
-    private static class SingletonHolder {
-        public static final AddressService instance = new AddressService();
-    }
-
-    public static AddressService getService() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final AddressService instance = new AddressService();
+//    }
+//
+//    public static AddressService getService() {
+//        return SingletonHolder.instance;
+//    }
 
     /**
      * Creates entity WITHOUT ID with the given data

@@ -1,7 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
 
 import java.util.List;
 

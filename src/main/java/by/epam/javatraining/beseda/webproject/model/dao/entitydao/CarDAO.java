@@ -3,35 +3,34 @@ package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Truck;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.CarTypeNotPresentException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.CarTypeNotPresentException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.*;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.*;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class CarDAO extends AbstractDAO<Car> {
 
-    private CarDAO() {
+    public CarDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final CarDAO instance = new CarDAO();
-    }
-
-    public static CarDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final CarDAO instance = new CarDAO();
+//    }
+//
+//    public static CarDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
     @Override
     protected Car createEntity(ResultSet result) throws CarTypeNotPresentException, SQLException, EntityLogicException {

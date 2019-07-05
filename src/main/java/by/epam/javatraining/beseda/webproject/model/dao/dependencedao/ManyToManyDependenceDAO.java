@@ -1,7 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,75 +1,86 @@
 package by.epam.javatraining.beseda.webproject.model.command.commands;
 
 import by.epam.javatraining.beseda.webproject.model.command.ActionCommand;
+import by.epam.javatraining.beseda.webproject.model.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.serviceexception.ServiceTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.service.entity.CustomerService;
 import by.epam.javatraining.beseda.webproject.model.service.entity.UserService;
-import by.epam.javatraining.beseda.webproject.util.srcontent.SessionRequestContent;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.service.factory.ServiceEntityFactory;
 import org.apache.log4j.Logger;
 
 import java.util.Map;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.CUSTOMER_INDIVIDUAL;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.CUSTOMER_LEGAL;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.USER_CUSTOMER;
-import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPAttribute.*;
-import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPParameter.*;
-import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPPath.CUSTOMER_MAIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPPath.CUSTOMER_REGISTER_PAGE;
-import static by.epam.javatraining.beseda.webproject.util.jspproperties.JSPPath.LOGIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPAttribute.*;
+import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPParameter.*;
+import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPPath.CUSTOMER_MAIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPPath.CUSTOMER_REGISTER_PAGE;
+import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPSessionAttribute.USER_DATA;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.*;
 
 public class CustomerRegisterCommand implements ActionCommand {
 
     private Logger log = Logger.getLogger("error");
+    private UserService userService = ServiceEntityFactory.getFactory().getUserService();
+    private CustomerService customerService = ServiceEntityFactory.getFactory().getCustomerService();
 
     @Override
     public String execute(SessionRequestContent content) {
-        String page = LOGIN_PAGE;
-        UserService us = UserService.getService();
-        CustomerService cs = CustomerService.getService();
+        String page = CUSTOMER_REGISTER_PAGE;
         Map<String, String[]> data = content.requestParameters();
+        Map<String,Object> attributes=content.requestAttributes();
         String login = data.get(LOGIN)[0];
         String password = data.get(PASSWORD)[0];
         String passwordConfirm = data.get(PASSWORD_CONFIRM)[0];
+
+        if (validUserData(attributes, login, password, passwordConfirm)) {
+            String companyName = data.get(COMPANY_NAME)[0];
+            String customerType = findOutCustomerType(companyName);
+            String name = data.get(NAME)[0];
+            String surname = data.get(SURNAME)[0];
+            String phone = data.get(PHONE)[0];
+            String email = data.get(EMAIL)[0];
+            try {
+                User user = userService.createEntity(login, password, USER_CUSTOMER);
+                Customer customer = customerService.createCustomer(user, name, surname, customerType, phone, email, companyName);
+                customerService.add(customer);
+                content.getSession().setAttribute(USER_DATA, user);
+                content.getSession().setAttribute(USER_ROLE, USER_CUSTOMER);
+                page = CUSTOMER_MAIN_PAGE;
+            } catch (ServiceLayerException e) {
+                log.error(e);
+            }
+        }
+
+        return page;
+    }
+
+    private boolean validUserData(Map<String,Object> attributes, String login, String password, String passwordConfirm) {
+        boolean correctData = true;
         try {
-            if (us.loginExists(login)) {
-                content.requestAttributes().put(ERROR_REGISTER_LOGIN, ERROR_REGISTER_LOGIN_MESSAGE);
-                page = CUSTOMER_REGISTER_PAGE;
+            if (userService.loginExists(login)) {
+                attributes.put(ERROR_REGISTER_LOGIN, ERROR_REGISTER_LOGIN_MESSAGE);
+                correctData = false;
             }
             if (!password.equals(passwordConfirm)) {
-                content.requestAttributes().put(ERROR_REGISTER_PASSWORD, ERROR_REGISTER_PASSWORD_MESSAGE);
-                page = CUSTOMER_REGISTER_PAGE;
-            }
-            if (page.equals(CUSTOMER_REGISTER_PAGE)) {
-                return page;
+                attributes.put(ERROR_REGISTER_PASSWORD, ERROR_REGISTER_PASSWORD_MESSAGE);
+                correctData = false;
             }
         } catch (ServiceTechnicalException e) {
             log.error(e);
         }
+        return correctData;
+    }
 
-        String companyName = data.get(COMPANY_NAME)[0];
+    private String findOutCustomerType(String companyName) {
         String customerType;
         if (companyName == null || companyName.length() < 3) {
             customerType = CUSTOMER_INDIVIDUAL;
         } else {
             customerType = CUSTOMER_LEGAL;
         }
-        String name = data.get(NAME)[0];
-        String surname = data.get(SURNAME)[0];
-        String phone = data.get(PHONE)[0];
-        String email = data.get(EMAIL)[0];
-        try {
-            User user = us.createEntity(login, password, USER_CUSTOMER);
-            Customer customer = cs.createCustomer(user, name, surname, customerType, phone, email, companyName);
-            cs.add(customer);
-            page = CUSTOMER_MAIN_PAGE;
-        } catch (ServiceLayerException e) {
-            log.error(e);
-        }
-        return page;
+        return customerType;
     }
-
 }

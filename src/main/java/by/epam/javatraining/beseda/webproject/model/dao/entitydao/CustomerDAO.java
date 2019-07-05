@@ -1,36 +1,35 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.model.exception.daoexception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.util.resourceloader.DatabaseEnumLoader;
-import by.epam.javatraining.beseda.webproject.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.util.database.DBEntityTableName.*;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.CUSTOMER_TYPE;
-import static by.epam.javatraining.beseda.webproject.util.database.DBEnumTable.USER_CUSTOMER;
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.CUSTOMER_TYPE;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.USER_CUSTOMER;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class CustomerDAO extends AbstractDAO<Customer> {
 
-    private CustomerDAO() {
+    public CustomerDAO() {
         super();
     }
 
 
-    private static class SingletonHolder {
-        public static final CustomerDAO instance = new CustomerDAO();
-    }
-
-    public static CustomerDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final CustomerDAO instance = new CustomerDAO();
+//    }
+//
+//    public static CustomerDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
 //    public CustomerDAO(WrapperConnector connector) {
 //        super(connector);

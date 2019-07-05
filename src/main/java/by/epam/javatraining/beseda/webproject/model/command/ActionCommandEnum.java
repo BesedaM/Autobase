@@ -3,12 +3,16 @@ package by.epam.javatraining.beseda.webproject.model.command;
 import by.epam.javatraining.beseda.webproject.model.command.commands.CustomerRegisterCommand;
 import by.epam.javatraining.beseda.webproject.model.command.commands.LoginCommand;
 import by.epam.javatraining.beseda.webproject.model.command.commands.LogoutCommand;
+import by.epam.javatraining.beseda.webproject.model.command.commands.gotopage.GoToCustomerRegister;
+import by.epam.javatraining.beseda.webproject.model.command.commands.gotopage.GoToLogin;
 
 public enum ActionCommandEnum {
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
     CUSTOMER_REGISTER(new CustomerRegisterCommand()),
-    EMPTY_COMMAND(new LogoutCommand());
+
+    LOGIN_PAGE(new GoToLogin()),
+    CUSTOMER_REGISTER_PAGE(new GoToCustomerRegister());
 
     ActionCommand command;
 

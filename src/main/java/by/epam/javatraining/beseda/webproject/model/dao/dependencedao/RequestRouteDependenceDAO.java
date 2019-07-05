@@ -3,21 +3,21 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class RequestRouteDependenceDAO extends OneToOneDependenceDAO<Request,Route> {
 
-    private RequestRouteDependenceDAO() {
+    public RequestRouteDependenceDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final RequestRouteDependenceDAO instance = new RequestRouteDependenceDAO();
-    }
-
-    public static RequestRouteDependenceDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final RequestRouteDependenceDAO instance = new RequestRouteDependenceDAO();
+//    }
+//
+//    public static RequestRouteDependenceDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
 
     @Override

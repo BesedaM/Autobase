@@ -3,21 +3,21 @@ package by.epam.javatraining.beseda.webproject.model.dao.dependencedao;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
 
-import static by.epam.javatraining.beseda.webproject.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
 public class TaskAddressDependenceDAO extends ManyToOneDependenceDAO<Task, Address> {
 
-    private TaskAddressDependenceDAO() {
+    public TaskAddressDependenceDAO() {
         super();
     }
 
-    private static class SingletonHolder {
-        public static final TaskAddressDependenceDAO instance = new TaskAddressDependenceDAO();
-    }
-
-    public static TaskAddressDependenceDAO getDAO() {
-        return SingletonHolder.instance;
-    }
+//    private static class SingletonHolder {
+//        public static final TaskAddressDependenceDAO instance = new TaskAddressDependenceDAO();
+//    }
+//
+//    public static TaskAddressDependenceDAO getDAO() {
+//        return SingletonHolder.instance;
+//    }
 
     @Override
     protected String getDependenceIdStatement() {
