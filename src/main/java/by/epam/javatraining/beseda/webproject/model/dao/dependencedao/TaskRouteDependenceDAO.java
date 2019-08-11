@@ -11,14 +11,6 @@ public class TaskRouteDependenceDAO extends ManyToOneDependenceDAO<Task, Route> 
         super();
     }
 
-//    private static class SingletonHolder {
-//        public static final TaskRouteDependenceDAO instance = new TaskRouteDependenceDAO();
-//    }
-//
-//    public static TaskRouteDependenceDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
     @Override
     protected String getDependenceIdStatement() {
         return TASK_ROUTE_GET_DEPENDENCE_ID;

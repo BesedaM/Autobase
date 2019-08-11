@@ -2,12 +2,12 @@ package by.epam.javatraining.beseda.webproject.model.exception.entityexception.r
 
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 
-public class IllegalRequestRouteException extends EntityLogicException {
+public class IllegalRouteException extends EntityLogicException {
 
-    public IllegalRequestRouteException() {
+    public IllegalRouteException() {
     }
 
-    public IllegalRequestRouteException(String message) {
+    public IllegalRouteException(String message) {
         super(message);
     }
 }

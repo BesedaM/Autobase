@@ -3,15 +3,31 @@ package by.epam.javatraining.beseda.webproject.model.service;
 public class ServiceConstants {
 
     //password check
-    public static int PASSWORD_LENGTH;
-    public static String IS_WHITESPACE_CHARACTER;
-    public static String IS_DIGIT;
-    public static String IS_ALPHABETIC_CHARACTER;
+
+    public static String PASSWORD_VALIDATE;
+
+    public static String USER_ROLE;
+    public static String CUSTOMER_TYPE;
+    public static String TRUCK_CAPACITY;
+    public static String CAR_STATUS;
+    public static String CAR_STATE;
+    public static String CAR_TYPE;
+    public static String ROUTE_STATUS;
+    public static String REQUEST_STATUS;
+
 
     static {
-        PASSWORD_LENGTH = 8;
-        IS_WHITESPACE_CHARACTER = "\\s";
-        IS_DIGIT = "\\d";
-        IS_ALPHABETIC_CHARACTER = "\\p{Alpha}";
+
+        PASSWORD_VALIDATE="((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=\\S+$).{6,20})";
+
+        USER_ROLE = "user_role";
+        CUSTOMER_TYPE = "customer_type";
+        TRUCK_CAPACITY = "truck_capacity";
+        CAR_STATUS = "car_status";
+        CAR_STATE = "car_state";
+        CAR_TYPE = "car_type";
+        ROUTE_STATUS = "route_status";
+        REQUEST_STATUS = "request_status";
+
     }
 }

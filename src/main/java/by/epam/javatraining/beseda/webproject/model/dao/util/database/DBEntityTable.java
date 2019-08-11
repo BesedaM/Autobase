@@ -45,7 +45,7 @@ public class DBEntityTable {
     public static final String ADDRESS_ID_TASKS = "address_id";
     public static final String ROUTE_ID_TASKS = "route_id";
     public static final String TIME = "time";
-    public static final String DETAIL = "detail";
+    public static final String DETAILS = "details";
 
     public static final String T_ADDRESSES = "addresses";
     public static final String COUNTRY = "country";

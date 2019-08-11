@@ -36,7 +36,9 @@ public abstract class OneToOneDependenceDAO<M extends BaseEntity, K extends Base
                 st = connector.prepareStatement(getEntityByDependenceStatement());
                 st.setInt(1, dependence.getId());
                 ResultSet res = st.executeQuery();
-                entityId = res.getInt(1);
+                if (res.first()) {
+                    entityId = res.getInt(1);
+                }
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
@@ -47,7 +49,6 @@ public abstract class OneToOneDependenceDAO<M extends BaseEntity, K extends Base
     }
 
     /**
-     *
      * @return string representation of getEntityIdByDependence statement
      */
     protected abstract String getEntityByDependenceStatement();

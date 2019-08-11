@@ -1,7 +1,9 @@
 package by.epam.javatraining.beseda.webproject.model.entity.route;
 
 import by.epam.javatraining.beseda.webproject.model.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.model.entity.DefaultValue;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.address.*;
+import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 
 import java.util.Objects;
 
@@ -15,11 +17,11 @@ public class Address extends BaseEntity {
     private String building;
 
     {
-        country = "Беларусь";
-        district = "Минский";
-        street = "";
-        house = 0;
-        building = "";
+        country = DefaultValue.COUNTRY;
+        district = DefaultValue.DISTRICT;
+        street = DefaultValue.EMPTY_STRING;
+        house = DefaultValue.ZERO;
+        building = DefaultValue.EMPTY_STRING;
     }
 
     public Address() {
@@ -142,12 +144,20 @@ public class Address extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Address{" +
-                "country='" + country + '\'' +
-                ", district='" + district + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", house=" + house +
-                ", building='" + building + '\'' + '}';
+        String addr;
+        if (country.equals(DefaultValue.COUNTRY) && house == DefaultValue.ZERO) {
+            addr = district + ", " + city + ", " + street;
+        } else if (street.equals(DefaultValue.EMPTY_STRING)) {
+            addr = district + ", " + city + ", " + street + " " + house;
+        } else if (country.equals(DefaultValue.COUNTRY)) {
+            addr = district + ", " + city + ", " + street + " " + house;
+        } else {
+            addr = country + ", " + district + ", " + city + ", " + street + " " + house;
+        }
+
+        if (building.matches(DefaultValue.ALPHA_NUMERIC_VALUE)) {
+            addr = addr + DefaultValue.SLASH + building;
+        }
+        return addr;
     }
 }

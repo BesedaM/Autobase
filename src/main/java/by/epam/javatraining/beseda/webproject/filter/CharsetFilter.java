@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
 
-@WebFilter(filterName = "CharsetFilter", urlPatterns = {"*.jsp","*.html"},
+@WebFilter(filterName = "CharsetFilter", urlPatterns = {"*.jsp", "*.html"},     //
         initParams = {@WebInitParam(name = "encoding", value = "UTF-8"),
                 @WebInitParam(name = "responseContentType", value = "text/html; charset=UTF-8")})
 public class CharsetFilter implements Filter {
@@ -24,8 +24,7 @@ public class CharsetFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain next)
             throws IOException, ServletException {
 
-        String codeRequest = request.getCharacterEncoding();
-        if (encoding != null && !encoding.equalsIgnoreCase(codeRequest)) {
+        if (encoding != null && respContType != null) {
             request.setCharacterEncoding(encoding);
             response.setContentType(respContType);
             response.setCharacterEncoding(encoding);

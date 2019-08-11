@@ -11,6 +11,9 @@ import java.util.Set;
  * Encapsulates request data in object fielda
  */
 public class SessionRequestContent {
+
+    private HttpServletRequest request;
+
     private Map<String, Object> requestAttributes;
     private Map<String, String[]> requestParameters;
     private HttpSession session;
@@ -25,15 +28,14 @@ public class SessionRequestContent {
      * @param request data source
      */
     public SessionRequestContent(HttpServletRequest request) {
-        extractAttributes(request);
-        extractParameters(request);
-        extractSession(request);
+        this.request=request;
+        extractAttributes();
+        extractParameters();
+        extractSession();
     }
 
-    /**
-     * @param request
-     */
-    private void extractAttributes(HttpServletRequest request) {
+
+    private void extractAttributes() {
         Enumeration<String> enumeration = request.getAttributeNames();
         if (enumeration.hasMoreElements()) {
             String key = enumeration.nextElement();
@@ -42,11 +44,11 @@ public class SessionRequestContent {
         }
     }
 
-    private void extractParameters(HttpServletRequest request) {
+    private void extractParameters() {
         requestParameters = request.getParameterMap();
     }
 
-    private void extractSession(HttpServletRequest request) {
+    private void extractSession() {
         session = request.getSession(true);
     }
 
@@ -67,5 +69,9 @@ public class SessionRequestContent {
 
     public HttpSession getSession() {
         return session;
+    }
+
+    public HttpSession renewSession(){
+        return request.getSession(true);
     }
 }

@@ -1,5 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.service.entity;
 
+import by.epam.javatraining.beseda.webproject.model.dao.entitydao.CarDAO;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.model.entity.car.Truck;
@@ -7,6 +9,7 @@ import by.epam.javatraining.beseda.webproject.model.dao.exception.CarTypeNotPres
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceTechnicalException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +23,6 @@ public class CarService extends AbstractEntityService<Car> {
         super();
         entityDAO = daoEntityFactory.getCarDAO();
     }
-
-//    private static class SingletonHolder {
-//        public static final CarService instance = new CarService();
-//    }
-//
-//    public static CarService getService() {
-//        return SingletonHolder.instance;
-//    }
 
     /**
      * Creates entity WITHOUT ID with the given data
@@ -75,5 +70,15 @@ public class CarService extends AbstractEntityService<Car> {
             }
         }
         return newList;
+    }
+
+    public void updateCarState(int carId, String state) throws ServiceTechnicalException {
+        if (carId > 0 && state != null) {
+            try {
+                ((CarDAO) entityDAO).updateCarState(carId, state);
+            } catch (DAOTechnicalException e) {
+                throw new ServiceTechnicalException(e);
+            }
+        }
     }
 }

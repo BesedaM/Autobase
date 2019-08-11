@@ -7,74 +7,131 @@
   Time: 14:28
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+
+<c:set var="urlPrefix" value="${pageContext.request.contextPath}"/>
+<c:set var="locale" value="${sessionScope.locale_file}" scope="session"/>
+<c:set var="lang" value="${sessionScope.language}" scope="page"/>
+
+<fmt:bundle basename="${locale}" prefix="registration.">
+    <fmt:message key="colon" var="colon"/>
+    <fmt:message key="customer.title" var="title"/>
+    <fmt:message key="user.form" var="user_form"/>
+    <fmt:message key="user.login" var="login"/>
+    <fmt:message key="user.login_requirements" var="login_requirements"/>
+    <fmt:message key="user.password" var="password"/>
+    <fmt:message key="user.password_requirements" var="password_requirements"/>
+    <fmt:message key="user.password_confirm" var="password_confirm"/>
+    <fmt:message key="company.legend" var="company_legend"/>
+    <fmt:message key="company.name" var="company_name"/>
+    <fmt:message key="company.info_message" var="company_info"/>
+    <fmt:message key="user.personal_data" var="personal_data"/>
+    <fmt:message key="user.name" var="user_name"/>
+    <fmt:message key="user.surname" var="user_surname"/>
+    <fmt:message key="user.phone_number" var="phone"/>
+    <fmt:message key="user.email" var="email"/>
+    <fmt:message key="company.legend" var="company_legend"/>
+    <fmt:message key="company.name" var="company_name"/>
+    <fmt:message key="company.info_message" var="company_info"/>
+    <fmt:message key="form.submit" var="submit"/>
+    <fmt:message key="form.reset" var="reset"/>
+    <fmt:message key="redirect.back_to_login" var="back_to_login"/>
+</fmt:bundle>
+
+<html lang="${lang}">
 <head>
-    <title>Customer register</title>
+    <title>${title}</title>
     <meta http-equiv="Content-Type" content="text/html">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
 </head>
 <body>
 
-<form name="customerRegister" action="controller" method="POST">
+<%@include file="../header/non_registered_user.jsp" %>
+
+<form name="customerRegister" action="${urlPrefix}/controller" method="POST">
     <input type="hidden" name="command" value="customer_register"/>
     <fieldset>
-        <legend>Registration form</legend>
+        <legend>${user_form}</legend>
         <table class="registration">
             <tr>
-                <td><label for="login">Enter login : </label></td>
-                <td><input id="login" name="login" type="text" pattern="^[\w]{8,}$" required/></td>
+                <td class="registration"><label for="login">${login}${colon}</label></td>
+                <td>
+                    <input id="login" name="login" type="text" pattern="^[\w]{8,}$" required/>
+                </td>
+                <td></td>
             </tr>
-            <tr>
-                <td colspan="2"><p class="error-message">${errorRegisterLogin}</p></td>
-            </tr>
+
+            <c:if test="${errorRegisterLogin!=null}">
+                <tr>
+                    <td colspan="2"><p class="error-message">${errorRegisterLogin}</p></td>
+                    <td></td>
+                </tr>
+            </c:if>
             <tr>
                 <td>
-                    <label for="passw1">Enter password : </label>
+                    <label for="passw1">${password}${colon}</label>
                 </td>
                 <td>
                     <input id="passw1" name="password" type="password" required/>
                 </td>
+                <td></td>
             </tr>
             <tr>
                 <td>
-                    <label for="passw2">Confirm password : </label>
+                    <label for="passw2">${password_confirm}${colon}</label>
                 </td>
                 <td>
                     <input id="passw2" name="password_confirm" type="password" required/>
                 </td>
+                <td></td>
             </tr>
+            <c:if test="${errorRegisterPassword!=null}">
+                <tr>
+                    <td colspan="2">
+                        <p class="error-message">${errorRegisterPassword}</p>
+                    </td>
+                    <td></td>
+                </tr>
+            </c:if>
             <tr>
-                <td colspan="2">
-                    <p class="error-message">${errorRegisterPassword}</p>
+                <td colspan="3">
+                    <br/>
+                    <p class="information">${login_requirements}</p>
+                    <p class="information">${password_requirements}</p>
                 </td>
             </tr>
         </table>
     </fieldset>
     <fieldset>
-        <legend>Company</legend>
+        <legend>${company_legend}</legend>
         <table class="registration">
             <tr>
-                <td>
-                    <label for="company">Company name: </label>
+                <td class="registration">
+                    <label for="company">${company_name}${colon}</label>
                 </td>
                 <td>
                     <input id="company" name="company_name" type="text"/>
                 </td>
+                <td></td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <p class="information">*Leave blank if you are an individual customer</p>
+                    <p class="information">${company_info}</p>
                 </td>
+                <td></td>
             </tr>
         </table>
     </fieldset>
     <fieldset>
-        <legend>Contacts</legend>
-        <table class="registration">
+        <legend>${personal_data}</legend>
+        <table>
             <tr>
-                <td>
-                    <label for="name">Name: </label>
+                <td class="registration">
+                    <label for="name">${user_name}${colon}</label>
                 </td>
                 <td>
                     <input id="name" name="name" type="text" pattern="(^[a-zA-Z-]{3,}$)|(^[А-Яа-я-]{3,}$)" required/>
@@ -82,7 +139,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="surname">Surname: </label>
+                    <label for="surname">${user_surname}${colon}</label>
                 </td>
                 <td>
                     <input id="surname" name="surname" type="text" pattern="(^[a-zA-Z-]{3,}$)|(^[А-Яа-я-]{3,}$)"
@@ -91,16 +148,16 @@
             </tr>
             <tr>
                 <td>
-                    <label for="phone">Phone: </label>
+                    <label for="phone">${phone}${colon}</label>
                 </td>
                 <td>
-                    <input id="phone" name="phone" type="text" placeholder="375(29)123-45-67"
-                           pattern="^375\(((29)|(33)|(44)|(25))\)[0-9]{3}-[0-9]{2}-[0-9]{2}(\s){0,}" required>
+                    <input id="phone" name="phone" type="text" placeholder="(29)123-45-67"
+                           pattern="^\(((29)|(33)|(44)|(25))\)[0-9]{3}-[0-9]{2}-[0-9]{2}(\s){0,}" required>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="email">Email:</label>
+                    <label for="email">${email}${colon}</label>
                 </td>
                 <td>
                     <input id="email" name="email" type="email" placeholder="email@example.com"
@@ -110,14 +167,15 @@
         </table>
     </fieldset>
     <br/>
-    <input type="submit" value="Register"/>
-    <input type="reset" value="Reset"/>
+    <input type="submit" value="${submit}"/>
+    <input type="reset" value="${reset}"/>
 </form>
 <br/>
 
 <form name="LoginRedirect" method="get" action="${urlPrefix}/controller">
     <input type="hidden" name="command" value="login_page">
-    <input type="submit" value="Back to login page"/>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+    <input type="submit" value="${back_to_login}"/>
 </form>
 </body>
 </html>

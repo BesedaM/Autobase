@@ -1,12 +1,15 @@
 package by.epam.javatraining.beseda.webproject.model.entity.user;
 
 import by.epam.javatraining.beseda.webproject.model.entity.car.Car;
+import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRouteException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalCarException;
 
 import java.util.Objects;
 
 public class Driver extends Person {
     protected Car car;
+//    protected Route activeRoute;
 
     public Driver() {
     }
@@ -34,6 +37,23 @@ public class Driver extends Person {
     public Car getCar() {
         return car;
     }
+
+//    public void setRoute(Route route) throws IllegalRouteException {
+//        if (route != null) {
+//            activeRoute = route;
+//        } else {
+//            throw new IllegalRouteException();
+//        }
+//    }
+//
+//    public void removeRoute() {
+//        activeRoute = null;
+//    }
+//
+//    public Route getRoute() {
+//        return activeRoute;
+//    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -11,14 +11,6 @@ public class TaskAddressDependenceDAO extends ManyToOneDependenceDAO<Task, Addre
         super();
     }
 
-//    private static class SingletonHolder {
-//        public static final TaskAddressDependenceDAO instance = new TaskAddressDependenceDAO();
-//    }
-//
-//    public static TaskAddressDependenceDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
     @Override
     protected String getDependenceIdStatement() {
         return TASK_ADDRESS_GET_DEPENDENCE_ID;

@@ -8,12 +8,10 @@ import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceTec
 
 public class DependenceService<M extends BaseEntity,K extends BaseEntity> {
 
-    protected DAODependenceFactory DAODependenceFactory;
+    protected static DAODependenceFactory daoDependenceFactory = DAODependenceFactory.getFactory();
     protected DependenceDAO<M,K> dependenceDAO;
 
-    protected DependenceService() {
-        this.DAODependenceFactory = DAODependenceFactory.getFactory();
-    }
+    protected DependenceService() { }
 
     public void addDependence(M entity01, K entity02) throws ServiceTechnicalException {
         if (entity01 != null && entity02 != null) {

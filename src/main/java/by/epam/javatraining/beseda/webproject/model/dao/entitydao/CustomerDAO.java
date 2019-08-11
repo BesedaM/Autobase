@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
@@ -22,18 +23,6 @@ public class CustomerDAO extends AbstractDAO<Customer> {
         super();
     }
 
-
-//    private static class SingletonHolder {
-//        public static final CustomerDAO instance = new CustomerDAO();
-//    }
-//
-//    public static CustomerDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
-//    public CustomerDAO(WrapperConnector connector) {
-//        super(connector);
-//    }
 
     @Override
     public synchronized int add(Customer user) throws DAOLayerException {
@@ -61,7 +50,7 @@ public class CustomerDAO extends AbstractDAO<Customer> {
         if (result != null) {
             customer = new Customer();
             customer.setRole(USER_CUSTOMER);
-            customer.setId(result.getInt(CUSTOMER_ID));
+            customer.setId(result.getInt(SQLQuery.CUSTOMER_ID));
             customer.setLogin(result.getString(LOGIN));
             customer.setPassword(result.getBytes(PASSWORD));
             customer.setCustomerType(result.getString(CUSTOMER_TYPE));

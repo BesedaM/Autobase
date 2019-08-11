@@ -24,16 +24,19 @@ public class DatabaseProperties {
 
     public static final String DATABASE_ENCODING;
 
+    public static final String UNICODE_PATCH;
     public static final String TIMEZONE_PATCH;
 
     static {
-        DATABASE_PROP_LOCATION = PROJECT_LOCATION +"src/main/resources/database.properties";
-        TIMEZONE_PATCH = "?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";     //  вставить вначале, если не работает useUnicode=true&
+        DATABASE_PROP_LOCATION = PROJECT_LOCATION + "src/main/resources/database.properties";
+        UNICODE_PATCH = "?useUnicode=true&characterEncoding=utf-8";
+        TIMEZONE_PATCH = "&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+
 
         DATABASE_PROP = new Properties();
         loadProperties();
         JDBC_MYSQL_DRIVER = DATABASE_PROP.getProperty("JDBC_MYSQL_DRIVER").trim();
-        DATABASE_URL = DATABASE_PROP.getProperty("DATABASE_URL").trim() + TIMEZONE_PATCH;
+        DATABASE_URL = DATABASE_PROP.getProperty("DATABASE_URL").trim() + UNICODE_PATCH + TIMEZONE_PATCH;
         DATABASE_USER = DATABASE_PROP.getProperty("DATABASE_USER").trim();
         DATABASE_PASSWORD = DATABASE_PROP.getProperty("DATABASE_PASSWORD").trim();
         DATABASE_ENCODING = DATABASE_PROP.getProperty("DATABASE_ENCODING").trim();

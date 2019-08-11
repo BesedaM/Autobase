@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.GregorianCalendar;
 
-import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.DETAIL;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.DETAILS;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.TIME;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.*;
 
@@ -21,25 +21,16 @@ public class TaskDAO extends AbstractDAO<Task> {
         super();
     }
 
-//    private static class SingletonHolder {
-//        public static final TaskDAO instance = new TaskDAO();
-//    }
-//
-//    public static TaskDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
     @Override
     protected Task createEntity(ResultSet result) throws SQLException, EntityLogicException {
         Task task = null;
         if (result != null) {
             task = new Task();
             GregorianCalendar time = new GregorianCalendar();
-            time.setTimeInMillis(result.getTime(TIME).getTime());
-
+            time.setTimeInMillis(result.getTime(TIME).getTime() + result.getDate(TIME).getTime());
             task.setTime(time);
             task.setId(result.getInt(SQLQuery.TASK_ID));
-            task.setDetails(result.getString(DETAIL));
+            task.setDetails(result.getString(DETAILS));
         }
         return task;
     }
@@ -76,10 +67,10 @@ public class TaskDAO extends AbstractDAO<Task> {
 
     @Override
     protected void setDataOnPreparedStatement(PreparedStatement st, Task task) throws SQLException, NotEnoughArgumentsException {
-        if(st!=null&&task!=null) {
+        if (st != null && task != null) {
             st.setTime(1, new Time(task.getTime().getTimeInMillis()));
             st.setString(2, task.getDetails());
-        }else{
+        } else {
             throw new NotEnoughArgumentsException();
         }
     }

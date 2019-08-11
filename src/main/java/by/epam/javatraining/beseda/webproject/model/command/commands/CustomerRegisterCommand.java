@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.command.commands;
 
 import by.epam.javatraining.beseda.webproject.model.command.ActionCommand;
+import by.epam.javatraining.beseda.webproject.model.command.util.Decoder;
 import by.epam.javatraining.beseda.webproject.model.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
@@ -19,10 +20,11 @@ import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPP
 import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPPath.CUSTOMER_REGISTER_PAGE;
 import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPSessionAttribute.USER_DATA;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.*;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 public class CustomerRegisterCommand implements ActionCommand {
 
-    private Logger log = Logger.getLogger("error");
+    private Logger log = Logger.getLogger(ERROR_LOGGER);
     private UserService userService = ServiceEntityFactory.getFactory().getUserService();
     private CustomerService customerService = ServiceEntityFactory.getFactory().getCustomerService();
 
@@ -30,20 +32,24 @@ public class CustomerRegisterCommand implements ActionCommand {
     public String execute(SessionRequestContent content) {
         String page = CUSTOMER_REGISTER_PAGE;
         Map<String, String[]> data = content.requestParameters();
-        Map<String,Object> attributes=content.requestAttributes();
+        Map<String, Object> attributes = content.requestAttributes();
         String login = data.get(LOGIN)[0];
         String password = data.get(PASSWORD)[0];
         String passwordConfirm = data.get(PASSWORD_CONFIRM)[0];
 
-        if (validUserData(attributes, login, password, passwordConfirm)) {
+        if (isValidUserData(attributes, login, password, passwordConfirm)) {
             String companyName = data.get(COMPANY_NAME)[0];
-            String customerType = findOutCustomerType(companyName);
-            String name = data.get(NAME)[0];
-            String surname = data.get(SURNAME)[0];
-            String phone = data.get(PHONE)[0];
-            String email = data.get(EMAIL)[0];
+            String customerType = defineCustomerType(companyName);
+
             try {
+                String name= Decoder.decode(data.get(NAME)[0]);
+                String surname = Decoder.decode(data.get(SURNAME)[0]);
+                String phone = data.get(PHONE)[0];
+                String email = data.get(EMAIL)[0];
+
                 User user = userService.createEntity(login, password, USER_CUSTOMER);
+                userService.add(user);
+
                 Customer customer = customerService.createCustomer(user, name, surname, customerType, phone, email, companyName);
                 customerService.add(customer);
                 content.getSession().setAttribute(USER_DATA, user);
@@ -57,7 +63,7 @@ public class CustomerRegisterCommand implements ActionCommand {
         return page;
     }
 
-    private boolean validUserData(Map<String,Object> attributes, String login, String password, String passwordConfirm) {
+    private boolean isValidUserData(Map<String, Object> attributes, String login, String password, String passwordConfirm) {
         boolean correctData = true;
         try {
             if (userService.loginExists(login)) {
@@ -74,9 +80,9 @@ public class CustomerRegisterCommand implements ActionCommand {
         return correctData;
     }
 
-    private String findOutCustomerType(String companyName) {
+    private String defineCustomerType(String companyName) {
         String customerType;
-        if (companyName == null || companyName.length() < 3) {
+        if (companyName == null || companyName.trim().length() < 3) {
             customerType = CUSTOMER_INDIVIDUAL;
         } else {
             customerType = CUSTOMER_LEGAL;

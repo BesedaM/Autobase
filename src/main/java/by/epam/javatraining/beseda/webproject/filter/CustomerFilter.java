@@ -18,7 +18,7 @@ public class CustomerFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (req.getSession(false) != null && USER_CUSTOMER.equals(req.getSession().getAttribute(USER_ROLE))) {
+        if (USER_CUSTOMER.equals(req.getSession().getAttribute(USER_ROLE))) {
             chain.doFilter(request, response);
         } else {
             req.getSession().invalidate();

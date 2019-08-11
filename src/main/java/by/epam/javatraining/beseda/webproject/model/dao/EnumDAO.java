@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao;
 
 import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.util.LoggerName;
 import by.epam.javatraining.beseda.webproject.util.ReversableHashMap;
 import org.apache.log4j.Logger;
 
@@ -18,7 +19,7 @@ import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQL
  */
 public class EnumDAO {
 
-    static Logger log = Logger.getLogger(EnumDAO.class.getSimpleName());
+    private static Logger log = Logger.getLogger(LoggerName.ERROR_LOGGER);
 
     /**
      * Method retrieves data from table, containing enum constants, and returns the ReversableHashMap representation of it

@@ -9,7 +9,6 @@ import by.epam.javatraining.beseda.webproject.model.exception.entityexception.Il
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceTechnicalException;
-import by.epam.javatraining.beseda.webproject.model.service.EntityService;
 
 import java.util.List;
 

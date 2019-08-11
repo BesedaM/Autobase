@@ -9,7 +9,6 @@ public class GoToLogin implements ActionCommand {
 
     @Override
     public String execute(SessionRequestContent content) {
-        content.getSession().invalidate();
         return LOGIN_PAGE;
     }
 }

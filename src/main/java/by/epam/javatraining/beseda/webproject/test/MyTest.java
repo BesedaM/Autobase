@@ -2,7 +2,9 @@ package by.epam.javatraining.beseda.webproject.test;
 
 import by.epam.javatraining.beseda.webproject.model.dao.util.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.model.dao.util.connectionpool.DBConnector;
+import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.service.factory.ServiceEntityFactory;
 
@@ -47,8 +49,15 @@ public class MyTest {
 //        }
 //        conn.close();
 
-        User user=ServiceEntityFactory.getFactory().getUserService().getUserByLoginAndPassword("admin","admin");
-        System.out.println(user);
+  //      User user=ServiceEntityFactory.getFactory().getUserService().getUserByLoginAndPassword("admin","admin");
+  //      System.out.println(user);
+
+        try {
+            Driver driver=ServiceEntityFactory.getFactory().getDriverService().getEntityById(2);
+            System.out.println(driver);
+        } catch (ServiceLayerException e) {
+            e.printStackTrace();
+        }
     }
 }
 

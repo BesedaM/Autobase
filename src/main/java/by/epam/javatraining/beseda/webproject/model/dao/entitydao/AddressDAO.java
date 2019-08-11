@@ -18,15 +18,6 @@ public class AddressDAO extends AbstractDAO<Address> {
         super();
     }
 
-//    private static class SingletonHolder {
-//        public static final AddressDAO instance = new AddressDAO();
-//    }
-//
-//    public static AddressDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
-
     @Override
     protected Address createEntity(ResultSet result) throws SQLException, EntityLogicException {
         Address addr = null;

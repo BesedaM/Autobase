@@ -18,12 +18,15 @@ public class JSPPath {
     public static Set<String> ALL_PATHS = new HashSet<>();
 
     static {
-        ERROR_PAGE = "/view/error.jsp";
+        ERROR_PAGE = "/view/error_page.jsp";
         LOGIN_PAGE = "/view/login.jsp";
         ADMIN_MAIN_PAGE = "/view/admin/welcome.jsp";
         CUSTOMER_MAIN_PAGE = "/view/customer/welcome.jsp";
-        DRIVER_MAIN_PAGE = "/view/driver/welcome.jsp";
+
+        DRIVER_MAIN_PAGE = "/view/driver/driver_main.jsp";
+
         CUSTOMER_REGISTER_PAGE = "/view/register/customer.jsp";
+
         DRIVER_REGISTER_PAGE = "/view/register/driver.jsp";
 
         ALL_PATHS.add(ERROR_PAGE);

@@ -6,38 +6,44 @@
   Time: 0:47
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+
 
 <c:set var="urlPrefix" value="${pageContext.request.contextPath}"/>
+<c:set var="locale" value="${sessionScope.locale_file}" scope="session"/>
+<c:set var="lang" value="${sessionScope.language}" scope="page"/>
 
-<%--<fmt:bundle basename="locale">--%>
-    <%--<fmt:message key="local.adminPage.setScore" var="setScore"/>--%>
-    <%--<fmt:message key="local.adminPage.createOdd" var="craeteOdd"/>--%>
-    <%--<fmt:message key="local.adminPage.createEvent" var="createEvent"/>--%>
-    <%--<fmt:message key="local.adminPage.createEntryLabel" var="entryAddedSuccesfull"/>--%>
-<%--</fmt:bundle>--%>
+<fmt:bundle basename="${locale}" prefix="login.">
+    <fmt:message key="colon" var="colon"/>
+    <fmt:message key="title" var="title"/>
+    <fmt:message key="prompt" var="prompt"/>
+    <fmt:message key="login" var="login"/>
+    <fmt:message key="password" var="password"/>
+    <fmt:message key="log_in" var="log_in"/>
+    <fmt:message key="whether_registered" var="whether_registered"/>
+    <fmt:message key="register" var="register"/>
+</fmt:bundle>
 
-<html>
+<html lang="${lang}">
 <head>
-    <title>AUTOBASE authentification</title>
-    <meta http-equiv="Content-Type" content="text/html">
-    <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--%>
+    <title>${title}</title>
     <link rel="stylesheet" href="<c:url value="${urlPrefix}/css/styles.css"/>" type="text/css"/>
-    <%--<style>--%>
-        <%--@import "${urlPrefix}/css/styles.css";--%>
-    <%--</style>--%>
 </head>
 <body>
-<form name="LoginForm" method="post" action="${urlPrefix}/controller">         <%--  ${pageContext.request.contextPath}/ --%>
+
+<%@include file="header/non_registered_user.jsp" %>
+
+<form name="LoginForm" method="post"
+      action="${urlPrefix}/controller">
     <input type="hidden" name="command" value="login"/>
 
-    <p>Enter your user's data</p>
+    <p>${prompt}</p>
     <table>
         <tr>
-            <td>
-                <label for="login">Login:</label>
+            <td class="login">
+                <label for="login">${login}${colon}</label>
             </td>
             <td>
                 <input id="login" name="login" type="text" required/>
@@ -45,25 +51,27 @@
         </tr>
         <tr>
             <td>
-                <label for="password">Password:</label>
+                <label for="password">${password}${colon}</label>
             </td>
             <td>
                 <input id="password" name="password" type="password" required/>
             </td>
         </tr>
-        <tr>
-            <td colspan="2">
-                <p id="login_error-message">${errorMessage}</p>
-            </td>
-        </tr>
+        <c:if test="${errorMessage!=null}">
+            <tr>
+                <td colspan="2">
+                    <p id="login_error-message">${errorMessage}</p>
+                </td>
+            </tr>
+        </c:if>
     </table>
-    <input type="submit" value="Log in"/>
+    <input type="submit" value="${log_in}"/>
 </form>
 <br/>
-<p>First time here?</p>
+<p>${whether_registered}</p>
 <form name="CustomerRegisterRedirect" method="get" action="${urlPrefix}/controller">
     <input type="hidden" name="command" value="customer_register_page">
-    <input type="submit" value="Register"/>
+    <input type="submit" value="${register}"/>
 </form>
 
 </body>

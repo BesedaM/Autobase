@@ -9,7 +9,6 @@ public class GoToCustomerRegister implements ActionCommand {
 
     @Override
     public String execute(SessionRequestContent content) {
-        content.getSession().invalidate();
         return CUSTOMER_REGISTER_PAGE;
     }
 }

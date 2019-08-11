@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
@@ -35,14 +36,14 @@ public class RequestDAO extends AbstractDAO<Request> {
         Request request = null;
         if (res != null) {
             request = new Request();
-            request.setId(res.getInt(REQUEST_ID));
+            request.setId(res.getInt(SQLQuery.REQUEST_ID));
             request.setStatus(res.getString(REQUEST_STATUS));
             request.setComment(res.getString(COMMENT));
 
             GregorianCalendar time = new GregorianCalendar();
             time.setTimeInMillis(res.getTime(REQUEST_DATE).getTime());
 
-            request.setDate(time);
+            request.setCreationDate(time);
         }
         return request;
     }
@@ -82,7 +83,7 @@ public class RequestDAO extends AbstractDAO<Request> {
         if (st != null && request != null) {
             int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
             st.setInt(1, statusId);
-            st.setTime(2, new Time(request.getDate().getTimeInMillis()));
+            st.setTime(2, new Time(request.getCreationDate().getTimeInMillis()));
             st.setString(3, request.getComment());
         } else {
             throw new NotEnoughArgumentsException();

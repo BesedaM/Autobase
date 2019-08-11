@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
@@ -54,7 +55,7 @@ public class DriverDAO extends AbstractDAO<Driver> {
         Driver driver = null;
         if (res != null) {
             driver = new Driver();
-            driver.setId(res.getInt(DBEntityTable.DRIVER_ID));
+            driver.setId(res.getInt(SQLQuery.DRIVER_ID));
             driver.setName(res.getString(NAME));
             driver.setSurname(res.getString(SURNAME));
             driver.setPhone(res.getString(PHONE));

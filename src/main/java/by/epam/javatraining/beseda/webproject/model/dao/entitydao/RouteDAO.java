@@ -1,5 +1,7 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
@@ -19,20 +21,12 @@ public class RouteDAO extends AbstractDAO<Route> {
         super();
     }
 
-//    private static class SingletonHolder {
-//        public static final RouteDAO instance = new RouteDAO();
-//    }
-//
-//    public static RouteDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
     @Override
     protected Route createEntity(ResultSet result) throws SQLException, EntityLogicException {
         Route route = null;
         if (result != null) {
             route = new Route();
-            route.setId(result.getInt(ROUTE_ID));
+            route.setId(result.getInt(SQLQuery.ROUTE_ID));
             route.setName(result.getString(ROUTE_NAME));
             route.setStatus(result.getString(ROUTE_STATUS));
         }
@@ -79,4 +73,23 @@ public class RouteDAO extends AbstractDAO<Route> {
             throw new NotEnoughArgumentsException();
         }
     }
+
+    public void updateRouteStatus(int id, String status) throws DAOTechnicalException {
+        if (id > 0 && status != null) {
+            int routeStatusIndex = DatabaseEnumLoader.ROUTE_STATUS_MAP.getKey(status);
+            PreparedStatement st = null;
+            try {
+                st = connector.prepareStatement(UPDATE_ROUTE_STATUS);
+                st.setInt(1, routeStatusIndex);
+                st.setInt(2, id);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DAOTechnicalException("Error updating route status", e);
+            } finally {
+                closeStatement(st);
+            }
+        }
+    }
+
+
 }

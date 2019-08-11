@@ -19,20 +19,20 @@ import java.sql.SQLException;
 
 import static by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseProperties.*;
 
-@WebServlet("/controller")
+@WebServlet(name="TruckingCompany",urlPatterns="/controller")
 public class Controller extends HttpServlet {
 
     private static Logger log;
-    private static ConnectionPool pool;
+    private ConnectionPool pool;
 
     static {
         log = Logger.getLogger("error");
-        pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
     }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
     }
 
     @Override
@@ -62,7 +62,6 @@ public class Controller extends HttpServlet {
     public void destroy() {
         try {
             pool.closePool();
-            System.out.println("SERVLET destroyed");
         } catch (SQLException e) {
             log.error("Error closing connection pool: " + e);
         }

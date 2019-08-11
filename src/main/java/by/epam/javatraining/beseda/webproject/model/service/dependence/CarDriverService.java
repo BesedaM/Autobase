@@ -7,7 +7,7 @@ public class CarDriverService extends OneToOneDependenceService<Car, Driver>{
 
     public CarDriverService() {
         super();
-        dependenceDAO = DAODependenceFactory.getCarDriverDAO();
+        dependenceDAO = daoDependenceFactory.getCarDriverDAO();
     }
 
 //    private static class SingletonHolder {

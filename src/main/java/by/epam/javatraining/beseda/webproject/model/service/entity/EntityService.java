@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.model.service;
+package by.epam.javatraining.beseda.webproject.model.service.entity;
 
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;

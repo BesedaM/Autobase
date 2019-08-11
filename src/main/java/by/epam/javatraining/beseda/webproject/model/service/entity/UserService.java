@@ -5,6 +5,7 @@ import by.epam.javatraining.beseda.webproject.model.entity.user.User;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.model.logic.RegisterLogic;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceTechnicalException;
@@ -12,6 +13,8 @@ import by.epam.javatraining.beseda.webproject.model.logic.PasswordHash;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static by.epam.javatraining.beseda.webproject.model.service.ServiceConstants.*;
 
@@ -22,30 +25,15 @@ public class UserService extends AbstractEntityService<User> {
         entityDAO = daoEntityFactory.getUserDAO();
     }
 
-//    private static class SingletonHolder {
-//        public static final UserService instance = new UserService();
-//    }
-//
-//    public static UserService getService() {
-//        return SingletonHolder.instance;
-//    }
-
 
     public boolean loginExists(String login) throws ServiceTechnicalException {
         return getUserByLogin(login) != null;
     }
 
     public boolean legalPassword(String password) {
-        boolean legalPassword = true;
-        if (password != null) {
-            if (password.length() < PASSWORD_LENGTH
-                    || password.matches(IS_WHITESPACE_CHARACTER)
-                    || (!password.matches(IS_DIGIT))
-                    || (!password.matches(IS_ALPHABETIC_CHARACTER))) {
-                legalPassword = false;
-            }
-        }
-        return legalPassword;
+        Pattern pattern = Pattern.compile(PASSWORD_VALIDATE);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 
     public List<User> getUsersByRole(String role) throws ServiceLayerException {
@@ -93,8 +81,11 @@ public class UserService extends AbstractEntityService<User> {
      */
     public User createEntity(String login, String password, String user_role) throws ServiceLayerException {
         User user = new User();
+
+
         if (login != null && password != null && user_role != null) {
-            if (!loginExists(login) && legalPassword(password)) {
+
+            if (!loginExists(login) && RegisterLogic.legalPassword(password)) {
                 byte[] pw = PasswordHash.getHash(password);
                 try {
                     user.setLogin(login);

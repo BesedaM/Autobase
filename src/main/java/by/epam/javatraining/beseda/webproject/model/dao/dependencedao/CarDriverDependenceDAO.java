@@ -11,14 +11,6 @@ public class CarDriverDependenceDAO extends OneToOneDependenceDAO<Car,Driver> {
         super();
     }
 
-//    private static class SingletonHolder {
-//        public static final CarDriverDependenceDAO instance = new CarDriverDependenceDAO();
-//    }
-//
-//    public static CarDriverDependenceDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
 
     @Override
     protected String getDependenceIdStatement() {

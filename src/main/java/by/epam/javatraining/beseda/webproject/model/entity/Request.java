@@ -3,9 +3,8 @@ package by.epam.javatraining.beseda.webproject.model.entity;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalDateException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestCommentException;
-import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestRouteException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRouteException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestStatusException;
-import by.epam.javatraining.beseda.webproject.model.exception.entityexception.task.IllegalTimeException;
 
 import java.util.GregorianCalendar;
 import java.util.Objects;
@@ -15,14 +14,14 @@ public class Request extends BaseEntity {
     private Route route;
     private String status;
     private String comment;
-    private GregorianCalendar date;
+    private GregorianCalendar creationDate;
 
     public Request() {
         super();
     }
 
     {
-        this.date = new GregorianCalendar();
+        this.creationDate = new GregorianCalendar();
     }
 
     public Request(String comment, String status) {
@@ -36,11 +35,11 @@ public class Request extends BaseEntity {
         this.status = status;
     }
 
-    public void setRoute(Route route) throws IllegalRequestRouteException {
+    public void setRoute(Route route) throws IllegalRouteException {
         if (route != null) {
             this.route = route;
         } else {
-            throw new IllegalRequestRouteException();
+            throw new IllegalRouteException();
         }
     }
 
@@ -52,9 +51,9 @@ public class Request extends BaseEntity {
         }
     }
 
-    public void setDate(GregorianCalendar date) throws IllegalDateException {
-        if (date != null) {
-            this.date = date;
+    public void setCreationDate(GregorianCalendar creationDate) throws IllegalDateException {
+        if (creationDate != null) {
+            this.creationDate = creationDate;
         } else {
             throw new IllegalDateException();
         }
@@ -84,8 +83,8 @@ public class Request extends BaseEntity {
         return comment;
     }
 
-    public GregorianCalendar getDate() {
-        return date;
+    public GregorianCalendar getCreationDate() {
+        return creationDate;
     }
 
     @Override
@@ -110,7 +109,7 @@ public class Request extends BaseEntity {
                 ", route=" + route +
                 ", status=" + status +
                 ", comment='" + comment + '\'' +
-                ", set on " + date +
+                ", set on " + creationDate +
                 '}';
     }
 }

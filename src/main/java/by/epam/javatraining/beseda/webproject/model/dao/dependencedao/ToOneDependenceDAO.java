@@ -30,6 +30,9 @@ public abstract class ToOneDependenceDAO<M extends BaseEntity, K extends BaseEnt
      * @throws DAOTechnicalException
      */
     public synchronized int getDependenceId(M entity) throws DAOTechnicalException {
+
+//        System.out.println(entity);
+
         int dependenceId = 0;
         if (entity != null) {
             PreparedStatement st = null;
@@ -37,7 +40,9 @@ public abstract class ToOneDependenceDAO<M extends BaseEntity, K extends BaseEnt
                 st = connector.prepareStatement(getDependenceIdStatement());
                 st.setInt(1, entity.getId());
                 ResultSet res = st.executeQuery();
-                dependenceId = res.getInt(1);
+                if (res.first()) {
+                    dependenceId = res.getInt(1);
+                }
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
@@ -48,7 +53,6 @@ public abstract class ToOneDependenceDAO<M extends BaseEntity, K extends BaseEnt
     }
 
     /**
-     *
      * @return string representation of get statement
      */
     protected abstract String getDependenceIdStatement();

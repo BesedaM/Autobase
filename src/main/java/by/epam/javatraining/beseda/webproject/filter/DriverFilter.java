@@ -18,7 +18,7 @@ public class DriverFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (req.getSession(false) != null && USER_DRIVER.equals(req.getSession().getAttribute(USER_ROLE))) {
+        if (USER_DRIVER.equals(req.getSession().getAttribute(USER_ROLE))) {
             chain.doFilter(request, response);
         } else {
             req.getSession().invalidate();

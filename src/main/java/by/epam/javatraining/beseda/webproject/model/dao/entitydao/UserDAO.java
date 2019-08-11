@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLogicException;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
@@ -100,7 +101,7 @@ public class UserDAO extends AbstractDAO<User> {
         if (result != null) {
             user = new User();
             user.setRole(result.getString(USER_ROLE));
-            user.setId(result.getInt(USER_ID));
+            user.setId(result.getInt(SQLQuery.USER_ID));
             user.setLogin(result.getString(LOGIN));
             user.setPassword(result.getBytes(PASSWORD));
         }

@@ -7,7 +7,7 @@ public class TaskRouteService extends ManyToOneDependenceService<Task, Route>{
 
     public TaskRouteService(){
         super();
-        dependenceDAO = DAODependenceFactory.getTaskRouteDAO();
+        dependenceDAO = daoDependenceFactory.getTaskRouteDAO();
     }
 
 //    private static class SingletonHolder {

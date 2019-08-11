@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Route extends BaseEntity {
 
     private String name;
-    private List<Task> tasks;
+    private ArrayList<Task> tasks;
     private List<Car> cars;
     private String status;
 
@@ -50,7 +50,7 @@ public class Route extends BaseEntity {
         }
     }
 
-    public void setTasksList(List<Task> list) {
+    public void setTasksList(ArrayList<Task> list) {
         if (list != null) {
             tasks = list;
         }

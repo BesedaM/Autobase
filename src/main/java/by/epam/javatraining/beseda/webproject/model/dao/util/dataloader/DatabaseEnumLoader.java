@@ -34,13 +34,14 @@ public class DatabaseEnumLoader {
     static {
         establishConnection();
         USER_ROLE_MAP = EnumDAO.getEnumMap(st, T_USER_ROLE);
-        CUSTOMER_TYPE_MAP = EnumDAO.getEnumMap(st, CUSTOMER_TYPE);
-        TRUCK_CAPACITY_MAP = EnumDAO.getEnumMap(st, TRUCK_CAPACITY);
-        CAR_STATUS_MAP = EnumDAO.getEnumMap(st, CAR_STATUS);
-        CAR_STATE_MAP = EnumDAO.getEnumMap(st, CAR_STATE);
-        CAR_TYPE_MAP = EnumDAO.getEnumMap(st, CAR_TYPE);
-        ROUTE_STATUS_MAP = EnumDAO.getEnumMap(st, ROUTE_STATUS);
-        REQUEST_STATUS_MAP = EnumDAO.getEnumMap(st, REQUEST_STATUS);
+        CUSTOMER_TYPE_MAP = EnumDAO.getEnumMap(st, T_CUSTOMER_TYPE);
+        TRUCK_CAPACITY_MAP = EnumDAO.getEnumMap(st, T_TRUCK_CAPACITY);
+        CAR_STATUS_MAP = EnumDAO.getEnumMap(st, T_CAR_STATUS);
+        CAR_STATE_MAP = EnumDAO.getEnumMap(st, T_CAR_STATE);
+//        showMap(CAR_STATE_MAP);
+        CAR_TYPE_MAP = EnumDAO.getEnumMap(st, T_CAR_TYPE);
+        ROUTE_STATUS_MAP = EnumDAO.getEnumMap(st, T_ROUTE_STATUS);
+        REQUEST_STATUS_MAP = EnumDAO.getEnumMap(st, T_REQUEST_STATUS);
         closeConnection();
     }
 
@@ -61,4 +62,12 @@ public class DatabaseEnumLoader {
             log.error("Exception thrown while closing connection: " + e);
         }
     }
+
+//    private static void showMap(ReversableHashMap<Integer,String> map){
+//        for (int i=0;i<map.size();i++){
+//            System.out.println(map.get(i+1));
+//        }
+//    }
+
+
 }

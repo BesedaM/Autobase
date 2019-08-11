@@ -13,14 +13,6 @@ public class CustomerService extends AbstractEntityService<Customer> {
         entityDAO = daoEntityFactory.getCustomerDAO();
     }
 
-//    private static class SingletonHolder {
-//        public static final CustomerService instance = new CustomerService();
-//    }
-//
-//    public static CustomerService getService() {
-//        return SingletonHolder.instance;
-//    }
-
     /**
      * Creates entity with the given data
      */

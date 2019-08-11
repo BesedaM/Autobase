@@ -34,6 +34,9 @@ public class SQLQuery {
     //CarRoute
     public static final String CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID;
     public static final String CAR_ROUTE_GET_DEPENDENCE_CAR_ID;
+    public static final String CAR_ROUTE_GET_DEPENDENCE_ACTIVE_ROUTE_ID;
+    public static final String CAR_ROUTE_GET_DEPENDENCE_PLANNED_ROUTE_ID;
+    public static final String CAR_ROUTE_GET_DEPENDENCE_ACTIVE_PLANNED_ROUTE_ID;
     public static final String CAR_ROUTE_UPDATE_DEPENDENCE;
     public static final String CAR_ROUTE_DELETE_DEPENDENCE;
 
@@ -61,6 +64,7 @@ public class SQLQuery {
     public static final String DELETE_CAR_BY_ID;
     public static final String UPDATE_BUS;
     public static final String UPDATE_TRUCK;
+    public static final String UPDATE_CAR_STATE;
 
     //Address DAO
     public static final String ADDRESS_ID;
@@ -85,6 +89,7 @@ public class SQLQuery {
     public static final String DELETE_ROUTE_BY_ID;
     public static final String INSERT_ROUTE;
     public static final String UPDATE_ROUTE;
+    public static final String UPDATE_ROUTE_STATUS;
 
     //Customer DAO
     public static final String CUSTOMER_ID;
@@ -145,6 +150,20 @@ public class SQLQuery {
 
         //CarRoute DependenceDAO
         CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID = "SELECT route_id FROM autobase.cars_in_routes WHERE car_id=?";
+        CAR_ROUTE_GET_DEPENDENCE_ACTIVE_ROUTE_ID = "SELECT route_id FROM autobase.cars_in_routes \n" +
+                "LEFT JOIN autobase.routes ON cars_in_routes.route_id=routes.id\n" +
+                "LEFT JOIN autobase.route_status ON routes.status_id=route_status.id\n" +
+                "WHERE car_id=? AND route_status.status='на выполнении';";
+        CAR_ROUTE_GET_DEPENDENCE_PLANNED_ROUTE_ID = "SELECT route_id FROM autobase.cars_in_routes \n" +
+                "LEFT JOIN autobase.routes ON cars_in_routes.route_id=routes.id\n" +
+                "LEFT JOIN autobase.route_status ON routes.status_id=route_status.id\n" +
+                "WHERE car_id=? AND route_status.status='запланирован';";
+        CAR_ROUTE_GET_DEPENDENCE_ACTIVE_PLANNED_ROUTE_ID = "SELECT route_id FROM autobase.cars_in_routes \n" +
+                "LEFT JOIN autobase.routes ON cars_in_routes.route_id=routes.id\n" +
+                "LEFT JOIN autobase.route_status ON routes.status_id=route_status.id\n" +
+                "WHERE car_id=? AND route_status.status IN ('запланирован','на выполнении');";
+
+
         CAR_ROUTE_GET_DEPENDENCE_CAR_ID = "SELECT car_id FROM autobase.cars_in_routes WHERE route_id=?";
         CAR_ROUTE_UPDATE_DEPENDENCE = "INSERT INTO autobase.cars_in_routes (car_id, route_id) VALUES (?,?)";
         CAR_ROUTE_DELETE_DEPENDENCE = "DELETE FROM autobase.cars_in_routes WHERE car_id=? AND route_id=?";
@@ -174,8 +193,9 @@ public class SQLQuery {
         ADD_NEW_BUS = "INSERT INTO autobase.cars  (type_id, seatsNumber, car_number, model, status_id, state_id) VALUES (?, ?, ?, ?, ?, ?)";
         ADD_NEW_TRUCK = "INSERT INTO autobase.cars  (type_id, capacity_id, car_number, model, status_id, state_id) VALUES (?, ?, ?, ?, ?, ?)";
         DELETE_CAR_BY_ID = "DELETE FROM autobase.cars WHERE id=?";
-        UPDATE_BUS = "UPDATE autobase.cars SET type_id=?, seatsNumber=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
-        UPDATE_TRUCK = "UPDATE autobase.cars SET type_id=?, capacity_id=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
+        UPDATE_BUS = "UPDATE autobase.cars SET seatsNumber=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
+        UPDATE_TRUCK = "UPDATE autobase.cars SET capacity_id=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
+        UPDATE_CAR_STATE="UPDATE autobase.cars SET state_id=? WHERE cars.id=?";
 
         //Address DAO
         ADDRESS_ID = "addresses.id";
@@ -190,8 +210,8 @@ public class SQLQuery {
         SELECT_ALL_TASKS = "SELECT * FROM autobase.tasks";
         SELECT_TASK_BY_ID = SELECT_ALL_TASKS + " WHERE id=?";
         DELETE_TASK_BY_ID = "DELETE FROM autobase.tasks WHERE id=?";
-        INSERT_TASK = "INSERT INTO autobase.tasks (time, datail) VALUES (?, ?)";
-        UPDATE_TASK = "UPDATE autobase.tasks SET time=?, detail=? WHERE tasks.id=?";
+        INSERT_TASK = "INSERT INTO autobase.tasks (time, datails) VALUES (?, ?)";
+        UPDATE_TASK = "UPDATE autobase.tasks SET time=?, details=? WHERE tasks.id=?";
 
 
         //Route DAO
@@ -202,6 +222,7 @@ public class SQLQuery {
         DELETE_ROUTE_BY_ID = "DELETE FROM autobase.routes WHERE id=?";
         INSERT_ROUTE = "INSERT INTO autobase.routes (name, status_id) VALUES (?, ?)";
         UPDATE_ROUTE = "UPDATE autobase.routes SET name=?, status_id=? WHERE routes.id=?";
+        UPDATE_ROUTE_STATUS="UPDATE autobase.routes SET status_id=? WHERE routes.id=?";
 
         //Customer DAO
         CUSTOMER_ID = "customers.id";
@@ -215,8 +236,8 @@ public class SQLQuery {
 
         //Driver DAO
         DRIVER_ID = "drivers.id";
-        SELECT_ALL_DRIVERS = "SELECT * FROM autobase.drivers";
-        SELECT_DRIVER_BY_ID = SELECT_ALL_DRIVERS + " WHERE id=?";
+        SELECT_ALL_DRIVERS = "SELECT * FROM autobase.drivers LEFT JOIN autobase.users ON drivers.id=users.id";
+        SELECT_DRIVER_BY_ID = SELECT_ALL_DRIVERS + " WHERE drivers.id=?";
         DELETE_DRIVER_BY_ID = "DELETE FROM autobase.drivers WHERE id=?";
         ADD_NEW_DRIVER = "INSERT INTO autobase.drivers (surname, name, phone, id) VALUES (?, ?, ?, ?)";
         UPDATE_DRIVER = "UPDATE autobase.drivers SET surname=?, name=?, phone=? WHERE drivers.id=?";
