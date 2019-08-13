@@ -3,7 +3,6 @@ package by.epam.javatraining.beseda.webproject.model.command.implementation.post
 import by.epam.javatraining.beseda.webproject.model.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.model.command.implementation.parts.CustomerProcessor;
 import by.epam.javatraining.beseda.webproject.model.command.implementation.parts.DriverProcessor;
-import by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath;
 import by.epam.javatraining.beseda.webproject.model.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
 import by.epam.javatraining.beseda.webproject.model.service.entityservice.CustomerService;
@@ -20,6 +19,7 @@ import static by.epam.javatraining.beseda.webproject.model.command.util.constant
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPAttribute.STATUS_TRUE;
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPParameter.LOGIN;
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPParameter.PASSWORD;
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath.*;
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPSessionAttribute.USER_DATA;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.*;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.AUTHORIZATION_LOGGER;
@@ -47,7 +47,7 @@ public class LoginCommand implements ActionCommand {
     public String execute(SessionRequestContent content) {
         HttpSession httpSession = content.getSession();
 
-        String page = JSPPath.LOGIN_PAGE.getPath();
+        String page = LOGIN_PAGE;
         String login = content.requestParameters().get(LOGIN)[0];
         String password = content.requestParameters().get(PASSWORD)[0];
 
@@ -71,17 +71,17 @@ public class LoginCommand implements ActionCommand {
     }
 
     private String definePageByUserRole(String userRole) {
-        String page = JSPPath.LOGIN_PAGE.getPath();
+        String page = LOGIN_PAGE;
         if (userRole != null) {
             switch (userRole) {
                 case USER_ADMIN:
-                    page = JSPPath.ADMIN_MAIN_PAGE.getPath();
+                    page = ADMIN_MAIN_PAGE;
                     break;
                 case USER_CUSTOMER:
-                    page = JSPPath.CUSTOMER_MAIN_PAGE.getPath();
+                    page = CUSTOMER_MAIN_PAGE;
                     break;
                 case USER_DRIVER:
-                    page = JSPPath.DRIVER_MAIN_PAGE.getPath();
+                    page = DRIVER_MAIN_PAGE;
                     break;
             }
         }

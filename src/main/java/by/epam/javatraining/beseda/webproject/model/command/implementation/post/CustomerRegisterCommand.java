@@ -17,6 +17,8 @@ import java.util.Map;
 
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPAttribute.*;
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPParameter.*;
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath.CUSTOMER_MAIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath.CUSTOMER_REGISTER_PAGE;
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPSessionAttribute.USER_DATA;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.*;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
@@ -52,7 +54,7 @@ public class CustomerRegisterCommand implements ActionCommand {
                 customerService.add(customer);
                 content.getSession().setAttribute(USER_DATA, user);
                 content.getSession().setAttribute(USER_ROLE, USER_CUSTOMER);
-                page = JSPPath.CUSTOMER_MAIN_PAGE.getPath();
+                page = CUSTOMER_MAIN_PAGE;
             }
         } catch (ServiceLayerException e) {
             log.error(e);

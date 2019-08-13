@@ -3,6 +3,8 @@ package by.epam.javatraining.beseda.webproject.model.command.implementation.goto
 import by.epam.javatraining.beseda.webproject.model.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.model.command.util.srcontent.SessionRequestContent;
 
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath.CUSTOMER_REGISTER_PAGE;
+
 public class GoToCustomerRegister implements ActionCommand {
 
     @Override
