@@ -53,6 +53,9 @@ public class CustomerDAO extends AbstractDAO<Customer> {
             customer.setId(result.getInt(SQLQuery.CUSTOMER_ID));
             customer.setLogin(result.getString(LOGIN));
             customer.setPassword(result.getBytes(PASSWORD));
+            customer.setName(result.getString(NAME));
+            customer.setSurname(result.getString(SURNAME));
+            customer.setPhone(result.getString(PHONE));
             customer.setCustomerType(result.getString(CUSTOMER_TYPE));
             customer.setCompanyName(result.getString(COMPANY_NAME));
             customer.setEmail(result.getString(EMAIL));

@@ -6,7 +6,7 @@ import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalEx
 import java.util.List;
 
 /**
- * Contains method declarations for entity DAO
+ * Contains method declarations for entityservice DAO
  *
  * @param <E>
  */
@@ -21,9 +21,9 @@ public interface EntityDAO<E> {
     List<E> getAll() throws DAOLayerException;
 
     /**
-     * Method for finding the specified entity by id
+     * Method for finding the specified entityservice by id
      *
-     * @param id entity id in database
+     * @param id entityservice id in database
      * @return the specified object or null if no object was found
      * @throws DAOTechnicalException
      */
@@ -41,7 +41,7 @@ public interface EntityDAO<E> {
     /**
      *Deletes object specified by id from database
      *
-     * @param id entity id
+     * @param id entityservice id
      */
     void delete(int id) throws DAOTechnicalException;
 
@@ -56,7 +56,7 @@ public interface EntityDAO<E> {
      * Method for adding object to database
      *
      * @param entity the object to add
-     * @return database-generated entity id
+     * @return database-generated entityservice id
      * @throws DAOLayerException
      */
     int add(E entity) throws DAOLayerException;

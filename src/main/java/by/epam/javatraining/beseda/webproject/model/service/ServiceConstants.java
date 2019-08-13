@@ -3,7 +3,6 @@ package by.epam.javatraining.beseda.webproject.model.service;
 public class ServiceConstants {
 
     //password check
-
     public static String PASSWORD_VALIDATE;
 
     public static String USER_ROLE;

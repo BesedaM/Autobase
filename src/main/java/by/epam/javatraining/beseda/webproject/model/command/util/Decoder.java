@@ -5,8 +5,18 @@ import by.epam.javatraining.beseda.webproject.util.resourceloader.GeneralPropert
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * Class used for decoding a string of text, in case of different encodings at client and server side
+ */
 public class Decoder {
 
+    /**
+     * Decodes a string of text from SERVER_ENCODING to PROJECT_ENCODING(these parameters should be set in a property-file)
+     *
+     * @param string Input string to decode
+     * @return string in utf-8 encoding
+     * @throws ServiceLayerException
+     */
     public static String decode(String string) throws ServiceLayerException {
         String newStr = string;
         if (!GeneralProperties.PROJECT_ENCODING.equals(GeneralProperties.SERVER_ENCODING)) {

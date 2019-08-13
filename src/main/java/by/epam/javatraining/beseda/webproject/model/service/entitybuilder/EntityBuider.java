@@ -15,10 +15,10 @@ public abstract class EntityBuider<E extends BaseEntity> {
     protected static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 
     /**
-     * Returns the whole entity with 'tree' of inner objects by entity's id
+     * Returns the whole entityservice with 'tree' of inner objects by entityservice's id
      *
-     * @param entityId - entity id
-     * @return entity of given type
+     * @param entityId - entityservice id
+     * @return entityservice of given type
      * @throws ServiceLayerException
      */
     abstract E getEntity(int entityId) throws ServiceLayerException;

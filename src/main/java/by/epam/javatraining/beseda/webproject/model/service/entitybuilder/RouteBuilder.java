@@ -5,17 +5,15 @@ import by.epam.javatraining.beseda.webproject.model.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.model.entity.route.Task;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.task.IllegalAddressException;
-import by.epam.javatraining.beseda.webproject.model.service.dependence.CarRouteService;
-import by.epam.javatraining.beseda.webproject.model.service.dependence.TaskAddressService;
-import by.epam.javatraining.beseda.webproject.model.service.dependence.TaskRouteService;
-import by.epam.javatraining.beseda.webproject.model.service.entity.AddressService;
-import by.epam.javatraining.beseda.webproject.model.service.entity.CarService;
-import by.epam.javatraining.beseda.webproject.model.service.entity.RouteService;
-import by.epam.javatraining.beseda.webproject.model.service.entity.TaskService;
+import by.epam.javatraining.beseda.webproject.model.service.dependenceservice.CarRouteService;
+import by.epam.javatraining.beseda.webproject.model.service.dependenceservice.TaskAddressService;
+import by.epam.javatraining.beseda.webproject.model.service.dependenceservice.TaskRouteService;
+import by.epam.javatraining.beseda.webproject.model.service.entityservice.AddressService;
+import by.epam.javatraining.beseda.webproject.model.service.entityservice.CarService;
+import by.epam.javatraining.beseda.webproject.model.service.entityservice.RouteService;
+import by.epam.javatraining.beseda.webproject.model.service.entityservice.TaskService;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
-
-import java.util.Arrays;
 
 public class RouteBuilder extends EntityBuider<Route> {
 
@@ -32,26 +30,27 @@ public class RouteBuilder extends EntityBuider<Route> {
         Route route = null;
         if (routeId > 0) {
             route = routeService.getEntityById(routeId);
-            int[] taskIds = taskRouteService.getEntitiesIdByDependenceId(route);
+            if (route != null) {
+                int[] taskIds = taskRouteService.getEntitiesIdByDependenceId(route);
 
-            for (int i = 0; i < taskIds.length; i++) {
-                Task task = taskService.getEntityById(taskIds[i]);
+                for (int i = 0; i < taskIds.length; i++) {
+                    Task task = taskService.getEntityById(taskIds[i]);
 
-                if (task != null) {
-                    route.addTask(task);
-                    int addressId = taskAddressService.getEntity02Id(task);
-                    Address address = addressService.getEntityById(addressId);
+                    if (task != null) {
+                        route.addTask(task);
+                        int addressId = taskAddressService.getEntity02Id(task);
+                        Address address = addressService.getEntityById(addressId);
 
-                    try {
-                        if (address != null) {
-                            task.setAddress(address);
+                        try {
+                            if (address != null) {
+                                task.setAddress(address);
+                            }
+                        } catch (IllegalAddressException e) {
+                            throw new ServiceLogicException(e);
                         }
-                    } catch (IllegalAddressException e) {
-                        throw new ServiceLogicException(e);
                     }
                 }
             }
-
         }
         return route;
     }

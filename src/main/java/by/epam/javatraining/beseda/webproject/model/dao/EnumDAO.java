@@ -2,7 +2,7 @@ package by.epam.javatraining.beseda.webproject.model.dao;
 
 import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.util.LoggerName;
-import by.epam.javatraining.beseda.webproject.util.ReversableHashMap;
+import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -28,10 +28,10 @@ public class EnumDAO {
      * @param tableName name of the table from where the data will be retrieved
      * @return ReversableHashMap<Integer , String> object with table data
      */
-    public static ReversableHashMap<Integer, String> getEnumMap(Statement statement, String tableName) {
-        ReversableHashMap<Integer, String> map = null;
+    public static ReversalHashMap<Integer, String> getEnumMap(Statement statement, String tableName) {
+        ReversalHashMap<Integer, String> map = null;
         if (statement != null && tableName != null) {
-            map = new ReversableHashMap<>();
+            map = new ReversalHashMap<>();
             try {
                 ResultSet result = statement.executeQuery(SELECT_ENUM + tableName + END_OF_STATEMENT);
                 while (result.next()) {

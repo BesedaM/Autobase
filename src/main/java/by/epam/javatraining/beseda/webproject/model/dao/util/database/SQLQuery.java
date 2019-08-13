@@ -11,11 +11,6 @@ public class SQLQuery {
     public static final String CAR_DRIVER_GET_ENTITIES_ID;
     public static final String CAR_DRIVER_UPDATE_DEPENDENCE;
 
-    //RequestRoute
-    public static final String REQUEST_ROUTE_GET_DEPENDENCE_ID;
-    public static final String REQUEST_ROUTE_GET_ENTITIES;
-    public static final String REQUEST_ROUTE_UPDATE_DEPENDENCE;
-
     //TaskAddress
     public static final String TASK_ADDRESS_GET_DEPENDENCE_ID;
     public static final String TASK_ADDRESS_GET_ENTITIES;
@@ -110,6 +105,7 @@ public class SQLQuery {
     //Request DAO
     public static final String REQUEST_ID;
     public static final String SELECT_ALL_REQUESTS;
+    public static final String SELECT_ACTIVE_CUSTOMER_REQUESTS_ID;
     public static final String SELECT_REQUEST_BY_ID;
     public static final String DELETE_REQUEST_BY_ID;
     public static final String ADD_NEW_REQUEST;
@@ -127,11 +123,6 @@ public class SQLQuery {
         CAR_DRIVER_GET_DEPENDENCE_ID = "SELECT driver_id FROM autobase.cars WHERE id=?";
         CAR_DRIVER_GET_ENTITIES_ID = "SELECT id FROM autobase.cars WHERE driver_id=?";
         CAR_DRIVER_UPDATE_DEPENDENCE = "UPDATE autobase.cars SET driver_id=? WHERE id=?";
-
-        //RequestRoute DependenceDAO
-        REQUEST_ROUTE_GET_DEPENDENCE_ID = "SELECT route_id FROM autobase.requests WHERE id=?";
-        REQUEST_ROUTE_GET_ENTITIES = "SELECT id FROM autobase.requests WHERE route_id=?";
-        REQUEST_ROUTE_UPDATE_DEPENDENCE = "UPDATE autobase.requests SET route_id=? WHERE id=?";
 
         //TaskAddress DependenceDAO
         TASK_ADDRESS_GET_DEPENDENCE_ID = "SELECT address_id FROM autobase.tasks WHERE id=?";
@@ -179,7 +170,7 @@ public class SQLQuery {
         SELECT_USER_BY_LOGIN = SELECT_ALL_USERS + " WHERE login=?";
         DELETE_USER_BY_ID = "DELETE FROM autobase.users WHERE id=?";
         ADD_NEW_USER = "INSERT INTO autobase.users (login, password, role_id) VALUES (?, ?, ?)";
-        UPDATE_USER_PASSWORD = "UPDATE autobase.users SET password=? WHERE login=?";
+        UPDATE_USER_PASSWORD = "UPDATE autobase.users SET password=? WHERE users.id=?";
         UPDATE_USER = "UPDATE autobase.users SET login=?, password=?, role_id=? WHERE id=?";
 
         //Car DAO
@@ -195,7 +186,7 @@ public class SQLQuery {
         DELETE_CAR_BY_ID = "DELETE FROM autobase.cars WHERE id=?";
         UPDATE_BUS = "UPDATE autobase.cars SET seatsNumber=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
         UPDATE_TRUCK = "UPDATE autobase.cars SET capacity_id=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
-        UPDATE_CAR_STATE="UPDATE autobase.cars SET state_id=? WHERE cars.id=?";
+        UPDATE_CAR_STATE = "UPDATE autobase.cars SET state_id=? WHERE cars.id=?";
 
         //Address DAO
         ADDRESS_ID = "addresses.id";
@@ -222,7 +213,7 @@ public class SQLQuery {
         DELETE_ROUTE_BY_ID = "DELETE FROM autobase.routes WHERE id=?";
         INSERT_ROUTE = "INSERT INTO autobase.routes (name, status_id) VALUES (?, ?)";
         UPDATE_ROUTE = "UPDATE autobase.routes SET name=?, status_id=? WHERE routes.id=?";
-        UPDATE_ROUTE_STATUS="UPDATE autobase.routes SET status_id=? WHERE routes.id=?";
+        UPDATE_ROUTE_STATUS = "UPDATE autobase.routes SET status_id=? WHERE routes.id=?";
 
         //Customer DAO
         CUSTOMER_ID = "customers.id";
@@ -245,9 +236,16 @@ public class SQLQuery {
         //Request DAO
         REQUEST_ID = "requests.id";
         SELECT_ALL_REQUESTS = "SELECT * FROM autobase.requests LEFT JOIN autobase.request_status ON requests.status_id=request_status.id";
+        SELECT_ACTIVE_CUSTOMER_REQUESTS_ID = "SELECT a.id FROM \n" +
+                "(SELECT requests.customer_id, requests.id FROM autobase.requests WHERE requests.status_id IN(1,3) " +
+                "UNION SELECT requests.customer_id, requests.id \n" +
+                "FROM autobase.requests JOIN autobase.routes ON requests.id=routes.id \n" +
+                "WHERE routes.status_id IN(1,2,3) ) AS a WHERE a.customer_id=?";
+
         SELECT_REQUEST_BY_ID = SELECT_ALL_REQUESTS + " WHERE requests.id=?";
         DELETE_REQUEST_BY_ID = "DELETE FROM autobase.requests WHERE id=?";
-        ADD_NEW_REQUEST = "INSERT INTO autobase.requests (status_id, request_date, comment) VALUES (?,?,?)";
-        UPDATE_REQUEST = "UPDATE autobase.requests SET status_id=?, request_date=?, comment=? WHERE id=?";
+        ADD_NEW_REQUEST = "INSERT INTO autobase.requests (status_id, comment, customer_id) VALUES (?,?,?)";
+        UPDATE_REQUEST = "UPDATE autobase.requests SET status_id=?, comment=? WHERE id=?";
+
     }
 }

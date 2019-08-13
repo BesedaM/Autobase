@@ -12,8 +12,8 @@ import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQL
 /**
  * Class represents relationship in database one-to-one
  *
- * @param <M> entity type parameter
- * @param <K> dependence type parameter
+ * @param <M> entityservice type parameter
+ * @param <K> dependenceservice type parameter
  */
 public abstract class OneToOneDependenceDAO<M extends BaseEntity, K extends BaseEntity> extends ToOneDependenceDAO<M, K> {
 
@@ -22,9 +22,9 @@ public abstract class OneToOneDependenceDAO<M extends BaseEntity, K extends Base
     }
 
     /**
-     * Returns entity id according to dependence
+     * Returns entityservice id according to dependenceservice
      *
-     * @param dependence entity-dependence
+     * @param dependence entityservice-dependenceservice
      * @return
      * @throws DAOTechnicalException
      */

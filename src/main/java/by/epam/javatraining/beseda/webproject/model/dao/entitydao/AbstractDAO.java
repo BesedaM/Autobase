@@ -17,7 +17,7 @@ import java.util.List;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery.END_OF_STATEMENT;
 
 /**
- * Abstract class, containing generic methods for entity DAO
+ * Abstract class, containing generic methods for entityservice DAO
  *
  * @param <E> parameter type
  */
@@ -44,7 +44,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
         } catch (EntityLogicException e) {
-            throw new DAOTechnicalException("Error creating entity", e);
+            throw new DAOTechnicalException("Error creating entityservice", e);
         } finally {
             closeStatement(st);
         }
@@ -69,7 +69,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
         } catch (EntityLogicException e) {
-            throw new DAOTechnicalException("Error creating entity", e);
+            throw new DAOTechnicalException("Error creating entityservice", e);
         } finally {
             closeStatement(st);
         }
@@ -93,7 +93,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } catch (EntityLogicException e) {
-                throw new DAOTechnicalException("Error creating entity", e);
+                throw new DAOTechnicalException("Error creating entityservice", e);
             } finally {
                 closeStatement(st);
             }
@@ -123,7 +123,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
     }
 
     /**
-     * Return string representation of SQL 'delete entity' query
+     * Return string representation of SQL 'delete entityservice' query
      */
     protected abstract String deleteStatement();
 
@@ -161,7 +161,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
     protected abstract void setDataOnPreparedStatement(PreparedStatement st, E entity) throws SQLException, DAOLogicException;
 
     /**
-     * Returns string representation of SQL 'add entity' query
+     * Returns string representation of SQL 'add entityservice' query
      */
     protected abstract String addStatement();
 
@@ -182,7 +182,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
     }
 
     /**
-     * Returns string representation of SQL 'update entity' query
+     * Returns string representation of SQL 'update entityservice' query
      */
     protected abstract String updateStatement();
 

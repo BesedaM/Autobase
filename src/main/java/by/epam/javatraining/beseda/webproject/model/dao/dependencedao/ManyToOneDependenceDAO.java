@@ -10,8 +10,8 @@ import java.sql.SQLException;
 /**
  * Class represents relationship in database one-to-many
  *
- * @param <M> entity type parameter
- * @param <K> dependence type parameter
+ * @param <M> entityservice type parameter
+ * @param <K> dependenceservice type parameter
  */
 public abstract class ManyToOneDependenceDAO<M extends BaseEntity, K extends BaseEntity> extends ToOneDependenceDAO<M,K> {
 

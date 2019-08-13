@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.USER_CUSTOMER;
-import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPPath.LOGIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPSessionAttribute.USER_ROLE;
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath.LOGIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPSessionAttribute.USER_ROLE;
 
 @WebFilter(filterName = "CustomerFilter", urlPatterns = "/view/customer/*")
 public class CustomerFilter implements Filter {

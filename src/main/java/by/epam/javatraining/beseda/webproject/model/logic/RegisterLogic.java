@@ -8,8 +8,12 @@ import static by.epam.javatraining.beseda.webproject.model.service.ServiceConsta
 public class RegisterLogic {
 
     public static boolean legalPassword(String password) {
-        Pattern pattern = Pattern.compile(PASSWORD_VALIDATE);
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
+        boolean isLegal = false;
+        if (password != null) {
+            Pattern pattern = Pattern.compile(PASSWORD_VALIDATE);
+            Matcher matcher = pattern.matcher(password);
+            isLegal = matcher.matches();
+        }
+        return isLegal;
     }
 }

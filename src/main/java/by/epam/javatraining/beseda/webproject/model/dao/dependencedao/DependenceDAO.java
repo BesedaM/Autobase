@@ -10,8 +10,8 @@ import java.sql.SQLException;
 /**
  * Top hierarchy class for dependenceDAO
  *
- * @param <M> entity type parameter
- * @param <K> dependence type parameter
+ * @param <M> entityservice type parameter
+ * @param <K> dependenceservice type parameter
  */
 public abstract class DependenceDAO<M extends BaseEntity, K extends BaseEntity> {
 

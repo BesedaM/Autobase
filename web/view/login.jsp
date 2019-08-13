@@ -26,6 +26,11 @@
     <fmt:message key="register" var="register"/>
 </fmt:bundle>
 
+<fmt:bundle basename="${locale}" prefix="error.">
+    <fmt:message key="incorrect_login_or_password" var="incorrect_login_or_password"/>
+
+</fmt:bundle>
+
 <html lang="${lang}">
 <head>
     <title>${title}</title>
@@ -60,7 +65,7 @@
         <c:if test="${errorMessage!=null}">
             <tr>
                 <td colspan="2">
-                    <p id="login_error-message">${errorMessage}</p>
+                    <p id="login_error-message">${incorrect_login_or_password}</p>
                 </td>
             </tr>
         </c:if>

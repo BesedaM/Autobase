@@ -12,8 +12,8 @@ import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQL
 /**
  * Class represents part relationship in database -to-one
  *
- * @param <M> entity type parameter
- * @param <K> dependence type parameter
+ * @param <M> entityservice type parameter
+ * @param <K> dependenceservice type parameter
  */
 public abstract class ToOneDependenceDAO<M extends BaseEntity, K extends BaseEntity> extends DependenceDAO<M, K> {
 
@@ -23,15 +23,15 @@ public abstract class ToOneDependenceDAO<M extends BaseEntity, K extends BaseEnt
 
 
     /**
-     * Returns dependence id
+     * Returns dependenceservice id
      *
-     * @param entity the specified entity
-     * @return dependence id according to entity id
+     * @param entity the specified entityservice
+     * @return dependenceservice id according to entityservice id
      * @throws DAOTechnicalException
      */
     public synchronized int getDependenceId(M entity) throws DAOTechnicalException {
 
-//        System.out.println(entity);
+//        System.out.println(entityservice);
 
         int dependenceId = 0;
         if (entity != null) {
@@ -58,9 +58,9 @@ public abstract class ToOneDependenceDAO<M extends BaseEntity, K extends BaseEnt
     protected abstract String getDependenceIdStatement();
 
     /**
-     * Deletes dependence for the specified entity
+     * Deletes dependenceservice for the specified entityservice
      *
-     * @param entity the specified entity
+     * @param entity the specified entityservice
      * @throws DAOTechnicalException
      */
     public synchronized void deleteDependence(M entity) throws DAOTechnicalException {

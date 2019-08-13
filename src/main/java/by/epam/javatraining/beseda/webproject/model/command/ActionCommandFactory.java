@@ -4,7 +4,7 @@ import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLog
 import by.epam.javatraining.beseda.webproject.model.command.util.srcontent.SessionRequestContent;
 import org.apache.log4j.Logger;
 
-import static by.epam.javatraining.beseda.webproject.model.command.util.jsp.JSPParameter.COMMAND;
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPParameter.COMMAND;
 
 public class ActionCommandFactory {
 

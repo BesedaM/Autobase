@@ -5,10 +5,7 @@ import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgum
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.*;
 import java.util.GregorianCalendar;
 
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.DETAILS;
@@ -68,7 +65,7 @@ public class TaskDAO extends AbstractDAO<Task> {
     @Override
     protected void setDataOnPreparedStatement(PreparedStatement st, Task task) throws SQLException, NotEnoughArgumentsException {
         if (st != null && task != null) {
-            st.setTime(1, new Time(task.getTime().getTimeInMillis()));
+            st.setTimestamp(1, new Timestamp(task.getTime().getTimeInMillis()));
             st.setString(2, task.getDetails());
         } else {
             throw new NotEnoughArgumentsException();

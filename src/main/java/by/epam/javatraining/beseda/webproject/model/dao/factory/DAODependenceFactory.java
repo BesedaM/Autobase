@@ -11,7 +11,6 @@ public class DAODependenceFactory {
     private final CarDriverDependenceDAO carDriverDAO;
     private final CarRouteDependenceDAO carRouteDAO;
     private final RequestCustomerDependenceDAO requestCustomerDAO;
-    private final RequestRouteDependenceDAO requestRouteDAO;
     private final TaskAddressDependenceDAO taskAddressDAO;
     private final TaskRouteDependenceDAO taskRouteDAO;
 
@@ -19,7 +18,6 @@ public class DAODependenceFactory {
         carDriverDAO = new CarDriverDependenceDAO();
         carRouteDAO = new CarRouteDependenceDAO();
         requestCustomerDAO = new RequestCustomerDependenceDAO();
-        requestRouteDAO = new RequestRouteDependenceDAO();
         taskAddressDAO = new TaskAddressDependenceDAO();
         taskRouteDAO = new TaskRouteDependenceDAO();
     }
@@ -38,10 +36,6 @@ public class DAODependenceFactory {
 
     public RequestCustomerDependenceDAO getRequestCustomerDAO() {
         return requestCustomerDAO;
-    }
-
-    public RequestRouteDependenceDAO getRequestRouteDAO() {
-        return requestRouteDAO;
     }
 
     public TaskAddressDependenceDAO getTaskAddressDAO() {

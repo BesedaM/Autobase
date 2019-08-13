@@ -1,15 +1,15 @@
 package by.epam.javatraining.beseda.webproject.model.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.*;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.COMMENT;
@@ -23,14 +23,6 @@ public class RequestDAO extends AbstractDAO<Request> {
         super();
     }
 
-//    private static class SingletonHolder {
-//        public static final RequestDAO instance = new RequestDAO();
-//    }
-//
-//    public static RequestDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
     @Override
     protected Request createEntity(ResultSet res) throws SQLException, EntityLogicException {
         Request request = null;
@@ -38,12 +30,15 @@ public class RequestDAO extends AbstractDAO<Request> {
             request = new Request();
             request.setId(res.getInt(SQLQuery.REQUEST_ID));
             request.setStatus(res.getString(REQUEST_STATUS));
-            request.setComment(res.getString(COMMENT));
 
+            String comment = res.getString(COMMENT);
+            if (comment != null) {
+                request.setComment(res.getString(COMMENT));
+            }
             GregorianCalendar time = new GregorianCalendar();
-            time.setTimeInMillis(res.getTime(REQUEST_DATE).getTime());
+            time.setTimeInMillis(res.getTime(REQUEST_DATE).getTime() + res.getDate(REQUEST_DATE).getTime());
 
-            request.setCreationDate(time);
+            request.setCreationTime(time);
         }
         return request;
     }
@@ -75,7 +70,7 @@ public class RequestDAO extends AbstractDAO<Request> {
 
     @Override
     protected int updateIdParameterNumber() {
-        return 3;
+        return 0;
     }
 
     @Override
@@ -83,10 +78,54 @@ public class RequestDAO extends AbstractDAO<Request> {
         if (st != null && request != null) {
             int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
             st.setInt(1, statusId);
-            st.setTime(2, new Time(request.getCreationDate().getTimeInMillis()));
-            st.setString(3, request.getComment());
+            st.setString(2, request.getComment());
+            st.setInt(3, request.getCustomer().getId());
         } else {
             throw new NotEnoughArgumentsException();
         }
     }
+
+    public synchronized int[] selectActiveCustomerRequestsId(int customerId) throws DAOTechnicalException {
+        int[] array = null;
+        if (customerId > 0) {
+            PreparedStatement st = null;
+            try {
+                st = connector.prepareStatement(SELECT_ACTIVE_CUSTOMER_REQUESTS_ID);
+                st.setInt(1, customerId);
+                ResultSet res = st.executeQuery();
+                res.last();
+                array = new int[res.getRow()];
+                res.first();
+                for (int i = 0; i < array.length; i++) {
+                    array[i] = res.getInt(1);
+                    res.next();
+                }
+            } catch (SQLException e) {
+                throw new DAOTechnicalException("Error retrieving data from database", e);
+            } finally {
+                closeStatement(st);
+            }
+        }
+        return array;
+    }
+
+    @Override
+    public synchronized void update(Request request) throws DAOLayerException {
+        if (request != null) {
+            PreparedStatement st = null;
+            try {
+                st = connector.prepareStatement(updateStatement());
+                int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
+                st.setInt(1, statusId);
+                st.setString(2, request.getComment());
+                st.setInt(3, request.getId());
+                st.executeUpdate();
+            } catch (SQLException e) {
+                throw new DAOTechnicalException("Error updating database", e);
+            } finally {
+                closeStatement(st);
+            }
+        }
+    }
+
 }

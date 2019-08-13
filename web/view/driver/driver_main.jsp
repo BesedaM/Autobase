@@ -53,7 +53,7 @@
 <body>
 <%@include file="../header/registered_user.jsp" %>
 
-<table class="driver_main">
+<table class="main">
     <tr>
         <th>${routes_header}</th>
         <th>${personal_data}</th>
@@ -61,24 +61,12 @@
     <tr>
         <td>
             <table>
-                <tr>
-                    <td colspan="4" class="header">${active_route_header}</td>
-                </tr>
-
                 <c:if test="${active_route!=null}">
                     <tr>
-                        <td>${active_route.id}</td>
-                        <td colspan="3">${active_route.name}</td>
+                        <td colspan="4" class="header">${active_route_header}</td>
                     </tr>
-                    <c:forEach var="task" items="${active_route.getTasksList()}">
-                        <tr>
-                            <td></td>
-                            <td><fmt:formatDate type="both" timeZone="UTC" value="${task.time.getTime()}"
-                                                pattern="dd-MM-yyyy HH:mm"/></td>
-                            <td>${task.address}</td>
-                            <td>${task.details}</td>
-                        </tr>
-                    </c:forEach>
+                    <c:set var="route" value="${active_route}" scope="request"/>
+                    <%@include file="../route/route_info.jsp"%>
                     <tr>
                         <td></td>
                         <td colspan="3">
@@ -125,19 +113,8 @@
 
                 <c:forEach items="${route_list}" var="route">
                     <c:if test="${route.status=='запланирован'}">
-                        <tr>
-                            <td>${route.id}</td>
-                            <td colspan="3">${route.name}</td>
-                        </tr>
-                        <c:forEach var="task" items="${route.getTasksList()}">
-                            <tr>
-                                <td></td>
-                                <td><fmt:formatDate type="both" timeZone="UTC" value="${task.time.getTime()}"
-                                                    pattern="dd-MM-yyyy HH:mm"/></td>
-                                <td>${task.address}</td>
-                                <td>${task.details}</td>
-                            </tr>
-                        </c:forEach>
+
+                        <%@include file="../route/route_info.jsp"%>
                         <tr>
                             <td></td>
                             <td colspan="3">

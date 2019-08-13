@@ -9,11 +9,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
-<%--<c:set var="urlPrefix" value="${pageContext.request.contextPath}"/>--%>
-<%--<c:set var="locale" value="${sessionScope.locale}"/>--%>
-
-
 <fmt:bundle basename="${locale}" prefix="header.">
     <fmt:message key="trucking_company" var="trucking_company"/>
     <fmt:message key="welcome_message" var="welcome_message"/>

@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.service.factory;
 
-import by.epam.javatraining.beseda.webproject.model.service.entity.*;
+import by.epam.javatraining.beseda.webproject.model.service.entityservice.*;
 
 public class ServiceEntityFactory {
 

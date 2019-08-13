@@ -23,14 +23,6 @@ public class UserDAO extends AbstractDAO<User> {
         super();
     }
 
-//    private static class SingletonHolder {
-//        public static final UserDAO instance = new UserDAO();
-//    }
-//
-//    public static UserDAO getDAO() {
-//        return SingletonHolder.instance;
-//    }
-
     public synchronized User getUserByLoginAndPassword(String login, byte[] password) throws DAOTechnicalException {
         User user = null;
         if (login != null && password != null) {
@@ -46,7 +38,7 @@ public class UserDAO extends AbstractDAO<User> {
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } catch (EntityLogicException e) {
-                throw new DAOTechnicalException("Error creating entity ", e);
+                throw new DAOTechnicalException("Error creating entityservice ", e);
             } finally {
                 closeStatement(st);
             }
@@ -68,7 +60,7 @@ public class UserDAO extends AbstractDAO<User> {
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } catch (EntityLogicException e) {
-                throw new DAOTechnicalException("Error creating entity ", e);
+                throw new DAOTechnicalException("Error creating entityservice ", e);
             } finally {
                 closeStatement(st);
             }
@@ -76,14 +68,14 @@ public class UserDAO extends AbstractDAO<User> {
         return user;
     }
 
-    public synchronized boolean updatePassword(String login, byte[] password) throws DAOTechnicalException {
+    public synchronized boolean updatePassword(int id, byte[] password) throws DAOTechnicalException {
         boolean succeed = false;
-        if (login != null && password != null) {
+        if (id > 0 && password != null) {
             PreparedStatement st = null;
             try {
                 st = connector.prepareStatement(UPDATE_USER_PASSWORD);
-                st.setString(1, login);
-                st.setBytes(2, password);
+                st.setBytes(1, password);
+                st.setInt(2, id);
                 st.executeUpdate();
                 succeed = true;
             } catch (SQLException e) {

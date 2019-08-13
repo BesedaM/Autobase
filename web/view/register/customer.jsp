@@ -34,13 +34,18 @@
     <fmt:message key="user.surname" var="user_surname"/>
     <fmt:message key="user.phone_number" var="phone"/>
     <fmt:message key="user.email" var="email"/>
-    <fmt:message key="company.legend" var="company_legend"/>
-    <fmt:message key="company.name" var="company_name"/>
     <fmt:message key="company.info_message" var="company_info"/>
     <fmt:message key="form.submit" var="submit"/>
     <fmt:message key="form.reset" var="reset"/>
     <fmt:message key="redirect.back_to_login" var="back_to_login"/>
 </fmt:bundle>
+
+
+<fmt:bundle basename="${locale}" prefix="error.">
+    <fmt:message key="login_exists" var="login_exists"/>
+    <fmt:message key="password_mismatch" var="password_mismatch"/>
+</fmt:bundle>
+
 
 <html lang="${lang}">
 <head>
@@ -67,7 +72,7 @@
 
             <c:if test="${errorRegisterLogin!=null}">
                 <tr>
-                    <td colspan="2"><p class="error-message">${errorRegisterLogin}</p></td>
+                    <td colspan="2"><p class="error-message">${login_exists}</p></td>
                     <td></td>
                 </tr>
             </c:if>
@@ -92,7 +97,15 @@
             <c:if test="${errorRegisterPassword!=null}">
                 <tr>
                     <td colspan="2">
-                        <p class="error-message">${errorRegisterPassword}</p>
+                        <p class="error-message">${password_mismatch}</p>
+                    </td>
+                    <td></td>
+                </tr>
+            </c:if>
+            <c:if test="${unsafePassword!=null}">
+                <tr>
+                    <td colspan="2">
+                        <p class="error-message">${password_requirements}</p>
                     </td>
                     <td></td>
                 </tr>

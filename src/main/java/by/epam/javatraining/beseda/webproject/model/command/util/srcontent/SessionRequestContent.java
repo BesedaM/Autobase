@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Encapsulates request data in object fielda
+ * Class supposed to retrieve and store all the necessary data from request object
+ *
+ * @author Beseda
  */
 public class SessionRequestContent {
 

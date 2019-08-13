@@ -10,8 +10,8 @@ import java.sql.SQLException;
 /**
  * Class represents relationship in database many-to-many
  *
- * @param <M> entity type parameter
- * @param <K> dependence type parameter
+ * @param <M> entityservice type parameter
+ * @param <K> dependenceservice type parameter
  */
 public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends BaseEntity> extends DependenceDAO<M, K> {
 
@@ -20,10 +20,10 @@ public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends Ba
     }
 
     /**
-     * Returns dependence ids according to specified entity
+     * Returns dependenceservice ids according to specified entityservice
      *
      * @param entity one oа two dependencies
-     * @return array, containing all the dependence ids
+     * @return array, containing all the dependenceservice ids
      * @throws DAOTechnicalException
      */
     public synchronized int[] getDependencesId(BaseEntity entity) throws DAOTechnicalException {
@@ -54,7 +54,7 @@ public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends Ba
     /**
      *
      * @param entity
-     * @return string representation of getDependence statement specified with the entity type
+     * @return string representation of getDependence statement specified with the entityservice type
      */
     protected abstract String getDependencesStatement(BaseEntity entity);
 

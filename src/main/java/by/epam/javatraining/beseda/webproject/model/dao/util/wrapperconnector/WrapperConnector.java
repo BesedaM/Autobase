@@ -7,6 +7,7 @@ import static by.epam.javatraining.beseda.webproject.model.dao.util.database.SQL
 import static by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseProperties.DATABASE_PASSWORD;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseProperties.DATABASE_URL;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseProperties.DATABASE_USER;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 import static by.epam.javatraining.beseda.webproject.util.resourceloader.GeneralProperties.WAIT_FOR_DB_RESPONSE;
 
 import java.sql.Connection;
@@ -14,9 +15,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class supposed to conceal connection object
+ *
+ * @author Beseda
+ */
 public class WrapperConnector {
 
-    private static Logger log = Logger.getLogger("error");
+    private static Logger log = Logger.getLogger(ERROR_LOGGER);
 
     private Connection connection;
     private static DBConnector pool;

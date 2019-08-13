@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.model.service.factory;
 
-import by.epam.javatraining.beseda.webproject.model.service.dependence.*;
+import by.epam.javatraining.beseda.webproject.model.service.dependenceservice.*;
 
 public class ServiceDependenceFactory {
 
@@ -11,7 +11,6 @@ public class ServiceDependenceFactory {
     private final CarDriverService carDriverService;
     private final CarRouteService carRouteService;
     private final RequestCustomerService requestCustomerService;
-    private final RequestRouteService requestRouteService;
     private final TaskAddressService taskAddressService;
     private final TaskRouteService taskRouteService;
 
@@ -20,7 +19,6 @@ public class ServiceDependenceFactory {
         carDriverService = new CarDriverService();
         carRouteService = new CarRouteService();
         requestCustomerService = new RequestCustomerService();
-        requestRouteService = new RequestRouteService();
         taskAddressService = new TaskAddressService();
         taskRouteService = new TaskRouteService();
     }
@@ -39,10 +37,6 @@ public class ServiceDependenceFactory {
 
     public RequestCustomerService getRequestCustomerService() {
         return requestCustomerService;
-    }
-
-    public RequestRouteService getRequestRouteService() {
-        return requestRouteService;
     }
 
     public TaskAddressService getTaskAddressService() {

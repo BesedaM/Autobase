@@ -1,10 +1,12 @@
 package by.epam.javatraining.beseda.webproject.model.entity;
 
 import by.epam.javatraining.beseda.webproject.model.entity.route.Route;
+import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalDateException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestCommentException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRouteException;
 import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestStatusException;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.user.IllegalCustomerException;
 
 import java.util.GregorianCalendar;
 import java.util.Objects;
@@ -12,27 +14,29 @@ import java.util.Objects;
 public class Request extends BaseEntity {
 
     private Route route;
+    private Customer customer;
     private String status;
     private String comment;
-    private GregorianCalendar creationDate;
+    private GregorianCalendar creationTime;
 
     public Request() {
         super();
     }
 
     {
-        this.creationDate = new GregorianCalendar();
+        this.creationTime = new GregorianCalendar();
     }
 
-    public Request(String comment, String status) {
+    public Request(Customer customer, String comment, String status) {
+        super();
+        this.customer = customer;
         this.comment = comment;
         this.status = status;
     }
 
-    public Request(Route route, String comment, String status) {
+    public Request(Customer customer,Route route, String comment, String status) {
+        this(customer,comment,status);
         this.route = route;
-        this.comment = comment;
-        this.status = status;
     }
 
     public void setRoute(Route route) throws IllegalRouteException {
@@ -51,9 +55,9 @@ public class Request extends BaseEntity {
         }
     }
 
-    public void setCreationDate(GregorianCalendar creationDate) throws IllegalDateException {
-        if (creationDate != null) {
-            this.creationDate = creationDate;
+    public void setCreationTime(GregorianCalendar creationTime) throws IllegalDateException {
+        if (creationTime != null) {
+            this.creationTime = creationTime;
         } else {
             throw new IllegalDateException();
         }
@@ -64,6 +68,14 @@ public class Request extends BaseEntity {
             this.comment = comment;
         } else {
             throw new IllegalRequestCommentException();
+        }
+    }
+
+    public void setCustomer(Customer customer) throws IllegalCustomerException {
+        if (customer != null) {
+            this.customer = customer;
+        } else {
+            throw new IllegalCustomerException();
         }
     }
 
@@ -83,8 +95,12 @@ public class Request extends BaseEntity {
         return comment;
     }
 
-    public GregorianCalendar getCreationDate() {
-        return creationDate;
+    public GregorianCalendar getCreationTime() {
+        return creationTime;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 
     @Override
@@ -106,10 +122,10 @@ public class Request extends BaseEntity {
     public String toString() {
         return "Request{" +
                 "id=" + id +
-                ", route=" + route +
+                ", route=" + route + ", customer=" + customer +
                 ", status=" + status +
                 ", comment='" + comment + '\'' +
-                ", set on " + creationDate +
+                ", set on " + creationTime +
                 '}';
     }
 }

@@ -9,9 +9,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
-<%--<c:set var="urlPrefix" value="${pageContext.request.contextPath}"/>--%>
-<%--<c:set var="locale" value="${sessionScope.locale}"/>--%>
 <c:set var="lang" value="${sessionScope.language}"/>
 
 <fmt:bundle basename="${locale}" prefix="header.">
@@ -27,7 +24,7 @@
     <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
 </head>
 <body>
- <form class="right_top_corner" name="LocaleChanger" method="post" action="${urlPrefix}/controller" onchange="submit()">
+ <form name="LocaleChanger" method="get" action="${urlPrefix}/controller" onchange="submit()">
         <input type="hidden" name="command" value="change_locale">
         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
         <label for="language_select">${change_language}</label>

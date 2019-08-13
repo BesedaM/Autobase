@@ -18,15 +18,16 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import static by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseProperties.*;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 @WebServlet(name="TruckingCompany",urlPatterns="/controller")
 public class Controller extends HttpServlet {
 
     private static Logger log;
-    private ConnectionPool pool;
+    private static ConnectionPool pool;
 
     static {
-        log = Logger.getLogger("error");
+        log = Logger.getLogger(ERROR_LOGGER);
     }
 
     @Override
