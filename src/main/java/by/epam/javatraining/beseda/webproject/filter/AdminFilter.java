@@ -1,13 +1,14 @@
 package by.epam.javatraining.beseda.webproject.filter;
 
+import by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.USER_ADMIN;
-import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath.LOGIN_PAGE;
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPSessionAttribute.USER_ROLE;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.USER_ADMIN;
 
 @WebFilter(filterName = "AdminFilter", urlPatterns = "/view/admin/*")
 public class AdminFilter implements Filter {
@@ -23,7 +24,7 @@ public class AdminFilter implements Filter {
             req.getRequestDispatcher(req.getPathInfo()).forward(request,response);
         } else {
             req.getSession().invalidate();
-            request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+            request.getRequestDispatcher(JSPPath.LOGIN_PAGE.getPath()).forward(request, response);
         }
     }
 }

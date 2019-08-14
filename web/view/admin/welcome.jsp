@@ -12,6 +12,7 @@
 </head>
 <body>
 Welcome to ${role_name} page!
+ADMIN PART IS STILL IN PROGRESS!!!
 <p><a href="${pageContext.request.contextPath}/view/login.jsp">Logout</a></p>
 </body>
 </html>

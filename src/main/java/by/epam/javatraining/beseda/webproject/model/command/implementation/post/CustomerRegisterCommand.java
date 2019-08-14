@@ -2,6 +2,7 @@ package by.epam.javatraining.beseda.webproject.model.command.implementation.post
 
 import by.epam.javatraining.beseda.webproject.model.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.model.command.util.Decoder;
+import by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath;
 import by.epam.javatraining.beseda.webproject.model.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
@@ -17,8 +18,6 @@ import java.util.Map;
 
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPAttribute.*;
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPParameter.*;
-import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath.CUSTOMER_MAIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath.CUSTOMER_REGISTER_PAGE;
 import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPSessionAttribute.USER_DATA;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.*;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
@@ -31,7 +30,7 @@ public class CustomerRegisterCommand implements ActionCommand {
 
     @Override
     public String execute(SessionRequestContent content) {
-        String page = CUSTOMER_REGISTER_PAGE;
+        String page = JSPPath.CUSTOMER_REGISTER_PAGE.getPath();
         Map<String, String[]> data = content.requestParameters();
         Map<String, Object> attributes = content.requestAttributes();
         String login = data.get(LOGIN)[0];
@@ -54,7 +53,7 @@ public class CustomerRegisterCommand implements ActionCommand {
                 customerService.add(customer);
                 content.getSession().setAttribute(USER_DATA, user);
                 content.getSession().setAttribute(USER_ROLE, USER_CUSTOMER);
-                page = CUSTOMER_MAIN_PAGE;
+                page = JSPPath.CUSTOMER_MAIN_PAGE.getPath();
             }
         } catch (ServiceLayerException e) {
             log.error(e);
