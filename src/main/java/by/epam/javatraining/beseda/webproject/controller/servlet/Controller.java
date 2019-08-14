@@ -26,13 +26,10 @@ public class Controller extends HttpServlet {
     private static Logger log;
     private static ConnectionPool pool;
 
-    static {
-        log = Logger.getLogger(ERROR_LOGGER);
-    }
-
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        log = Logger.getLogger(ERROR_LOGGER);
         pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
     }
 

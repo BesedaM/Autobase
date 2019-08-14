@@ -16,8 +16,6 @@
     <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
 </head>
 <body>
-<%--Request from ${pageContext.errorData.requestURI} failed<br/>--%>
-<%--Servlet name: ${pageContext.errorData.servletName}<br/>--%>
 <p class="error_page_main">Error code ${pageContext.errorData.statusCode}</p>
 
 <c:set var="message" value="${pageContext.exception.message}" scope="page"/>

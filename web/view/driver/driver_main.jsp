@@ -41,6 +41,7 @@
     <fmt:message key="phone_number" var="phone"/>
     <fmt:message key="no_current_route" var="no_current_route_message"/>
     <fmt:message key="active_route" var="active_route_header"/>
+    <fmt:message key="no_planned_routes" var="no_planned_routes"/>
     <fmt:message key="submit" var="submit"/>
 </fmt:bundle>
 
@@ -104,11 +105,16 @@
                 </c:if>
 
                 </tr>
+
                 <tr>
                     <td colspan="4"><br/></td>
                 </tr>
                 <tr>
                     <td colspan="4" class="header">${future_routes}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4" class="information">${no_planned_routes}</td>
                 </tr>
 
                 <c:forEach items="${route_list}" var="route">

@@ -18,26 +18,35 @@
 
 
 <fmt:bundle basename="${locale}" prefix="admin.">
-    <%--<fmt:message key="id" var="request_id"/>--%>
-    <%--<fmt:message key="date" var="request_date"/>--%>
-    <%--<fmt:message key="status" var="request_status"/>--%>
-    <%--<fmt:message key="route_description" var="route_description"/>--%>
+    <fmt:message key="new_requests" var="new_requests"/>
+    <fmt:message key="current_requests" var="current_requests"/>
+    <fmt:message key="fulfilled_requests" var="fulfilled_requests"/>
+    <fmt:message key="rejected_requests" var="rejected_requests"/>
+    <fmt:message key="car_list" var="car_list"/>
+    <fmt:message key="driver_list" var="driver_list"/>
+    <fmt:message key="client_list" var="client_list"/>
+    <fmt:message key="menu" var="menu"/>
 </fmt:bundle>
 
 
 <html lang="${lang}">
 <head>
-    <title>Customer main</title>
+    <title>Admin main</title>
     <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
 </head>
 <body>
 <%@include file="../header/registered_user.jsp" %>
 
+<p>${menu}</p>
+
 <form name="AdminMenu" method="get" action="${urlPrefix}/controller">
-    <button type="submit" name="command" value="new_requests">${new_requests}</button>
-    <button type="submit" name="command" value="current_requests">${current_requests}</button>
-    <button type="submit" name="command" value="fulfilled_requests">${fulfilled_requests}</button>
-    <button type="submit" name="command" value="rejected_requests">${rejected_requests}</button>
+    <button type="submit" name="command" value="new_requests_redirect">${new_requests}</button>
+    <button type="submit" name="command" value="current_requests_redirect">${current_requests}</button>
+    <button type="submit" name="command" value="fulfilled_requests_redirect">${fulfilled_requests}</button>
+    <button type="submit" name="command" value="rejected_requests_redirect">${rejected_requests}</button>
+    <button type="submit" name="command" value="car_list_redirect">${car_list}</button>
+    <button type="submit" name="command" value="driver_list_redirect">${driver_list}</button>
+    <button type="submit" name="command" value="client_list_redirect">${client_list}</button>
 </form>
 
 

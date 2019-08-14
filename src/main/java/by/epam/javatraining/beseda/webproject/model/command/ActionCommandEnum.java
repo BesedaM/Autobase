@@ -20,7 +20,7 @@ public enum ActionCommandEnum {
 
     LOGIN_PAGE(new GoToLogin()),
     CUSTOMER_REGISTER_PAGE(new GoToCustomerRegister()),
-    PERSONAL_DATA_PAGE(new GoToPersonalCustomerData()),
+    PERSONAL_CUSTOMER_DATA_PAGE(new GoToPersonalCustomerData()),
     CUSTOMER_MAIN_PAGE(new GoToCustomerMain()),
 
     CHANGE_ROUTE_STATUS(new RouteStatusChanger()),

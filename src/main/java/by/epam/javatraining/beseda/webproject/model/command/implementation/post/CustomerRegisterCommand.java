@@ -2,7 +2,6 @@ package by.epam.javatraining.beseda.webproject.model.command.implementation.post
 
 import by.epam.javatraining.beseda.webproject.model.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.model.command.util.Decoder;
-import by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPPath;
 import by.epam.javatraining.beseda.webproject.model.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.entity.user.User;
@@ -30,7 +29,7 @@ public class CustomerRegisterCommand implements ActionCommand {
 
     @Override
     public String execute(SessionRequestContent content) {
-        String page = JSPPath.CUSTOMER_REGISTER_PAGE.getPath();
+        String page = CUSTOMER_REGISTER_PAGE;
         Map<String, String[]> data = content.requestParameters();
         Map<String, Object> attributes = content.requestAttributes();
         String login = data.get(LOGIN)[0];

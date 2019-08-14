@@ -10,9 +10,11 @@ import java.sql.SQLException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
 public class DBConnector implements ConnectionPool {
 
-    private static Logger log = Logger.getLogger("error");
+    private static Logger log = Logger.getLogger(ERROR_LOGGER);
 
     private static Driver driver;
 
