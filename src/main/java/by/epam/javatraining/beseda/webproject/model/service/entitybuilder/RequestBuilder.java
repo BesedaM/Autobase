@@ -7,11 +7,15 @@ import by.epam.javatraining.beseda.webproject.model.service.entityservice.Reques
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
 
-public class RequestBuilder extends EntityBuider<Request> {
+public class RequestBuilder extends EntityBuilder<Request> {
 
-    private static RequestService requestService = serviceEntityFactory.getRequestService();
+    private RequestService requestService;
+    private RouteBuilder routeBuilder;
 
-    private RouteBuilder routeBuilder = new RouteBuilder();
+    public RequestBuilder() {
+        requestService = serviceEntityFactory.getRequestService();
+        routeBuilder = new RouteBuilder();
+    }
 
     public Request getEntity(int requestId) throws ServiceLayerException {
 

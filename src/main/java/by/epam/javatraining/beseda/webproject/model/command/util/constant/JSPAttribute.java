@@ -5,6 +5,8 @@ package by.epam.javatraining.beseda.webproject.model.command.util.constant;
  */
 public class JSPAttribute {
 
+    public static final String ID;
+    public static final String CUSTOMER;
     public static final String STATUS_TRUE;
 
     public static final String ERROR_MESSAGE;
@@ -19,14 +21,19 @@ public class JSPAttribute {
 
     public static final String DATA_CHANGED;
 
+    public static final String TEXT;
+
     static {
+        ID = "id";
+        CUSTOMER = "customer";
         STATUS_TRUE = "true";
 
         ERROR_MESSAGE = "errorMessage";
         ERROR_REGISTER_LOGIN = "errorRegisterLogin";
         ERROR_REGISTER_PASSWORD = "errorRegisterPassword";
-        UNSAFE_PASSWORD="unsafePassword";
-        PASSWORD_CHANGED="passwordChanged";
-        DATA_CHANGED="dataChanged";
+        UNSAFE_PASSWORD = "unsafePassword";
+        PASSWORD_CHANGED = "passwordChanged";
+        DATA_CHANGED = "dataChanged";
+        TEXT = "text";
     }
 }

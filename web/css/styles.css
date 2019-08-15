@@ -29,13 +29,17 @@ p.important_info span{
     font-weight: bold;
 }
 
+div.requests{
+    width: 300px;
+}
+
 
 form.right_side{
     overflow: hidden;
     margin-bottom: 0px;
 }
 
-.right_side input{
+.right_side input,button{
     float: right;
     clear: both;
     margin-bottom: 5px;
@@ -65,15 +69,26 @@ table{
     border-collapse: collapse;
 }
 
+table.no-borders{
+    border: none;
+}
+
 table.main {
     position: relative;
     min-width: 800px;
+    max-width: unset;
     width: max-content;
     border: 2px solid grey;
 }
 
 table.main td,th {
     border: 1px solid grey;
+}
+
+
+table.menu th,td{
+    text-align: center;
+    border: none;
 }
 
 td{
@@ -90,12 +105,23 @@ td.login {
     width: 150px;
 }
 
-td.registration {
+table.registration td {
     width: 200px;
+    text-align: left;
 }
 
 
 th {
     text-align: center;
     font-size: 150%;
+}
+
+table.menu button{
+    margin-top: 15px;
+    margin-right: 35px;
+    margin-left: 35px;
+    size: 3em;
+    padding: 10px;
+    min-width: 200px;
+    font-size: 16px;
 }

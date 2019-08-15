@@ -1,0 +1,59 @@
+package by.epam.javatraining.beseda.webproject.model.command.implementation.post.admin;
+
+import by.epam.javatraining.beseda.webproject.model.command.ActionCommand;
+import by.epam.javatraining.beseda.webproject.model.command.util.Decoder;
+import by.epam.javatraining.beseda.webproject.model.command.util.srcontent.SessionRequestContent;
+import by.epam.javatraining.beseda.webproject.model.entity.Request;
+import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
+import by.epam.javatraining.beseda.webproject.model.exception.entityexception.request.IllegalRequestStatusException;
+import by.epam.javatraining.beseda.webproject.model.service.entityservice.RequestService;
+import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
+import by.epam.javatraining.beseda.webproject.model.service.factory.ServiceEntityFactory;
+import org.apache.log4j.Logger;
+
+import javax.servlet.http.HttpSession;
+import java.util.Map;
+import java.util.Set;
+
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPParameter.*;
+import static by.epam.javatraining.beseda.webproject.model.command.util.constant.JSPSessionAttribute.REQUEST_CUSTOMER_MAP;
+import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEnumTable.ADOPTED_REQUEST;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
+public class RequestStatusChanger implements ActionCommand {
+
+    private static Logger log = Logger.getLogger(ERROR_LOGGER);
+    private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
+    private RequestService requestService = serviceEntityFactory.getRequestService();
+
+    @Override
+    public String execute(SessionRequestContent content) {
+        HttpSession httpSession = content.getSession();
+        Map<String, String[]> requestParam = content.requestParameters();
+
+        try {
+            String newRequestStatus = Decoder.decode(requestParam.get(STATUS)[0]);
+            Map<String, Object> requestAttr = content.requestAttributes();
+            requestAttr.put(CAR_ID, null);
+            int requestId = Integer.parseInt(requestParam.get(ID)[0]);
+
+            Map<Request, Customer> requestCustomerMap = (Map<Request, Customer>) httpSession.getAttribute(REQUEST_CUSTOMER_MAP);
+            Set<Request> requests = requestCustomerMap.keySet();
+            for (Request req : requests) {
+                Request request = req;
+                if (request.getId() == requestId) {
+                    Customer customer = requestCustomerMap.get(request);
+                    requestCustomerMap.remove(request);
+                    request.setStatus(newRequestStatus);
+                    requestService.update(request);
+                    if (newRequestStatus.equals(ADOPTED_REQUEST)) {
+                        requestCustomerMap.put(request, customer);
+                    }
+                }
+            }
+        } catch (ServiceLayerException | IllegalRequestStatusException e) {
+            log.error(e);
+        }
+        return requestParam.get(CURRENT_PAGE)[0];
+    }
+}

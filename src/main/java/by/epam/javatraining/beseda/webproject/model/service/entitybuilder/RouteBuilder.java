@@ -15,16 +15,26 @@ import by.epam.javatraining.beseda.webproject.model.service.entityservice.TaskSe
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLogicException;
 
-public class RouteBuilder extends EntityBuider<Route> {
+public class RouteBuilder extends EntityBuilder<Route> {
 
-    private static CarService carService = serviceEntityFactory.getCarService();
-    private static RouteService routeService = serviceEntityFactory.getRouteService();
-    private static TaskService taskService = serviceEntityFactory.getTaskService();
-    private static AddressService addressService = serviceEntityFactory.getAddressService();
+    private CarService carService;
+    private RouteService routeService;
+    private TaskService taskService;
+    private AddressService addressService;
 
-    private static CarRouteService carRouteService = serviceDependenceFactory.getCarRouteService();
-    private static TaskRouteService taskRouteService = serviceDependenceFactory.getTaskRouteService();
-    private static TaskAddressService taskAddressService = serviceDependenceFactory.getTaskAddressService();
+    private CarRouteService carRouteService;
+    private TaskRouteService taskRouteService;
+    private TaskAddressService taskAddressService;
+
+    public RouteBuilder() {
+        carService = serviceEntityFactory.getCarService();
+        routeService = serviceEntityFactory.getRouteService();
+        taskService = serviceEntityFactory.getTaskService();
+        addressService =  serviceEntityFactory.getAddressService();
+        carRouteService = serviceDependenceFactory.getCarRouteService();
+        taskRouteService = serviceDependenceFactory.getTaskRouteService();
+        taskAddressService = serviceDependenceFactory.getTaskAddressService();
+    }
 
     public Route getEntity(int routeId) throws ServiceLayerException {
         Route route = null;

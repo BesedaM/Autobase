@@ -1,15 +1,16 @@
 package by.epam.javatraining.beseda.webproject.model.command;
 
 import by.epam.javatraining.beseda.webproject.model.command.implementation.get.LocaleChangerCommand;
+import by.epam.javatraining.beseda.webproject.model.command.implementation.post.admin.ReloadNewRequestsPage;
+import by.epam.javatraining.beseda.webproject.model.command.implementation.gotopage.*;
 import by.epam.javatraining.beseda.webproject.model.command.implementation.post.CustomerRegisterCommand;
 import by.epam.javatraining.beseda.webproject.model.command.implementation.post.LoginCommand;
 import by.epam.javatraining.beseda.webproject.model.command.implementation.get.LogoutCommand;
 import by.epam.javatraining.beseda.webproject.model.command.implementation.get.UpdateCustomerRequestsCommand;
-import by.epam.javatraining.beseda.webproject.model.command.implementation.gotopage.GoToCustomerMain;
-import by.epam.javatraining.beseda.webproject.model.command.implementation.gotopage.GoToCustomerRegister;
-import by.epam.javatraining.beseda.webproject.model.command.implementation.gotopage.GoToLogin;
-import by.epam.javatraining.beseda.webproject.model.command.implementation.gotopage.GoToPersonalCustomerData;
 import by.epam.javatraining.beseda.webproject.model.command.implementation.post.*;
+import by.epam.javatraining.beseda.webproject.model.command.implementation.post.admin.AddNewRoute;
+import by.epam.javatraining.beseda.webproject.model.command.implementation.post.admin.AdminGetNewRequests;
+import by.epam.javatraining.beseda.webproject.model.command.implementation.post.admin.RequestStatusChanger;
 
 public enum ActionCommandEnum {
     LOGIN(new LoginCommand()),
@@ -30,6 +31,18 @@ public enum ActionCommandEnum {
     CHANGE_CUSTOMER_DATA(new CustomerDataChanger()),
     ADD_REQUEST(new AddRequestCommand()),
     UPDATE_CUSTOMER_REQUEST_LIST(new UpdateCustomerRequestsCommand()),
+
+    NEW_REQUESTS_REDIRECT(new AdminGetNewRequests()),
+    CHANGE_REQUEST_STATUS(new RequestStatusChanger()),
+    NEW_REQUESTS_RELOAD(new ReloadNewRequestsPage()),
+    CREATE_ROUTE(new AddNewRoute()),
+//    CURRENT_REQUESTS_REDIRECT(new AdminGetCurrentRequests()),
+//    FULFILLED_REQUESTS_REDIRECT(new AdminGetFulfilledRequests()),
+//    REJECTED_REQUESTS_REDIRECT(new AdminGetRejectedRequests()),
+//    CAR_LIST_REDIRECT(new AdminGetCarListData()),
+//    DRIVER_LIST_REDIRECT(new AdminGetDriversData()),
+//    CLIENT_LIST_REDIRECT(new AdminGetClientsData()),
+    ADMIN_MAIN_REDIRECT(new GoToAdminMain()),
 
     DELETE_REQUEST(new RequestDeleteCommand());
 

@@ -44,7 +44,7 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
         } catch (EntityLogicException e) {
-            throw new DAOTechnicalException("Error creating entityservice", e);
+            throw new DAOTechnicalException("Error creating entity", e);
         } finally {
             closeStatement(st);
         }

@@ -39,5 +39,6 @@ public class DBEnumTable {
 
     public static final String T_REQUEST_STATUS = "request_status";
     public static final String REQUEST_STATUS = "status";
+    public static final String ADOPTED_REQUEST="принята";
 
 }

@@ -9,8 +9,10 @@ import by.epam.javatraining.beseda.webproject.model.exception.entityexception.En
 import by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.COMMENT;
 import static by.epam.javatraining.beseda.webproject.model.dao.util.database.DBEntityTable.REQUEST_DATE;
@@ -36,7 +38,7 @@ public class RequestDAO extends AbstractDAO<Request> {
                 request.setComment(res.getString(COMMENT));
             }
             GregorianCalendar time = new GregorianCalendar();
-            time.setTimeInMillis(res.getTime(REQUEST_DATE).getTime() + res.getDate(REQUEST_DATE).getTime());
+            time.setTimeInMillis(res.getDate(REQUEST_DATE).getTime());
 
             request.setCreationTime(time);
         }
@@ -126,6 +128,28 @@ public class RequestDAO extends AbstractDAO<Request> {
                 closeStatement(st);
             }
         }
+    }
+
+
+    public synchronized List<Request> getNewRequests() throws DAOLayerException {
+        List<Request> list = new ArrayList<>();
+        Statement st = null;
+        Request entity = null;
+        try {
+            st = connector.createStatement();
+            ResultSet result = st.executeQuery(SELECT_NEW_REQUESTS + END_OF_STATEMENT);
+            while (result.next()) {
+                entity = createEntity(result);
+                list.add(entity);
+            }
+        } catch (SQLException e) {
+            throw new DAOTechnicalException("Error retrieving data from database", e);
+        } catch (EntityLogicException e) {
+            throw new DAOTechnicalException("Error creating entity", e);
+        } finally {
+            closeStatement(st);
+        }
+        return list;
     }
 
 }

@@ -20,7 +20,7 @@ public class AdminFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
 
         if (USER_ADMIN.equals(req.getSession().getAttribute(USER_ROLE))) {
-//            chain.doFilter(request, response);
+            chain.doFilter(request, response);
             req.getRequestDispatcher(req.getPathInfo()).forward(request,response);
         } else {
             req.getSession().invalidate();

@@ -110,6 +110,7 @@ public class SQLQuery {
     public static final String DELETE_REQUEST_BY_ID;
     public static final String ADD_NEW_REQUEST;
     public static final String UPDATE_REQUEST;
+    public static final String SELECT_NEW_REQUESTS;
 
     public static final String END_OF_STATEMENT = ";";
 
@@ -241,6 +242,9 @@ public class SQLQuery {
                 "UNION SELECT requests.customer_id, requests.id \n" +
                 "FROM autobase.requests JOIN autobase.routes ON requests.id=routes.id \n" +
                 "WHERE routes.status_id IN(1,2,3) ) AS a WHERE a.customer_id=?";
+        SELECT_NEW_REQUESTS="SELECT * FROM autobase.requests LEFT JOIN autobase.routes ON requests.id=routes.id  " +
+                "LEFT JOIN autobase.request_status ON requests.status_id=request_status.id\n" +
+                "WHERE request_status.status='рассматривается' OR (request_status.status='принята' AND isnull(routes.id));";
 
         SELECT_REQUEST_BY_ID = SELECT_ALL_REQUESTS + " WHERE requests.id=?";
         DELETE_REQUEST_BY_ID = "DELETE FROM autobase.requests WHERE id=?";

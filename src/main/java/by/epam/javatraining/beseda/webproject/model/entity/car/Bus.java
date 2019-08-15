@@ -45,7 +45,7 @@ public class Bus extends Car{
 
     @Override
     public String toString() {
-        return "Bus{" +", id=" + id +
+        return "Bus{id=" + id +
                 ", seats=" + seats +
                 ", number='" + number + '\'' +
                 ", model='" + model + '\'' +

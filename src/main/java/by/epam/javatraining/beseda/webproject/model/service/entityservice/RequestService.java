@@ -1,10 +1,13 @@
 package by.epam.javatraining.beseda.webproject.model.service.entityservice;
 
 import by.epam.javatraining.beseda.webproject.model.dao.entitydao.RequestDAO;
+import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.model.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.model.entity.Request;
 import by.epam.javatraining.beseda.webproject.model.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.model.service.exception.ServiceLayerException;
+
+import java.util.List;
 
 import static by.epam.javatraining.beseda.webproject.model.dao.util.dataloader.DatabaseEnumLoader.REQUEST_STATUS_MAP;
 
@@ -37,6 +40,16 @@ public class RequestService extends AbstractEntityService<Request> {
             }
         }
         return array;
+    }
+
+    public List<Request> getNewRequests() throws ServiceLayerException {
+        List<Request> list = null;
+        try {
+            list = ((RequestDAO)entityDAO).getNewRequests();
+        } catch (DAOLayerException e) {
+            throw new ServiceLayerException(e);
+        }
+        return list;
     }
 
 }

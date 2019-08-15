@@ -9,7 +9,7 @@ import by.epam.javatraining.beseda.webproject.model.service.factory.ServiceEntit
  * Declares method for building complex objects with it's small one's
  * @param <E> type parameter
  */
-public abstract class EntityBuider<E extends BaseEntity> {
+public abstract class EntityBuilder<E extends BaseEntity> {
 
     protected static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
     protected static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();

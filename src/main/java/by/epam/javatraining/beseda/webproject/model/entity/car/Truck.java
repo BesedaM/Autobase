@@ -18,7 +18,7 @@ public class Truck extends Car {
     }
 
     public void setCapacity(int capacity) throws IllegalTruckCapacityException {
-        if(capacity>0) {
+        if(capacity>=0) {
             this.capacity = capacity;
         }else{
             throw new IllegalTruckCapacityException();

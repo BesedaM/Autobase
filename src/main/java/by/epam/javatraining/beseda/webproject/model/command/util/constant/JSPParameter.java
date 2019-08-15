@@ -26,6 +26,7 @@ public class JSPParameter {
     public static final String ROUTE_STATUS_CHANGER;
     public static final String ROUTE_ID;
     public static final String CAR_ID;
+    public static final String CUSTOMER_ID;
     public static final String CAR_STATE_CHANGER;
 
 
@@ -33,7 +34,12 @@ public class JSPParameter {
     public static final String NEW_REQUEST;
     public static final String NEW_PASSWORD;
 
+    public static final String REQUEST_TEXT;
+
     public static final String ID;
+
+    public static final String STATUS;
+
 
     static {
         LANGUAGE_SELECT = "language_select";
@@ -57,11 +63,16 @@ public class JSPParameter {
         ROUTE_STATUS_CHANGER = "route_status_changer";
         ROUTE_ID = "route_id";
         CAR_ID = "car_id";
+        CUSTOMER_ID = "customer_id";
         CAR_STATE_CHANGER = "car_state_changer";
 
 
         NEW_REQUEST_TEXT = "new_request_text";
-        NEW_REQUEST ="new_request";
-        NEW_PASSWORD="new_password";
+        NEW_REQUEST = "new_request";
+        NEW_PASSWORD = "new_password";
+
+        REQUEST_TEXT = "request_text";
+
+        STATUS = "status";
     }
 }

@@ -127,7 +127,7 @@ CREATE TABLE `cars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `car_number` varchar(15) NOT NULL,
   `type_id` int(11) NOT NULL,
-  `model` varchar(20) NOT NULL,
+  `model` varchar(30) NOT NULL,
   `seatsNumber` smallint(150) DEFAULT NULL,
   `capacity_id` int(11) DEFAULT NULL,
   `status_id` int(11) NOT NULL DEFAULT '1',
@@ -314,7 +314,7 @@ CREATE TABLE `requests` (
   KEY `fk_requests_request_status1_idx` (`status_id`),
   CONSTRAINT `fk_requests_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_requests_request_status1` FOREIGN KEY (`status_id`) REFERENCES `request_status` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +323,7 @@ CREATE TABLE `requests` (
 
 LOCK TABLES `requests` WRITE;
 /*!40000 ALTER TABLE `requests` DISABLE KEYS */;
-INSERT INTO `requests` VALUES (1,7,2,'2018-09-04 21:00:00','-'),(2,8,2,'2018-10-08 21:00:00','-'),(3,7,2,'2018-10-24 21:00:00','-'),(4,9,2,'2018-12-19 21:00:00','-'),(5,10,2,'2019-01-11 21:00:00',NULL),(6,11,2,'2019-07-02 21:00:00',NULL),(7,10,2,'2019-07-07 21:00:00',NULL),(8,9,2,'2019-07-31 21:00:00',NULL),(9,10,1,'2019-08-13 00:52:56','Привет! Привет! Как дела?'),(10,10,2,'2019-08-13 01:24:22','Hello!'),(12,10,3,'2019-08-13 03:08:16','еще одна заявка!!!!'),(13,10,1,'2019-08-13 03:39:27','Заявка, заявка, заявка.....'),(14,10,3,'2019-08-13 04:30:47','');
+INSERT INTO `requests` VALUES (1,7,2,'2018-09-04 21:00:00','-'),(2,8,2,'2018-10-08 21:00:00','-'),(3,7,2,'2018-10-24 21:00:00','-'),(4,9,2,'2018-12-19 21:00:00','-'),(5,10,2,'2019-01-11 21:00:00',NULL),(6,11,2,'2019-07-02 21:00:00',NULL),(7,10,2,'2019-07-07 21:00:00',NULL),(8,9,2,'2019-07-31 21:00:00',NULL),(9,10,1,'2019-08-12 21:00:00','Привет! Привет! Как дела?'),(10,10,2,'2019-08-12 21:00:00','Hello!'),(12,10,3,'2019-08-12 21:00:00','еще одна заявка!!!!'),(13,10,1,'2019-08-12 21:00:00','Заявка, заявка, заявка.....'),(14,10,3,'2019-08-12 21:00:00',''),(15,9,1,'2019-08-13 21:00:00','1234567 хороший год');
 /*!40000 ALTER TABLE `requests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,4 +495,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-14  2:37:37
+-- Dump completed on 2019-08-16  2:23:21

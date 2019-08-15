@@ -63,7 +63,7 @@
         <legend>${user_form}</legend>
         <table class="registration">
             <tr>
-                <td class="registration"><label for="login">${login}${colon}</label></td>
+                <td><label for="login">${login}${colon}</label></td>
                 <td>
                     <input id="login" name="login" type="text" pattern="^[\w]{8,}$" required/>
                 </td>
@@ -72,8 +72,7 @@
 
             <c:if test="${errorRegisterLogin!=null}">
                 <tr>
-                    <td colspan="2"><p class="error-message">${login_exists}</p></td>
-                    <td></td>
+                    <td colspan="3"><p class="error-message">${login_exists}</p></td>
                 </tr>
             </c:if>
             <tr>
@@ -96,18 +95,16 @@
             </tr>
             <c:if test="${errorRegisterPassword!=null}">
                 <tr>
-                    <td colspan="2">
+                    <td colspan="3">
                         <p class="error-message">${password_mismatch}</p>
                     </td>
-                    <td></td>
                 </tr>
             </c:if>
             <c:if test="${unsafePassword!=null}">
                 <tr>
-                    <td colspan="2">
+                    <td colspan="3">
                         <p class="error-message">${password_requirements}</p>
                     </td>
-                    <td></td>
                 </tr>
             </c:if>
             <tr>
@@ -123,27 +120,25 @@
         <legend>${company_legend}</legend>
         <table class="registration">
             <tr>
-                <td class="registration">
+                <td>
                     <label for="company">${company_name}${colon}</label>
                 </td>
                 <td>
                     <input id="company" name="company_name" type="text"/>
                 </td>
-                <td></td>
             </tr>
             <tr>
                 <td colspan="2">
                     <p class="information">${company_info}</p>
                 </td>
-                <td></td>
             </tr>
         </table>
     </fieldset>
     <fieldset>
         <legend>${personal_data}</legend>
-        <table>
+        <table class="registration">
             <tr>
-                <td class="registration">
+                <td>
                     <label for="name">${user_name}${colon}</label>
                 </td>
                 <td>
