@@ -38,7 +38,7 @@
 <body>
 <%@include file="../header/registered_user.jsp" %>
 
-<form name="AdminMenu" method="get" action="${urlPrefix}/controller">
+<form name="AdminMenu" method="post" action="${urlPrefix}/controller">
     <table class="menu">
         <tr>
             <td class="header" colspan="2">
@@ -53,7 +53,7 @@
         </tr>
         <tr>
             <td>
-                <button type="submit" name="command" value="current_requests_redirect">${current_requests}</button>
+                <button type="submit" name="command" value="current_requests_get">${current_requests}</button>
             </td>
             <td>
                 <button type="submit" name="command" value="car_list_redirect">${car_list}</button>

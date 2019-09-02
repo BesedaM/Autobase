@@ -66,7 +66,7 @@
                     </tr>
                     <tr>
                         <td>${request.id}</td>
-                        <td><fmt:formatDate type="date" timeZone="UTC" value="${request.creationTime.getTime()}"
+                        <td><fmt:formatDate type="date" value="${request.creationTime.getTime()}"
                                             pattern="dd-MM-yyyy"/></td>
                         <td>
                             <c:if test="${customer.customerType=='юр.лицо'}">
@@ -97,7 +97,7 @@
                             <td colspan="3">
                                 <form class="right_side" name="CreateRoute" method="post"
                                       action="${urlPrefix}/controller">
-                                    <input type="hidden" name="command" value="create_route"/>
+                                    <input type="hidden" name="command" value="create_route_redirect"/>
                                     <input type="hidden" name="customer_id" value="${customer.id}"/>
                                     <input type="hidden" name="request_text" value="${request.comment}"/>
                                     <input type="hidden" name="id" value="${request.id}"/>
@@ -117,38 +117,7 @@
         </td>
 
         <td>
-            <form name="CarsInRoutes" method="post" action="${urlPrefix}/controller"
-                  onchange="submit()">
-                <input type="hidden" name="command" value="new_requests_reload"/>
-
-                <c:forEach items="${car_busy_dates_map}" var="car_dates">
-                    <c:set var="car" value="${car_dates.key}"/>
-                    <label>${car.model}
-                    <input type="radio" name="car_id" value="${car.id}" id="${car.id}"
-                            <c:if test="${car_id==car.id}"> checked </c:if>
-                    /></label>
-                    <br/>
-                </c:forEach>
-            </form>
-
-            <table class="no-borders">
-                <c:if test="${car_id!=null}">
-                    <c:forEach items="${car_busy_dates_map}" var="car_dates">
-                        <c:if test="${car_dates.key.id==car_id}">
-                            <c:set var="dates_set" value="${car_dates.value}" scope="request"/>
-                        </c:if>
-                    </c:forEach>
-
-                    <c:forEach items="${dates_set}" var="date">
-                        <tr>
-                            <td>
-                                <fmt:formatDate type="date" timeZone="UTC" value="${date}" pattern="dd-MM-yyyy"/>
-                            </td>
-                        </tr>
-                    </c:forEach>
-
-                </c:if>
-            </table>
+            <%@include file="../cars/cars_in_routes_info.jsp" %>
         </td>
     </tr>
 </table>

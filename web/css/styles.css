@@ -69,9 +69,7 @@ table{
     border-collapse: collapse;
 }
 
-table.no-borders{
-    border: none;
-}
+
 
 table.main {
     position: relative;
@@ -85,10 +83,13 @@ table.main td,th {
     border: 1px solid grey;
 }
 
-
 table.menu th,td{
     text-align: center;
     border: none;
+}
+
+table.inner{
+    width: 100%;
 }
 
 td{
@@ -101,12 +102,42 @@ td.personal_data{
     vertical-align: top;
 }
 
+tr.borders td{
+    border: 1px solid grey;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+td.borders{
+    border: 1px solid grey;
+}
+
+td.left_side{
+    text-align: left;
+}
+
 td.login {
     width: 150px;
 }
 
 table.registration td {
     width: 200px;
+    text-align: left;
+}
+
+table.for_form td {
+    width: 200px;
+    text-align: left;
+}
+
+#route_name{
+    size: 200px;
+    width: 250px;
+}
+
+table.available_cars_info td {
+    width: 160px;
+    border: none;
     text-align: left;
 }
 
@@ -124,4 +155,8 @@ table.menu button{
     padding: 10px;
     min-width: 200px;
     font-size: 16px;
+}
+
+table.align_left{
+    align-self: left;
 }

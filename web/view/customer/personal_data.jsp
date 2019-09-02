@@ -36,7 +36,7 @@
     <fmt:message key="new_password" var="new_password"/>
     <fmt:message key="change_data" var="change_data"/>
     <fmt:message key="back_to_customer_main" var="back_to_customer_main"/>
-    <fmt:message key="password_change_secceed" var="password_change_secceed"/>
+    <fmt:message key="password_change_succeed" var="password_change_secceed"/>
     <fmt:message key="personal_data_changed" var="data_changed"/>
 </fmt:bundle>
 
@@ -122,11 +122,11 @@
             <legend>${company_legend}</legend>
             <table class="registration">
                 <tr>
-                    <td class="registration">
+                    <td>
                         <label for="company">${company_name}${colon}</label>
                     </td>
                     <td>
-                        <input id="company" name="company_name" type="text" placeholder="${user.getCompanyName()}"/>
+                        <input id="company" name="company_name" type="text" value="${fn:escapeXml(user.getCompanyName())}"/>
                     </td>
                     <td></td>
                 </tr>
@@ -143,7 +143,7 @@
                 </td>
                 <td>
                     <input id="name" name="name" type="text" pattern="(^[a-zA-Z-]{3,}$)|(^[А-Яа-я-]{3,}$)"
-                           placeholder="${user.name}"/>
+                           value="${user.name}"/>
                 </td>
             </tr>
             <tr>
@@ -152,7 +152,7 @@
                 </td>
                 <td>
                     <input id="surname" name="surname" type="text" pattern="(^[a-zA-Z-]{3,}$)|(^[А-Яа-я-]{3,}$)"
-                           placeholder="${user.surname}"/>
+                           value="${user.surname}"/>
                 </td>
             </tr>
             <tr>
@@ -160,7 +160,7 @@
                     <label for="phone">${phone}${colon}</label>
                 </td>
                 <td>
-                    <input id="phone" name="phone" type="text" placeholder="${user.phone}"
+                    <input id="phone" name="phone" type="text" value="${user.phone}"
                            pattern="^\(((29)|(33)|(44)|(25))\)[0-9]{3}-[0-9]{2}-[0-9]{2}(\s){0,}"/>
                 </td>
             </tr>
