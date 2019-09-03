@@ -156,12 +156,12 @@ public class RequestDAO extends AbstractDAO<Request> {
         return list;
     }
 
-    public synchronized int[] getCurrentRequestsId() throws DAOLayerException {
+    private synchronized int[] getSpecifiedRequestsId(String sqlStatement) throws DAOTechnicalException {
         int[] array;
         Statement st = null;
         try {
             st = connector.createStatement();
-            ResultSet result = st.executeQuery(SELECT_CURRENT_REQUESTS_ID + END_OF_STATEMENT);
+            ResultSet result = st.executeQuery(sqlStatement + END_OF_STATEMENT);
             result.last();
             array = new int[result.getRow()];
             result.first();
@@ -177,25 +177,16 @@ public class RequestDAO extends AbstractDAO<Request> {
         return array;
     }
 
+    public synchronized int[] getCurrentRequestsId() throws DAOLayerException {
+        return getSpecifiedRequestsId(SELECT_CURRENT_REQUESTS_ID);
+    }
+
     public int[] getFulfilledRequestsId() throws DAOLayerException {
-        int[] array;
-        Statement st = null;
-        try {
-            st = connector.createStatement();
-            ResultSet result = st.executeQuery(SELECT_FULFILLED_REQUESTS_ID + END_OF_STATEMENT);
-            result.last();
-            array = new int[result.getRow()];
-            result.first();
-            for (int i = 0; i < array.length; i++) {
-                array[i] = result.getInt(1);
-                result.next();
-            }
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Error retrieving data from database", e);
-        } finally {
-            closeStatement(st);
-        }
-        return array;
+        return getSpecifiedRequestsId(SELECT_FULFILLED_REQUESTS_ID);
+    }
+
+    public int[] getRejectedRequestsId() throws DAOLayerException {
+        return getSpecifiedRequestsId(SELECT_REJECTED_REQUESTS_ID);
     }
 
 }

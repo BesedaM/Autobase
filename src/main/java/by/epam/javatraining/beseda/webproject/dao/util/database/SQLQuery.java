@@ -122,6 +122,7 @@ public class SQLQuery {
     public static final String SELECT_NEW_REQUESTS;
     public static final String SELECT_CURRENT_REQUESTS_ID;
     public static final String SELECT_FULFILLED_REQUESTS_ID;
+    public static final String SELECT_REJECTED_REQUESTS_ID;
 
     public static final String END_OF_STATEMENT = ";";
 
@@ -272,7 +273,10 @@ public class SQLQuery {
         SELECT_FULFILLED_REQUESTS_ID = "SELECT requests.id FROM autobase.requests RIGHT JOIN autobase.routes ON requests.id=routes.id  \n" +
                 "LEFT JOIN autobase.request_status ON requests.status_id=request_status.id\n" +
                 "LEFT JOIN autobase.route_status ON routes.status_id=route_status.id\n" +
-                "WHERE route_status.status='выполнен'";
+                "WHERE route_status.status='выполнен' LIMIT 10";
+        SELECT_REJECTED_REQUESTS_ID ="SELECT requests.id FROM autobase.requests \n" +
+                "LEFT JOIN autobase.request_status ON requests.status_id=request_status.id\n" +
+                "WHERE request_status.status='отклонена' LIMIT 10";
 
         SELECT_REQUEST_BY_ID = SELECT_ALL_REQUESTS + " WHERE requests.id=?";
         DELETE_REQUEST_BY_ID = "DELETE FROM autobase.requests WHERE id=?";

@@ -75,4 +75,14 @@ public class RequestService extends AbstractEntityService<Request> {
         return array;
     }
 
+    public int[] getRejectedRequestsId() throws ServiceLayerException {
+        int[] array;
+        try {
+            array=((RequestDAO)entityDAO).getRejectedRequestsId();
+        } catch (DAOLayerException e) {
+            throw new ServiceLayerException(e);
+        }
+        return array;
+    }
+
 }

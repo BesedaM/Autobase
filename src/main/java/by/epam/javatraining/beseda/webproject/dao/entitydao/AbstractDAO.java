@@ -9,8 +9,10 @@ import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperC
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static by.epam.javatraining.beseda.webproject.dao.util.database.DBConstants.*;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.END_OF_STATEMENT;
 
 /**
@@ -74,17 +76,20 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
     }
 
 
-    public synchronized List<E> getEntitiesByIdList(int[] id) throws DAOLayerException {
+    public synchronized List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException {
         List<E> list = new ArrayList<>();
-        PreparedStatement st = null;
+        Statement st = null;
         try {
-            st = connector.prepareStatement(getEntityListByIdStatement());
-            Array array = connector.createArray(id);
-            st.setArray(1, array);
-            ResultSet res = st.executeQuery();
+            st = connector.createStatement();
+            String array= Arrays.toString(idArr);
+            String newArr=array.replace(OPENING_SQUARE_BRACKET,SPACE)
+                    .replace(CLOSING_SQUARE_BRACKET,SPACE).replace(SPACE,EMPTY_CHARACTER);
+            String modifiedStatement=getEntityListByIdStatement().replace(QUESTION_MARK,newArr);
+            ResultSet res = st.executeQuery(modifiedStatement);
+
             while (res.next()) {
                 E entity = createEntity(res);
-                    list.add(entity);
+                list.add(entity);
             }
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
