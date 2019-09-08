@@ -10,7 +10,7 @@ public class CustomerService extends AbstractEntityService<Customer> {
 
     CustomerService() {
         super();
-        entityDAO = daoEntityFactory.getCustomerDAO();
+        entityDAO = mySQLDAOEntityFactory.getCustomerDAO();
     }
 
     /**

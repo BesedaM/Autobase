@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.service.entitybuilder;
 
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.dependenceservice.ServiceDependenceFactory;
 import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
@@ -9,7 +9,7 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntit
  * Declares method for building complex objects with it's small one's
  * @param <E> type parameter
  */
-public abstract class EntityBuilder<E extends BaseEntity> {
+public abstract class EntityBuilder<E extends EntityBase> {
 
     protected static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
     protected static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();

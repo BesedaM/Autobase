@@ -1,17 +1,13 @@
 package by.epam.javatraining.beseda.webproject.entity;
 
+import by.epam.javatraining.beseda.webproject.entity.exception.RequestException;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.entity.exception.request.IllegalDateException;
-import by.epam.javatraining.beseda.webproject.entity.exception.request.IllegalRequestCommentException;
-import by.epam.javatraining.beseda.webproject.entity.exception.request.IllegalRouteException;
-import by.epam.javatraining.beseda.webproject.entity.exception.request.IllegalRequestStatusException;
-import by.epam.javatraining.beseda.webproject.entity.exception.user.IllegalCustomerException;
 
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
-public class Request extends BaseEntity {
+public class Request extends EntityBase {
 
     private Route route;
     private Customer customer;
@@ -39,43 +35,43 @@ public class Request extends BaseEntity {
         this.route = route;
     }
 
-    public void setRoute(Route route) throws IllegalRouteException {
+    public void setRoute(Route route) throws RequestException {
         if (route != null) {
             this.route = route;
         } else {
-            throw new IllegalRouteException();
+            throw new RequestException();
         }
     }
 
-    public void setStatus(String status) throws IllegalRequestStatusException {
+    public void setStatus(String status) throws RequestException {
         if (status != null) {
             this.status = status;
         } else {
-            throw new IllegalRequestStatusException();
+            throw new RequestException();
         }
     }
 
-    public void setCreationTime(GregorianCalendar creationTime) throws IllegalDateException {
+    public void setCreationTime(GregorianCalendar creationTime) throws RequestException {
         if (creationTime != null) {
             this.creationTime = creationTime;
         } else {
-            throw new IllegalDateException();
+            throw new RequestException();
         }
     }
 
-    public void setComment(String comment) throws IllegalRequestCommentException {
+    public void setComment(String comment) throws RequestException {
         if (comment != null) {
             this.comment = comment;
         } else {
-            throw new IllegalRequestCommentException();
+            throw new RequestException();
         }
     }
 
-    public void setCustomer(Customer customer) throws IllegalCustomerException {
+    public void setCustomer(Customer customer) throws RequestException {
         if (customer != null) {
             this.customer = customer;
         } else {
-            throw new IllegalCustomerException();
+            throw new RequestException();
         }
     }
 

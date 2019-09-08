@@ -2,10 +2,10 @@ package by.epam.javatraining.beseda.webproject.service.dependenceservice;
 
 import by.epam.javatraining.beseda.webproject.dao.dependencedao.OneToOneDependenceDAO;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 
-public abstract class OneToOneDependenceService<M extends BaseEntity,K extends BaseEntity> extends ToOneDependenceService<M,K>{
+public abstract class OneToOneDependenceService<M extends EntityBase,K extends EntityBase> extends ToOneDependenceService<M,K>{
 
     protected OneToOneDependenceService() {super();}
 

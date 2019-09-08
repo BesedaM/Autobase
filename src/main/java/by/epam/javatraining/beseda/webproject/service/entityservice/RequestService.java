@@ -7,7 +7,6 @@ import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class RequestService extends AbstractEntityService<Request> {
 
     RequestService() {
         super();
-        entityDAO = daoEntityFactory.getRequestDAO();
+        entityDAO = mySQLDAOEntityFactory.getRequestDAO();
     }
 
     /**

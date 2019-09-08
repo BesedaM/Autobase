@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.DriverInterface;
 import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
@@ -15,18 +16,19 @@ import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityT
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.USER_DRIVER;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
-public class DriverDAO extends AbstractDAO<Driver> {
+public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 
     DriverDAO() {
         super();
     }
 
     @Override
-    public synchronized int add(Driver driver) throws DAOLayerException {
+    public int add(Driver driver) throws DAOLayerException {
         int id = -1;
         if (driver != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(addStatement());
                 setDataOnPreparedStatement(st, driver);
                 id = driver.getId();
@@ -35,14 +37,15 @@ public class DriverDAO extends AbstractDAO<Driver> {
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error updating database", e);
             } finally {
-                closeStatement(st);
+                connector.closeStatement(st);
+                lock.unlock();
             }
         }
         return id;
     }
 
     @Override
-    protected Driver createEntity(ResultSet res) throws SQLException, EntityLogicException {
+    protected Driver buildEntity(ResultSet res) throws SQLException, EntityLogicException {
         Driver driver = null;
         if (res != null) {
             driver = new Driver();

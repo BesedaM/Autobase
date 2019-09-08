@@ -18,7 +18,7 @@ public class UserService extends AbstractEntityService<User> {
 
     UserService() {
         super();
-        entityDAO = daoEntityFactory.getUserDAO();
+        entityDAO = mySQLDAOEntityFactory.getUserDAO();
     }
 
 

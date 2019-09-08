@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import by.epam.javatraining.beseda.webproject.dao.entitydao.CarDAO;
+import by.epam.javatraining.beseda.webproject.dao.entitydao.CarInterface;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.entity.car.Bus;
@@ -12,21 +12,16 @@ import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerExce
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.BUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.TRUCK;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.END_OF_STATEMENT;
 
 public class CarService extends AbstractEntityService<Car> {
 
     CarService() {
         super();
-        entityDAO = daoEntityFactory.getCarDAO();
+        entityDAO = mySQLDAOEntityFactory.getCarDAO();
     }
 
     /**
@@ -68,7 +63,7 @@ public class CarService extends AbstractEntityService<Car> {
         List<Car> carList = null;
         if (carType != null) {
             try {
-                carList = ((CarDAO)entityDAO).getCarsByType(carType);
+                carList = ((CarInterface)entityDAO).getCarsByType(carType);
             } catch (DAOLayerException e) {
                 throw new ServiceLayerException(e);
             }
@@ -79,7 +74,7 @@ public class CarService extends AbstractEntityService<Car> {
     public void updateCarState(int carId, String state) throws ServiceTechnicalException {
         if (carId > 0 && state != null) {
             try {
-                ((CarDAO) entityDAO).updateCarState(carId, state);
+                ((CarInterface) entityDAO).updateCarState(carId, state);
             } catch (DAOTechnicalException e) {
                 throw new ServiceTechnicalException(e);
             }

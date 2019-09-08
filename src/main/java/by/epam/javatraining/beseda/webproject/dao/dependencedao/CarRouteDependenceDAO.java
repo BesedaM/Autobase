@@ -1,7 +1,7 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 
@@ -64,7 +64,7 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
 
 
     @Override
-    protected String getDependencesStatement(BaseEntity entity) {
+    protected String getDependenceStatement(EntityBase entity) {
         String statement = null;
         if (entity instanceof Car) {
             statement = CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID;

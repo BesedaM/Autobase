@@ -1,14 +1,12 @@
 package by.epam.javatraining.beseda.webproject.entity.route;
 
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
-import by.epam.javatraining.beseda.webproject.entity.exception.task.IllegalAddressException;
-import by.epam.javatraining.beseda.webproject.entity.exception.task.IllegalDetailException;
-import by.epam.javatraining.beseda.webproject.entity.exception.task.IllegalTimeException;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+import by.epam.javatraining.beseda.webproject.entity.exception.TaskException;
 
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
-public class Task extends BaseEntity {
+public class Task extends EntityBase {
 
     private Address address;
     private GregorianCalendar time;
@@ -30,11 +28,11 @@ public class Task extends BaseEntity {
         this.details = details;
     }
 
-    public void setAddress(Address address) throws IllegalAddressException {
+    public void setAddress(Address address) throws TaskException {
         if (address != null) {
             this.address = address;
         } else {
-            throw new IllegalAddressException();
+            throw new TaskException();
         }
     }
 
@@ -42,19 +40,19 @@ public class Task extends BaseEntity {
         this.address = null;
     }
 
-    public void setTime(GregorianCalendar time) throws IllegalTimeException {
+    public void setTime(GregorianCalendar time) throws TaskException {
         if (time != null) {
             this.time = time;
         } else {
-            throw new IllegalTimeException();
+            throw new TaskException();
         }
     }
 
-    public void setDetails(String details) throws IllegalDetailException {
+    public void setDetails(String details) throws TaskException {
         if (details != null) {
             this.details = details;
         } else {
-            throw new IllegalDetailException();
+            throw new TaskException();
         }
     }
 

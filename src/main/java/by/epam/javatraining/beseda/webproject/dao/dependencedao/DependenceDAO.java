@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperConnector;
 
@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @param <M> entityservice type parameter
  * @param <K> dependenceservice type parameter
  */
-public abstract class DependenceDAO<M extends BaseEntity, K extends BaseEntity> {
+public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> {
 
     protected WrapperConnector connector;
 
@@ -72,5 +72,9 @@ public abstract class DependenceDAO<M extends BaseEntity, K extends BaseEntity> 
      * @return string representation of update statement
      */
     protected abstract String updateDependenceStatement();
+
+    public void close(){
+        connector.closeConnector();
+    }
 
 }

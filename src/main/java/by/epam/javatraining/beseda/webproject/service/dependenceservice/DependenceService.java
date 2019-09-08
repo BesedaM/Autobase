@@ -3,10 +3,10 @@ package by.epam.javatraining.beseda.webproject.service.dependenceservice;
 import by.epam.javatraining.beseda.webproject.dao.dependencedao.DependenceDAO;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.dependencedao.DAODependenceFactory;
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
-public abstract class DependenceService<M extends BaseEntity,K extends BaseEntity> {
+public abstract class DependenceService<M extends EntityBase,K extends EntityBase> {
 
     protected static DAODependenceFactory daoDependenceFactory = DAODependenceFactory.getFactory();
     protected DependenceDAO<M,K> dependenceDAO;

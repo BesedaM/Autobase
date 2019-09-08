@@ -7,7 +7,7 @@ public class AddressService extends AbstractEntityService<Address> {
 
     AddressService() {
         super();
-        entityDAO = daoEntityFactory.getAddressDAO();
+        entityDAO = mySQLDAOEntityFactory.getAddressDAO();
     }
 
     /**

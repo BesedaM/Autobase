@@ -7,7 +7,7 @@ public class DriverService extends AbstractEntityService<Driver> {
 
     DriverService() {
         super();
-        entityDAO = daoEntityFactory.getDriverDAO();
+        entityDAO = mySQLDAOEntityFactory.getDriverDAO();
     }
 
     /**

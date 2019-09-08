@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @param <M> entityservice type parameter
  * @param <K> dependenceservice type parameter
  */
-public abstract class ManyToOneDependenceDAO<M extends BaseEntity, K extends BaseEntity> extends ToOneDependenceDAO<M,K> {
+public abstract class ManyToOneDependenceDAO<M extends EntityBase, K extends EntityBase> extends ToOneDependenceDAO<M,K> {
 
     protected ManyToOneDependenceDAO() {
         super();

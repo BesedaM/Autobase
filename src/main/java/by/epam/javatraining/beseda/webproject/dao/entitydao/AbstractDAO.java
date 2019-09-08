@@ -1,6 +1,7 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLogicException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
@@ -11,6 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBConstants.*;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.END_OF_STATEMENT;
@@ -20,24 +22,26 @@ import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.
  *
  * @param <E> parameter type
  */
-public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> {
+public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> {
 
     protected WrapperConnector connector;
+    protected ReentrantLock lock = new ReentrantLock();
 
     protected AbstractDAO() {
         this.connector = new WrapperConnector();
     }
 
 
-    public synchronized List<E> getAll() throws DAOLayerException {
+    public List<E> getAll() throws DAOLayerException {
         List<E> list = new ArrayList<>();
         Statement st = null;
         E entity = null;
         try {
+            lock.lock();
             st = connector.createStatement();
             ResultSet result = st.executeQuery(getAllStatement() + END_OF_STATEMENT);
             while (result.next()) {
-                entity = createEntity(result);
+                entity = buildEntity(result);
                 list.add(entity);
             }
         } catch (SQLException e) {
@@ -45,7 +49,8 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         } catch (EntityLogicException e) {
             throw new DAOTechnicalException("Error creating entity", e);
         } finally {
-            closeStatement(st);
+            connector.closeStatement(st);
+            lock.unlock();
         }
         return list;
     }
@@ -55,40 +60,43 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
      */
     protected abstract String getAllStatement();
 
-    public synchronized E getEntityById(int id) throws DAOLayerException {
+    public E getEntityById(int id) throws DAOLayerException {
         E entity = null;
         PreparedStatement st = null;
         try {
+            lock.lock();
             st = connector.prepareStatement(getEntityByIdStatement());
             st.setInt(1, id);
             ResultSet res = st.executeQuery();
             if (res.first()) {
-                entity = createEntity(res);
+                entity = buildEntity(res);
             }
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
         } catch (EntityLogicException e) {
             throw new DAOTechnicalException("Error creating entity", e);
         } finally {
-            closeStatement(st);
+            connector.closeStatement(st);
+            lock.unlock();
         }
         return entity;
     }
 
 
-    public synchronized List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException {
+    public List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException {
         List<E> list = new ArrayList<>();
         Statement st = null;
         try {
+            lock.lock();
             st = connector.createStatement();
-            String array= Arrays.toString(idArr);
-            String newArr=array.replace(OPENING_SQUARE_BRACKET,SPACE)
-                    .replace(CLOSING_SQUARE_BRACKET,SPACE).replace(SPACE,EMPTY_CHARACTER);
-            String modifiedStatement=getEntityListByIdStatement().replace(QUESTION_MARK,newArr);
+            String array = Arrays.toString(idArr);
+            String newArr = array.replace(OPENING_SQUARE_BRACKET, SPACE)
+                    .replace(CLOSING_SQUARE_BRACKET, SPACE).replace(SPACE, EMPTY_CHARACTER);
+            String modifiedStatement = getEntityListByIdStatement().replace(QUESTION_MARK, newArr);
             ResultSet res = st.executeQuery(modifiedStatement);
 
             while (res.next()) {
-                E entity = createEntity(res);
+                E entity = buildEntity(res);
                 list.add(entity);
             }
         } catch (SQLException e) {
@@ -96,7 +104,8 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
         } catch (EntityLogicException e) {
             throw new DAOTechnicalException("Error creating entity", e);
         } finally {
-            closeStatement(st);
+            connector.closeStatement(st);
+            lock.unlock();
         }
         return list;
     }
@@ -109,18 +118,20 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
      */
     protected abstract String getEntityByIdStatement();
 
-    protected abstract E createEntity(ResultSet res) throws DAOLogicException, SQLException, EntityLogicException;
+    protected abstract E buildEntity(ResultSet res) throws DAOLogicException, SQLException, EntityLogicException;
 
-    public synchronized void delete(int id) throws DAOTechnicalException {
+    public void delete(int id) throws DAOTechnicalException {
         PreparedStatement st = null;
         try {
+            lock.lock();
             st = connector.prepareStatement(deleteStatement());
             st.setInt(1, id);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error updating database", e);
         } finally {
-            closeStatement(st);
+            connector.closeStatement(st);
+            lock.unlock();
         }
     }
 
@@ -129,15 +140,16 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
      */
     protected abstract String deleteStatement();
 
-    public synchronized void delete(E entity) throws DAOTechnicalException {
+    public void delete(E entity) throws DAOTechnicalException {
         delete(entity.getId());
     }
 
-    public synchronized int add(E entity) throws DAOLayerException {
+    public int add(E entity) throws DAOLayerException {
         int id = -1;
         if (entity != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatementWithAutoGeneratedKeys(addStatement());
                 setDataOnPreparedStatement(st, entity);
                 st.executeUpdate();
@@ -147,7 +159,8 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error updating database", e);
             } finally {
-                closeStatement(st);
+                connector.closeStatement(st);
+                lock.unlock();
             }
         }
         return id;
@@ -167,10 +180,11 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
      */
     protected abstract String addStatement();
 
-    public synchronized void update(E entity) throws DAOLayerException {
+    public void update(E entity) throws DAOLayerException {
         if (entity != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(updateStatement());
                 setDataOnPreparedStatement(st, entity);
                 st.setInt(updateIdParameterNumber(), entity.getId());
@@ -178,7 +192,8 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error updating database", e);
             } finally {
-                closeStatement(st);
+                connector.closeStatement(st);
+                lock.unlock();
             }
         }
     }
@@ -190,16 +205,8 @@ public abstract class AbstractDAO<E extends BaseEntity> implements EntityDAO<E> 
 
     protected abstract int updateIdParameterNumber();
 
-
-    /**
-     * Closes the specified statement
-     *
-     * @param statement statement to close
-     */
-    protected void closeStatement(Statement statement) {
-        if (statement != null) {
-            connector.closeStatement(statement);
-        }
+    public void close() {
+        connector.closeConnector();
     }
 
 }

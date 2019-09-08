@@ -3,12 +3,12 @@ package by.epam.javatraining.beseda.webproject.service.dependenceservice;
 import by.epam.javatraining.beseda.webproject.dao.dependencedao.ManyToManyDependenceDAO;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
 
-public abstract class ManyToManyDependenceService<M extends BaseEntity, K extends BaseEntity> extends DependenceService<M, K> {
+public abstract class ManyToManyDependenceService<M extends EntityBase, K extends EntityBase> extends DependenceService<M, K> {
 
     protected ManyToManyDependenceService() {
         super();
@@ -39,7 +39,7 @@ public abstract class ManyToManyDependenceService<M extends BaseEntity, K extend
         int[] entityId01 = null;
         if (entity != null) {
             try {
-                entityId01 = ((ManyToManyDependenceDAO<M, K>) dependenceDAO).getDependencesId(entity);
+                entityId01 = ((ManyToManyDependenceDAO<M, K>) dependenceDAO).getDependenceId(entity);
             } catch (DAOLayerException e) {
                 throw new ServiceLayerException(e);
             }
@@ -51,7 +51,7 @@ public abstract class ManyToManyDependenceService<M extends BaseEntity, K extend
         int[] entityId02 = null;
         if (entity != null) {
             try {
-                entityId02 = ((ManyToManyDependenceDAO<M, K>) dependenceDAO).getDependencesId(entity);
+                entityId02 = ((ManyToManyDependenceDAO<M, K>) dependenceDAO).getDependenceId(entity);
             } catch (DAOLayerException e) {
                 throw new ServiceLayerException(e);
             }

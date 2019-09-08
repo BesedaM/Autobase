@@ -4,8 +4,7 @@ import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
 import by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant;
 import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
-import by.epam.javatraining.beseda.webproject.entity.exception.IllegalEntityIdException;
-import by.epam.javatraining.beseda.webproject.entity.exception.task.IllegalAddressException;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
@@ -24,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.*;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.TIME;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.*;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
@@ -87,9 +85,7 @@ public class ProcessTaskData implements ActionCommand {
                 taskList.add(newTask);
             }
 
-        } catch (ServiceLayerException | IllegalAddressException |
-                IllegalEntityIdException e)
-
+        } catch (ServiceLayerException | EntityLogicException e)
         {
             log.error(e);
         }

@@ -11,7 +11,7 @@ public class RouteService extends AbstractEntityService<Route> {
 
     RouteService() {
         super();
-        entityDAO = daoEntityFactory.getRouteDAO();
+        entityDAO = mySQLDAOEntityFactory.getRouteDAO();
     }
 
     /**

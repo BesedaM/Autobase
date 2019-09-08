@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.TaskInterface;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
 import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
@@ -14,14 +15,14 @@ import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityT
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.TIME;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
-public class TaskDAO extends AbstractDAO<Task> {
+public class TaskDAO extends AbstractDAO<Task> implements TaskInterface {
 
     TaskDAO() {
         super();
     }
 
     @Override
-    protected Task createEntity(ResultSet result) throws SQLException, EntityLogicException {
+    protected Task buildEntity(ResultSet result) throws SQLException, EntityLogicException {
         Task task = null;
         if (result != null) {
             task = new Task();

@@ -1,14 +1,11 @@
 package by.epam.javatraining.beseda.webproject.entity.car;
 
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
-import by.epam.javatraining.beseda.webproject.entity.exception.car.IllegalCarModelException;
-import by.epam.javatraining.beseda.webproject.entity.exception.car.IllegalCarNumberException;
-import by.epam.javatraining.beseda.webproject.entity.exception.car.IllegalCarStateException;
-import by.epam.javatraining.beseda.webproject.entity.exception.car.IllegalCarStatusException;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+import by.epam.javatraining.beseda.webproject.entity.exception.CarException;
 
 import java.util.Objects;
 
-public class Car extends BaseEntity {
+public class Car extends EntityBase {
 
     protected String number;
     protected String model;
@@ -25,35 +22,35 @@ public class Car extends BaseEntity {
         this.model = model;
     }
 
-    public void setNumber(String number) throws IllegalCarNumberException {
+    public void setNumber(String number) throws CarException {
         if (number != null) {
             this.number = number;
         } else {
-            throw new IllegalCarNumberException();
+            throw new CarException();
         }
     }
 
-    public void setModel(String model) throws IllegalCarModelException {
+    public void setModel(String model) throws CarException {
         if (model != null) {
             this.model = model;
         } else {
-            throw new IllegalCarModelException();
+            throw new CarException();
         }
     }
 
-    public void setStatus(String status) throws IllegalCarStatusException {
+    public void setStatus(String status) throws CarException {
         if (status != null) {
             this.status = status;
         } else {
-            throw new IllegalCarStatusException();
+            throw new CarException();
         }
     }
 
-    public void setState(String state) throws IllegalCarStateException {
+    public void setState(String state) throws CarException {
         if (state != null) {
             this.state = state;
         } else {
-            throw new IllegalCarStateException();
+            throw new CarException();
         }
     }
 

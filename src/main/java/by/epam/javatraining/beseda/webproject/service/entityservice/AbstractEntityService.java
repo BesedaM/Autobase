@@ -1,21 +1,21 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import by.epam.javatraining.beseda.webproject.dao.entitydao.AbstractDAO;
-import by.epam.javatraining.beseda.webproject.dao.entitydao.DAOEntityFactory;
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.dao.entitydao.MySQLDAOEntityFactory;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.exception.IllegalEntityIdException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
 import java.util.List;
 
-public abstract class AbstractEntityService<E extends BaseEntity> implements EntityService<E> {
+public abstract class AbstractEntityService<E extends EntityBase> implements EntityService<E> {
 
-    protected static DAOEntityFactory daoEntityFactory = DAOEntityFactory.getFactory();
-    protected AbstractDAO<E> entityDAO;
+    protected static MySQLDAOEntityFactory mySQLDAOEntityFactory = MySQLDAOEntityFactory.getFactory();
+    protected EntityDAO<E> entityDAO;
 
     protected AbstractEntityService() {
     }
@@ -67,7 +67,7 @@ public abstract class AbstractEntityService<E extends BaseEntity> implements Ent
             try {
                 int id = entityDAO.add(entity);
                 entity.setId(id);
-            } catch (DAOLayerException | IllegalEntityIdException e) {
+            } catch (DAOLayerException | EntityIdException e) {
                 throw new ServiceLogicException(e);
             }
         }

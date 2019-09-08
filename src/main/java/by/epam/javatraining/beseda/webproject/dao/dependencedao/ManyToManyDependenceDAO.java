@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @param <M> entityservice type parameter
  * @param <K> dependenceservice type parameter
  */
-public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends BaseEntity> extends DependenceDAO<M, K> {
+public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends EntityBase> extends DependenceDAO<M, K> {
 
     protected ManyToManyDependenceDAO() {
         super();
@@ -23,15 +23,15 @@ public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends Ba
      * Returns dependenceservice ids according to specified entityservice
      *
      * @param entity one oа two dependencies
-     * @return array, containing all the dependenceservice ids
+     * @return array, containing all the dependence service ids
      * @throws DAOTechnicalException
      */
-    public synchronized int[] getDependencesId(BaseEntity entity) throws DAOTechnicalException {
+    public synchronized int[] getDependenceId(EntityBase entity) throws DAOTechnicalException {
         int[] dependencyId = null;
         if (entity != null) {
             PreparedStatement st = null;
             try {
-                String statement = getDependencesStatement(entity);
+                String statement = getDependenceStatement(entity);
                 st = connector.prepareStatement(statement);
                 st.setInt(1, entity.getId());
                 ResultSet res = st.executeQuery();
@@ -55,7 +55,7 @@ public abstract class ManyToManyDependenceDAO<M extends BaseEntity, K extends Ba
      * @param entity
      * @return string representation of getDependence statement specified with the entityservice type
      */
-    protected abstract String getDependencesStatement(BaseEntity entity);
+    protected abstract String getDependenceStatement(EntityBase entity);
 
 
     protected abstract String updateDependenceStatement();

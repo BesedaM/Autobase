@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.AddressInterface;
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
@@ -12,14 +13,14 @@ import java.sql.SQLException;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.*;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
-public class AddressDAO extends AbstractDAO<Address> {
+public class AddressDAO extends AbstractDAO<Address> implements AddressInterface {
 
     AddressDAO() {
         super();
     }
 
     @Override
-    protected Address createEntity(ResultSet result) throws SQLException, EntityLogicException {
+    protected Address buildEntity(ResultSet result) throws SQLException, EntityLogicException {
         Address addr = null;
         if (result != null) {
             addr = new Address();

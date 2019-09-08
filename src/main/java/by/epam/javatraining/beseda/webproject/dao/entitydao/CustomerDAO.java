@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
 import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
@@ -17,7 +18,7 @@ import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTab
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.USER_CUSTOMER;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
-public class CustomerDAO extends AbstractDAO<Customer> {
+public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterface {
 
     CustomerDAO() {
         super();
@@ -25,11 +26,12 @@ public class CustomerDAO extends AbstractDAO<Customer> {
 
 
     @Override
-    public synchronized int add(Customer user) throws DAOLayerException {
+    public int add(Customer user) throws DAOLayerException {
         int id = -1;
         if (user != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(addStatement());
                 setDataOnPreparedStatement(st, user);
                 id = user.getId();
@@ -38,14 +40,15 @@ public class CustomerDAO extends AbstractDAO<Customer> {
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error updating database", e);
             } finally {
-                closeStatement(st);
+                connector.closeStatement(st);
+                lock.unlock();
             }
         }
         return id;
     }
 
     @Override
-    protected Customer createEntity(ResultSet result) throws SQLException, EntityLogicException {
+    protected Customer buildEntity(ResultSet result) throws SQLException, EntityLogicException {
         Customer customer = null;
         if (result != null) {
             customer = new Customer();

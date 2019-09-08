@@ -2,6 +2,7 @@ package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
 import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
@@ -18,14 +19,14 @@ import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityT
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.REQUEST_STATUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
-public class RequestDAO extends AbstractDAO<Request> {
+public class RequestDAO extends AbstractDAO<Request> implements RequestInterface {
 
     RequestDAO() {
         super();
     }
 
     @Override
-    protected Request createEntity(ResultSet res) throws SQLException, EntityLogicException {
+    protected Request buildEntity(ResultSet res) throws SQLException, EntityLogicException {
         Request request = null;
         if (res != null) {
             request = new Request();
@@ -91,11 +92,13 @@ public class RequestDAO extends AbstractDAO<Request> {
         }
     }
 
-    public synchronized int[] selectActiveCustomerRequestsId(int customerId) throws DAOTechnicalException {
+    @Override
+    public int[] selectActiveCustomerRequestsId(int customerId) throws DAOTechnicalException {
         int[] array = null;
         if (customerId > 0) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(SELECT_ACTIVE_CUSTOMER_REQUESTS_ID);
                 st.setInt(1, customerId);
                 ResultSet res = st.executeQuery();
@@ -109,17 +112,19 @@ public class RequestDAO extends AbstractDAO<Request> {
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
-                closeStatement(st);
+                connector.closeStatement(st);
+                lock.unlock();
             }
         }
         return array;
     }
 
     @Override
-    public synchronized void update(Request request) throws DAOLayerException {
+    public void update(Request request) throws DAOLayerException {
         if (request != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(updateStatement());
                 int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
                 st.setInt(1, statusId);
@@ -129,21 +134,24 @@ public class RequestDAO extends AbstractDAO<Request> {
             } catch (SQLException e) {
                 throw new DAOTechnicalException("Error updating database", e);
             } finally {
-                closeStatement(st);
+                connector.closeStatement(st);
+                lock.unlock();
             }
         }
     }
 
 
-    public synchronized List<Request> getNewRequests() throws DAOLayerException {
+    @Override
+    public List<Request> getNewRequests() throws DAOLayerException {
         List<Request> list = new ArrayList<>();
         Statement st = null;
         Request entity = null;
         try {
+            lock.lock();
             st = connector.createStatement();
             ResultSet result = st.executeQuery(SELECT_NEW_REQUESTS + END_OF_STATEMENT);
             while (result.next()) {
-                entity = createEntity(result);
+                entity = buildEntity(result);
                 list.add(entity);
             }
         } catch (SQLException e) {
@@ -151,15 +159,17 @@ public class RequestDAO extends AbstractDAO<Request> {
         } catch (EntityLogicException e) {
             throw new DAOTechnicalException("Error creating entity", e);
         } finally {
-            closeStatement(st);
+            connector.closeStatement(st);
+            lock.unlock();
         }
         return list;
     }
 
-    private synchronized int[] getSpecifiedRequestsId(String sqlStatement) throws DAOTechnicalException {
+    private int[] getSpecifiedRequestsId(String sqlStatement) throws DAOTechnicalException {
         int[] array;
         Statement st = null;
         try {
+            lock.lock();
             st = connector.createStatement();
             ResultSet result = st.executeQuery(sqlStatement + END_OF_STATEMENT);
             result.last();
@@ -172,19 +182,23 @@ public class RequestDAO extends AbstractDAO<Request> {
         } catch (SQLException e) {
             throw new DAOTechnicalException("Error retrieving data from database", e);
         } finally {
-            closeStatement(st);
+            connector.closeStatement(st);
+            lock.unlock();
         }
         return array;
     }
 
-    public synchronized int[] getCurrentRequestsId() throws DAOLayerException {
+    @Override
+    public int[] getCurrentRequestsId() throws DAOLayerException {
         return getSpecifiedRequestsId(SELECT_CURRENT_REQUESTS_ID);
     }
 
+    @Override
     public int[] getFulfilledRequestsId() throws DAOLayerException {
         return getSpecifiedRequestsId(SELECT_FULFILLED_REQUESTS_ID);
     }
 
+    @Override
     public int[] getRejectedRequestsId() throws DAOLayerException {
         return getSpecifiedRequestsId(SELECT_REJECTED_REQUESTS_ID);
     }

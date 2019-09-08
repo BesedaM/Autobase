@@ -21,7 +21,6 @@ public class JSPPath {
     public static final String FULFILLED_REQUESTS_PAGE;
     public static final String REJECTED_REQUESTS_PAGE;
 
-    public static final String CARS_IN_ROUTES_PAGE;
     public static final String CAR_LIST_PAGE;
     public static final String CLIENT_LIST_PAGE;
     public static final String DRIVER_LIST_PAGE;
@@ -48,7 +47,6 @@ public class JSPPath {
         FULFILLED_REQUESTS_PAGE = "/view/admin/requests/fulfilled_requests.jsp";
         REJECTED_REQUESTS_PAGE = "/view/admin/requests/rejected_requests.jsp";
 
-        CARS_IN_ROUTES_PAGE = "/view/admin/cars_in_routes.jsp";
         CAR_LIST_PAGE = "/view/admin/car_list.jsp";
         CLIENT_LIST_PAGE = "/view/admin/client_list.jsp";
         DRIVER_LIST_PAGE = "/view/admin/driver_list.jsp";

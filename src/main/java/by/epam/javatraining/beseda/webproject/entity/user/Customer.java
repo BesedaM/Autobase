@@ -1,8 +1,6 @@
 package by.epam.javatraining.beseda.webproject.entity.user;
 
-import by.epam.javatraining.beseda.webproject.entity.exception.user.IllegalCompanyNameException;
-import by.epam.javatraining.beseda.webproject.entity.exception.user.IllegalCustomerEmailException;
-import by.epam.javatraining.beseda.webproject.entity.exception.user.IllegalCustomerTypeException;
+import by.epam.javatraining.beseda.webproject.entity.exception.CustomerException;
 
 import java.util.Objects;
 
@@ -33,27 +31,27 @@ public class Customer extends Person {
         this.companyName = companyName;
     }
 
-    public void setCustomerType(String type) throws IllegalCustomerTypeException {
+    public void setCustomerType(String type) throws CustomerException {
         if (type != null) {
             this.customerType = type;
         } else {
-            throw new IllegalCustomerTypeException();
+            throw new CustomerException();
         }
     }
 
-    public void setEmail(String email) throws IllegalCustomerEmailException {
+    public void setEmail(String email) throws CustomerException {
         if (email != null) {
             this.email = email;
         } else {
-            throw new IllegalCustomerEmailException();
+            throw new CustomerException();
         }
     }
 
-    public void setCompanyName(String companyName) throws IllegalCompanyNameException {
+    public void setCompanyName(String companyName) throws CustomerException {
         if (companyName != null) {
             this.companyName = companyName;
         } else {
-            throw new IllegalCompanyNameException();
+            throw new CustomerException();
         }
     }
 

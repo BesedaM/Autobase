@@ -1,13 +1,12 @@
 package by.epam.javatraining.beseda.webproject.entity.route;
 
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
-import by.epam.javatraining.beseda.webproject.entity.exception.route.IllegalRouteNameException;
-import by.epam.javatraining.beseda.webproject.entity.exception.route.IllegalRouteStatusException;
+import by.epam.javatraining.beseda.webproject.entity.exception.RouteException;
 
 import java.util.*;
 
-public class Route extends BaseEntity {
+public class Route extends EntityBase {
 
     private String name;
     private List<Task> tasks;
@@ -34,19 +33,19 @@ public class Route extends BaseEntity {
         this.status = status;
     }
 
-    public void setName(String name) throws IllegalRouteNameException {
+    public void setName(String name) throws RouteException {
         if (name != null) {
             this.name = name;
         } else {
-            throw new IllegalRouteNameException();
+            throw new RouteException();
         }
     }
 
-    public void setStatus(String status) throws IllegalRouteStatusException {
+    public void setStatus(String status) throws RouteException {
         if (status != null) {
             this.status = status;
         } else {
-            throw new IllegalRouteStatusException();
+            throw new RouteException();
         }
     }
 

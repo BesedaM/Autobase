@@ -3,11 +3,11 @@ package by.epam.javatraining.beseda.webproject.service.dependenceservice;
 import by.epam.javatraining.beseda.webproject.dao.dependencedao.ToOneDependenceDAO;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.BaseEntity;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
-public abstract class ToOneDependenceService <M extends BaseEntity, K extends BaseEntity> extends DependenceService<M,K>{
+public abstract class ToOneDependenceService <M extends EntityBase, K extends EntityBase> extends DependenceService<M,K>{
 
     protected ToOneDependenceService() {
         super();

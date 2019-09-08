@@ -8,7 +8,7 @@ public class TaskService extends AbstractEntityService<Task> {
 
     TaskService() {
         super();
-        entityDAO = daoEntityFactory.getTaskDAO();
+        entityDAO = mySQLDAOEntityFactory.getTaskDAO();
     }
 
     /**
