@@ -26,12 +26,13 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
      * @return array, containing all the dependence service ids
      * @throws DAOTechnicalException
      */
-    public synchronized int[] getDependenceId(EntityBase entity) throws DAOTechnicalException {
+    public int[] getDependenceId(EntityBase entity) throws DAOTechnicalException {
         int[] dependencyId = null;
         if (entity != null) {
             PreparedStatement st = null;
             try {
                 String statement = getDependenceStatement(entity);
+                lock.lock();
                 st = connector.prepareStatement(statement);
                 st.setInt(1, entity.getId());
                 ResultSet res = st.executeQuery();
@@ -46,6 +47,7 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
         return dependencyId;
@@ -60,10 +62,11 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
 
     protected abstract String updateDependenceStatement();
 
-    public synchronized void deleteDependence(M entity, K dependency) throws DAOTechnicalException {
+    public void deleteDependence(M entity, K dependency) throws DAOTechnicalException {
         if (entity != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(deleteDependenceStatement());
                 st.setInt(1, entity.getId());
                 st.setInt(2, dependency.getId());
@@ -72,15 +75,17 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
     }
 
 
-    public synchronized void deleteDependence(int entityId, int dependenceId) throws DAOTechnicalException {
+    public void deleteDependence(int entityId, int dependenceId) throws DAOTechnicalException {
         if (entityId > 0 && dependenceId > 0) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(deleteDependenceStatement());
                 st.setInt(1, entityId);
                 st.setInt(2, dependenceId);
@@ -89,6 +94,7 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
     }

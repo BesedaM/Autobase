@@ -6,6 +6,7 @@ import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperC
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Top hierarchy class for dependenceDAO
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> {
 
     protected WrapperConnector connector;
+    protected ReentrantLock lock = new ReentrantLock();
 
     protected DependenceDAO() {
         this.connector = new WrapperConnector();
@@ -28,10 +30,11 @@ public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> 
      * @param dependence dependency object
      * @throws DAOTechnicalException
      */
-    public synchronized void setDependence(M entity, K dependence) throws DAOTechnicalException {
+    public void setDependence(M entity, K dependence) throws DAOTechnicalException {
         if (entity != null && dependence != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(updateDependenceStatement());
                 st.setInt(1, dependence.getId());
                 st.setInt(2, entity.getId());
@@ -40,6 +43,7 @@ public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> 
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
     }
@@ -51,10 +55,11 @@ public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> 
      * @param dependenceId dependency id
      * @throws DAOTechnicalException
      */
-    public synchronized void setDependence(int entityId, int dependenceId) throws DAOTechnicalException {
+    public void setDependence(int entityId, int dependenceId) throws DAOTechnicalException {
         if (entityId >0 && dependenceId >0) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(updateDependenceStatement());
                 st.setInt(1, dependenceId);
                 st.setInt(2, entityId);
@@ -63,6 +68,7 @@ public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> 
                 throw new DAOTechnicalException("Error updating database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
     }
@@ -74,7 +80,9 @@ public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> 
     protected abstract String updateDependenceStatement();
 
     public void close(){
+        lock.lock();
         connector.closeConnector();
+        lock.unlock();
     }
 
 }

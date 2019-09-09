@@ -29,12 +29,13 @@ public abstract class ToOneDependenceDAO<M extends EntityBase, K extends EntityB
      * @return dependenceservice id according to entityservice id
      * @throws DAOTechnicalException
      */
-    public synchronized int getDependenceId(M entity) throws DAOTechnicalException {
+    public int getDependenceId(M entity) throws DAOTechnicalException {
 
         int dependenceId = 0;
         if (entity != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(getDependenceIdStatement());
                 st.setInt(1, entity.getId());
                 ResultSet res = st.executeQuery();
@@ -45,6 +46,7 @@ public abstract class ToOneDependenceDAO<M extends EntityBase, K extends EntityB
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
         return dependenceId;
@@ -61,10 +63,11 @@ public abstract class ToOneDependenceDAO<M extends EntityBase, K extends EntityB
      * @param entity the specified entityservice
      * @throws DAOTechnicalException
      */
-    public synchronized void deleteDependence(M entity) throws DAOTechnicalException {
+    public void deleteDependence(M entity) throws DAOTechnicalException {
         if (entity != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(updateDependenceStatement());
                 st.setInt(1, NULL);
                 st.setInt(2, entity.getId());
@@ -73,15 +76,17 @@ public abstract class ToOneDependenceDAO<M extends EntityBase, K extends EntityB
                 throw new DAOTechnicalException("Error updating database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
     }
 
 
-    public synchronized void deleteDependence(int entityId) throws DAOTechnicalException {
+    public void deleteDependence(int entityId) throws DAOTechnicalException {
         if (entityId >0) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(updateDependenceStatement());
                 st.setInt(1, NULL);
                 st.setInt(2, entityId);
@@ -90,6 +95,7 @@ public abstract class ToOneDependenceDAO<M extends EntityBase, K extends EntityB
                 throw new DAOTechnicalException("Error updating database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
     }

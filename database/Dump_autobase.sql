@@ -26,12 +26,12 @@ CREATE TABLE `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `country` varchar(15) NOT NULL DEFAULT 'Беларусь',
   `district` varchar(45) NOT NULL DEFAULT 'Минский',
-  `city` varchar(15) NOT NULL,
-  `street` varchar(20) DEFAULT '-',
+  `city` varchar(20) NOT NULL,
+  `street` varchar(40) DEFAULT '-',
   `houseNum` int(11) DEFAULT '0',
   `building` varchar(3) DEFAULT '-',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `addresses` (
 
 LOCK TABLES `addresses` WRITE;
 /*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
-INSERT INTO `addresses` VALUES (1,'Беларусь','Минский','Минск','Скорины',18,'-'),(2,'Беларусь','Минский','пос.Солнечный','-',NULL,'-'),(3,'Беларусь','Минский','Заславль','Уваровой',4,'-'),(4,'Беларусь','Минский','Минск','Орловская',39,'2'),(5,'Беларусь','Минский','Жодино','Землестроителей',18,'-'),(6,'Беларусь','Минский','Борисов','Победы пр.',34,'1'),(7,'Беларусь','Минский','Минск','Газеты Звезда пр.',41,'-'),(8,'Беларусь','Минский','Минск','Оранжерейная',10,'-'),(9,'Беларусь','Минский','Минск','Аэропорт Минск-2',NULL,'-'),(10,'Беларусь','Минский','Минск','ДС \"Дружная\"',0,'-'),(11,'Беларусь','Минский','г.п.Раков','Минская',12,'-'),(12,'Беларусь','Минский','Минск','Руссиянова',18,'3'),(13,'Беларусь','Минский','Минск','Карбышева',1,'3'),(14,'Беларусь','Минский','Минск','Толбухина',2,'-');
+INSERT INTO `addresses` VALUES (1,'Беларусь','Минский','Минск','Скорины',18,'-'),(2,'Беларусь','Минский','пос.Солнечный','-',NULL,'-'),(3,'Беларусь','Минский','Заславль','Уваровой',4,'-'),(4,'Беларусь','Минский','Минск','Орловская',39,'2'),(5,'Беларусь','Минский','Жодино','Землестроителей',18,'-'),(6,'Беларусь','Минский','Борисов','Победы пр.',34,'1'),(7,'Беларусь','Минский','Минск','Газеты Звезда пр.',41,'-'),(8,'Беларусь','Минский','Минск','Оранжерейная',10,'-'),(9,'Беларусь','Минский','Минск','Аэропорт Минск-2',NULL,'-'),(11,'Беларусь','Минский','г.п.Раков','Минская',12,'-'),(12,'Беларусь','Минский','Минск','Руссиянова',18,'3'),(13,'Беларусь','Минский','Минск','Карбышева',1,'3'),(14,'Беларусь','Минский','Минск','Толбухина',2,'-'),(33,'Беларусь','Минский','Минск','пр.Независимости',0,''),(34,'Беларусь','Минский','Минск','пр.Независимости',164,''),(35,'Беларусь','Гомельский','Гомель','Гагарина',0,''),(36,'Беларусь','Минский','Минск','ДС \"Дружная\" 1',0,''),(37,'Беларусь','Минский','Минск','ДС \"Дружная\" 1',0,''),(39,'Беларусь','Минский','Минск','ДС \"Дружная\"',0,''),(40,'Беларусь','Минский','Минск','ДС \"Дружная\"',0,''),(41,'Беларусь','Минский','Минск','ДС \"Дружная\"',0,''),(42,'Беларусь','Минский','Минск','ДС \"Дружная\"',0,''),(43,'Беларусь','Минский','Минск','пр.Независимости',164,''),(44,'Беларусь','Минский','Минск','пр.Независимости',164,''),(45,'Беларусь','Минский','Минск','пр.Независимости',164,''),(46,'Беларусь','Минский','Минск','ДС \"Дружная\"',0,''),(47,'Беларусь','Минский','Минск','пр.Независимости',164,'2'),(48,'Беларусь','Минский','Минск','пр.Независимости',164,'2'),(49,'Беларусь','Минский','Минск','пр.Независимости',164,'2'),(50,'Беларусь','Минский','Минск','пр.Независимости',164,'2'),(51,'Беларусь','Минский','Минск','ДС \"Дружная\" 1',0,''),(52,'Беларусь','Минский','Минск','пр.Независимости',164,'');
 /*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +140,7 @@ CREATE TABLE `cars` (
   KEY `fk_Car_Car_status1` (`status_id`),
   KEY `fk_Car_Car_type1` (`type_id`),
   KEY `fk_Car_Truck_capacity1` (`capacity_id`),
-  CONSTRAINT `fk_cars_drivers1` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cars_drivers1` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_Car_Car_state1` FOREIGN KEY (`state_id`) REFERENCES `car_state` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Car_Car_status1` FOREIGN KEY (`status_id`) REFERENCES `car_status` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Car_Car_type1` FOREIGN KEY (`type_id`) REFERENCES `car_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -173,8 +173,8 @@ CREATE TABLE `cars_in_routes` (
   KEY `fk_cars_in_routes_routes1_idx` (`route_id`),
   KEY `fk_cars_in_routes_cars1_idx` (`car_id`),
   CONSTRAINT `fk_cars_in_routes_cars1` FOREIGN KEY (`car_id`) REFERENCES `cars` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cars_in_routes_routes1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_cars_in_routes_routes1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +183,7 @@ CREATE TABLE `cars_in_routes` (
 
 LOCK TABLES `cars_in_routes` WRITE;
 /*!40000 ALTER TABLE `cars_in_routes` DISABLE KEYS */;
-INSERT INTO `cars_in_routes` VALUES (1,1,2),(2,2,5),(3,3,4),(4,4,4),(5,5,1),(6,6,2),(7,7,2),(8,8,2);
+INSERT INTO `cars_in_routes` VALUES (1,1,2),(2,2,5),(3,3,4),(4,4,4),(5,5,1),(7,7,2),(8,8,2),(25,10,1),(26,10,3),(29,6,3);
 /*!40000 ALTER TABLE `cars_in_routes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,7 +229,7 @@ CREATE TABLE `customers` (
   PRIMARY KEY (`id`),
   KEY `fk_Customer_Customer_type1` (`type_id`),
   KEY `fk_customers_users1_idx` (`id`),
-  CONSTRAINT `fk_customers_users1` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_customers_users1` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_Customer_Customer_type1` FOREIGN KEY (`type_id`) REFERENCES `customer_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -258,7 +258,7 @@ CREATE TABLE `drivers` (
   `phone` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_drivers_users1_idx` (`id`),
-  CONSTRAINT `fk_drivers_users1` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_drivers_users1` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -314,7 +314,7 @@ CREATE TABLE `requests` (
   KEY `fk_requests_request_status1_idx` (`status_id`),
   CONSTRAINT `fk_requests_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_requests_request_status1` FOREIGN KEY (`status_id`) REFERENCES `request_status` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +323,7 @@ CREATE TABLE `requests` (
 
 LOCK TABLES `requests` WRITE;
 /*!40000 ALTER TABLE `requests` DISABLE KEYS */;
-INSERT INTO `requests` VALUES (1,7,2,'2018-09-04 21:00:00','-'),(2,8,2,'2018-10-08 21:00:00','-'),(3,7,2,'2018-10-24 21:00:00','-'),(4,9,2,'2018-12-19 21:00:00','-'),(5,10,2,'2019-01-11 21:00:00',NULL),(6,11,2,'2019-07-02 21:00:00',NULL),(7,10,2,'2019-07-07 21:00:00',NULL),(8,9,2,'2019-07-31 21:00:00',NULL),(9,10,1,'2019-08-12 21:00:00','Привет! Привет! Как дела?'),(10,10,2,'2019-08-12 21:00:00','Hello!'),(12,10,3,'2019-08-12 21:00:00','еще одна заявка!!!!'),(13,10,1,'2019-08-12 21:00:00','Заявка, заявка, заявка.....'),(14,10,3,'2019-08-12 21:00:00',''),(15,9,1,'2019-08-13 21:00:00','1234567 хороший год');
+INSERT INTO `requests` VALUES (1,7,2,'2018-09-04 21:00:00','-'),(2,8,2,'2018-10-08 21:00:00','-'),(3,7,2,'2018-10-24 21:00:00','-'),(4,9,2,'2018-12-19 21:00:00','-'),(5,10,2,'2019-01-11 21:00:00',NULL),(6,11,2,'2019-07-02 21:00:00',NULL),(7,10,2,'2019-07-07 21:00:00',NULL),(8,9,2,'2019-07-31 21:00:00',NULL),(9,10,1,'2019-08-12 21:00:00','Привет! Привет! Как дела?'),(10,10,2,'2019-08-12 21:00:00','Hello!'),(12,10,3,'2019-08-12 21:00:00','еще одна заявка!!!!'),(13,10,1,'2019-08-12 21:00:00','Заявка, заявка, заявка.....'),(14,10,3,'2019-08-12 21:00:00',''),(15,9,1,'2019-08-13 21:00:00','1234567 хороший год'),(16,7,3,'2019-08-12 21:00:00','заявка отклоненная');
 /*!40000 ALTER TABLE `requests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -362,7 +362,7 @@ CREATE TABLE `route_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +371,7 @@ CREATE TABLE `route_status` (
 
 LOCK TABLES `route_status` WRITE;
 /*!40000 ALTER TABLE `route_status` DISABLE KEYS */;
-INSERT INTO `route_status` VALUES (1,'новый'),(2,'запланирован'),(3,'на выполнении'),(4,'выполнен');
+INSERT INTO `route_status` VALUES (1,'запланирован'),(2,'на выполнении'),(3,'выполнен');
 /*!40000 ALTER TABLE `route_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,9 +388,9 @@ CREATE TABLE `routes` (
   `status_id` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_Route_Route_status1` (`status_id`),
-  CONSTRAINT `fk_routes_requests` FOREIGN KEY (`id`) REFERENCES `requests` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `fk_Route_Route_status1` FOREIGN KEY (`status_id`) REFERENCES `route_status` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_routes_requests` FOREIGN KEY (`id`) REFERENCES `requests` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_Route_Route_status1` FOREIGN KEY (`status_id`) REFERENCES `route_status` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -399,7 +399,7 @@ CREATE TABLE `routes` (
 
 LOCK TABLES `routes` WRITE;
 /*!40000 ALTER TABLE `routes` DISABLE KEYS */;
-INSERT INTO `routes` VALUES (1,'Пассажироперевозки БО Солнечный',4),(2,'Грузоперевозки стройматериалы',4),(3,'Грузоперевозки сантехника',4),(4,'Перевозка мебели',4),(5,'Перевозка пассажиров',4),(6,'Пассажироперевозки г.п.Раков',3),(7,'Пассажироперевозки Аэропорт Минск-2',2),(8,'Пассажироперевозки Минск',2);
+INSERT INTO `routes` VALUES (1,'Пассажироперевозки БО Солнечный',3),(2,'Грузоперевозки стройматериалы',3),(3,'Грузоперевозки сантехника',3),(4,'Перевозка мебели',3),(5,'Перевозка пассажиров',3),(6,'Пассажироперевозки г.п.Раков',2),(7,'Пассажироперевозки Аэропорт Минск-2',1),(8,'Пассажироперевозки Минск',1),(10,'New route',1);
 /*!40000 ALTER TABLE `routes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,16 +412,16 @@ DROP TABLE IF EXISTS `tasks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `route_id` int(11) NOT NULL,
-  `address_id` int(11) NOT NULL,
+  `route_id` int(11) DEFAULT NULL,
+  `address_id` int(11) DEFAULT NULL,
   `time` datetime NOT NULL,
   `details` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_Task_Adress1` (`address_id`),
   KEY `fk_Task_Route1` (`route_id`),
-  CONSTRAINT `fk_Task_Adress1` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Task_Route1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+  KEY `fk_Task_Adress1` (`address_id`),
+  CONSTRAINT `fk_Task_Adress1` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_Task_Route1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,7 +430,7 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (1,1,1,'2018-09-18 10:30:00','Посадка пассажиров, ожидание'),(2,1,2,'2018-09-18 12:00:00','Прибытие на БО, высадка пассажиров'),(3,1,2,'2018-09-18 22:00:00','Посадка пассажиров'),(4,1,1,'2018-09-18 23:00:00','Прибытие в место отправления, высадка пассажиров'),(7,2,3,'2018-10-15 10:00:00','Погрузка товара, регистрация'),(8,2,4,'2018-10-15 13:00:00','Выгрузка товара, регистрация'),(9,3,5,'2018-11-08 10:00:00','Погрузка товара, получение накладной'),(10,3,1,'2018-11-08 13:00:00','Передача товара, передача накладной'),(11,4,6,'2019-01-12 10:00:00','Погрузка мебели, ожидание'),(12,4,7,'2019-01-12 14:00:00','Выгрузка мебели'),(17,5,8,'2019-02-03 10:00:00','Посадка пассажиров'),(18,5,9,'2019-02-03 12:00:00','Прибытие в аэропорт, выгрузка пассажиров'),(19,5,9,'2019-02-03 16:00:00','Посадка пассажиров'),(20,5,8,'2019-02-03 18:00:00','Прибытие в место отправления'),(21,6,10,'2019-08-13 12:00:00','Посадка пассажиров'),(22,6,11,'2019-08-13 13:00:00','Высадка пассажиров'),(23,6,11,'2019-08-13 22:00:00','Посадка пассажиров'),(24,6,10,'2019-08-13 23:00:00','Высадка пассажиров'),(25,7,8,'2019-09-02 11:00:00','Посадка пассажиров'),(26,7,9,'2019-09-02 13:00:00','Прибытие в аэропорт, выгрузка пассажиров'),(27,7,9,'2019-09-02 17:00:00','Посадка пассажиров'),(28,7,8,'2019-09-02 19:00:00','Прибытие в место отправления'),(29,8,12,'2019-08-24 13:00:00','Посадка пассажиров'),(30,8,13,'2019-08-24 14:00:00','Высадка пассажиров'),(31,8,13,'2019-08-24 15:30:00','Посадка пассажиров'),(32,8,14,'2019-08-24 17:00:00','Высадка пассажиров');
+INSERT INTO `tasks` VALUES (1,1,1,'2018-09-18 10:30:00','Посадка пассажиров, ожидание'),(2,1,2,'2018-09-18 12:00:00','Прибытие на БО, высадка пассажиров'),(3,1,2,'2018-09-18 22:00:00','Посадка пассажиров'),(4,1,1,'2018-09-18 23:00:00','Прибытие в место отправления, высадка пассажиров'),(7,2,3,'2018-10-15 10:00:00','Погрузка товара, регистрация'),(8,2,4,'2018-10-15 13:00:00','Выгрузка товара, регистрация'),(9,3,5,'2018-11-08 10:00:00','Погрузка товара, получение накладной'),(10,3,1,'2018-11-08 13:00:00','Передача товара, передача накладной'),(11,4,6,'2019-01-12 10:00:00','Погрузка мебели, ожидание'),(12,4,7,'2019-01-12 14:00:00','Выгрузка мебели'),(17,5,8,'2019-02-03 10:00:00','Посадка пассажиров'),(18,5,9,'2019-02-03 12:00:00','Прибытие в аэропорт, выгрузка пассажиров'),(19,5,9,'2019-02-03 16:00:00','Посадка пассажиров'),(20,5,8,'2019-02-03 18:00:00','Прибытие в место отправления'),(21,6,42,'2019-08-13 12:00:00','Посадка пассажиров'),(22,6,11,'2019-08-13 13:00:00','Высадка пассажиров'),(23,6,11,'2019-08-13 22:00:00','Посадка пассажиров'),(25,7,8,'2019-09-02 11:00:00','Посадка пассажиров'),(26,7,9,'2019-09-02 13:00:00','Прибытие в аэропорт, выгрузка пассажиров'),(27,7,9,'2019-09-02 17:00:00','Посадка пассажиров'),(28,7,8,'2019-09-02 19:00:00','Прибытие в место отправления'),(29,8,12,'2019-10-05 12:00:00','Забрать пассажиров'),(30,8,13,'2019-10-05 13:00:00','Высадка пассажиров'),(31,8,13,'2019-10-05 14:00:00','Забрать пассажиров'),(32,8,14,'2019-10-05 16:00:00','Высадка пассажиров'),(57,10,34,'2019-09-01 00:00:00','Забрать пассажиров'),(58,10,35,'2019-09-01 12:00:00','Высадка пассажиров'),(62,6,46,'2019-08-13 23:00:00','Высадка пассажиров');
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,4 +495,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-16  2:23:21
+-- Dump completed on 2019-09-09 11:57:23

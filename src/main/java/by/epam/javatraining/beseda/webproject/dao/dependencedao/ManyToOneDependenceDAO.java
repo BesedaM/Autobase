@@ -26,11 +26,12 @@ public abstract class ManyToOneDependenceDAO<M extends EntityBase, K extends Ent
      * @return array, containing entities id
      * @throws DAOTechnicalException
      */
-    public synchronized int[] getEntitiesIdByDependenceId(K dependence) throws DAOTechnicalException {
+    public int[] getEntitiesIdByDependenceId(K dependence) throws DAOTechnicalException {
         int[] entityId = null;
         if (dependence != null) {
             PreparedStatement st = null;
             try {
+                lock.lock();
                 st = connector.prepareStatement(getEntitiesByDependenceStatement());
                 st.setInt(1, dependence.getId());
                 ResultSet res = st.executeQuery();
@@ -45,6 +46,7 @@ public abstract class ManyToOneDependenceDAO<M extends EntityBase, K extends Ent
                 throw new DAOTechnicalException("Error retrieving data from database", e);
             } finally {
                 connector.closeStatement(st);
+                lock.unlock();
             }
         }
         return entityId;
