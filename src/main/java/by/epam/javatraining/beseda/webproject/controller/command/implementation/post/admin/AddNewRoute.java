@@ -4,6 +4,7 @@ import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
 import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
+import by.epam.javatraining.beseda.webproject.entity.route.Task;
 import by.epam.javatraining.beseda.webproject.service.dependenceservice.CarRouteService;
 import by.epam.javatraining.beseda.webproject.service.dependenceservice.ServiceDependenceFactory;
 import by.epam.javatraining.beseda.webproject.service.entityservice.RouteService;
@@ -54,7 +55,7 @@ public class AddNewRoute implements ActionCommand {
             }
         }
         session.setAttribute(CURRENT_ROUTE, route);
-        session.setAttribute(TASK_LIST,new ArrayList());
+        session.setAttribute(TASK_LIST,new ArrayList<Task>());
         return requestParam.get(CURRENT_PAGE)[0];
     }
 }

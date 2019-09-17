@@ -7,11 +7,12 @@ import org.apache.log4j.Logger;
 
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
-public abstract class ActionCommandBase implements ActionCommand{
+@SuppressWarnings("unused")
+public abstract class ActionCommandBase implements ActionCommand {
 
-    private static Logger log = Logger.getLogger(ERROR_LOGGER);
-    private static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-    private static ServiceDependenceFactory serviceDependenceFactory=ServiceDependenceFactory.getFactory();
-    private static EntityBuilderFactory entityBuilderFactory=EntityBuilderFactory.getFactory();
+	private static final Logger log = Logger.getLogger(ERROR_LOGGER);
+	private static final ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
+	private static final ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
+	private static final EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
 
 }

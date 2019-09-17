@@ -1,15 +1,16 @@
 package by.epam.javatraining.beseda.webproject.controller.command;
 
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.get.LocaleChangerCommand;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.get.ReloadCarsInRoutes;
+import by.epam.javatraining.beseda.webproject.controller.command.implementation.get.*;
 import by.epam.javatraining.beseda.webproject.controller.command.implementation.gotopage.*;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.post.CustomerRegisterCommand;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.post.LoginCommand;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.get.LogoutCommand;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.get.UpdateCustomerRequestsCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.implementation.post.*;
 import by.epam.javatraining.beseda.webproject.controller.command.implementation.post.admin.*;
 
+/**
+ * Class containing all the application commands
+ * 
+ * @author Maryia_Biaseda
+ *
+ */
 public enum ActionCommandEnum {
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),

@@ -16,20 +16,21 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class ChangeRoute implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        Map<String, String[]> parameters = content.requestParameters();
-        HttpSession session = content.getSession();
-        int routeId = Integer.parseInt(parameters.get(JSPParameter.ID)[0]);
-        Map<Request, Customer> requestCustomerMap = (Map<Request, Customer>) session.getAttribute(REQUEST_CUSTOMER_MAP);
-        Route route = null;
-        for (Map.Entry<Request, Customer> entry : requestCustomerMap.entrySet()) {
-            if (entry.getKey().getId() == routeId) {
-                route = entry.getKey().getRoute();
-            }
-        }
-        session.setAttribute(CHANGING_ROUTE,route);
+	@SuppressWarnings("unchecked")
+	@Override
+	public String execute(SessionRequestContent content) {
+		Map<String, String[]> parameters = content.requestParameters();
+		HttpSession session = content.getSession();
+		int routeId = Integer.parseInt(parameters.get(JSPParameter.ID)[0]);
+		Map<Request, Customer> requestCustomerMap = (Map<Request, Customer>) session.getAttribute(REQUEST_CUSTOMER_MAP);
+		Route route = null;
+		for (Map.Entry<Request, Customer> entry : requestCustomerMap.entrySet()) {
+			if (entry.getKey().getId() == routeId) {
+				route = entry.getKey().getRoute();
+			}
+		}
+		session.setAttribute(CHANGING_ROUTE, route);
 
-        return CHANGE_ROUTE_PAGE;
-    }
+		return CHANGE_ROUTE_PAGE;
+	}
 }

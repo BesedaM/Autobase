@@ -1,7 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.DriverInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
@@ -15,6 +14,7 @@ import java.sql.SQLException;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.*;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.USER_DRIVER;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
+
 
 public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 
@@ -35,7 +35,7 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
                 st.setInt(4, id);
                 st.executeUpdate();
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -49,7 +49,7 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
         Driver driver = null;
         if (res != null) {
             driver = new Driver();
-            driver.setId(res.getInt(SQLQuery.DRIVER_ID));
+            driver.setId(res.getInt(ID));
             driver.setName(res.getString(NAME));
             driver.setSurname(res.getString(SURNAME));
             driver.setPhone(res.getString(PHONE));
