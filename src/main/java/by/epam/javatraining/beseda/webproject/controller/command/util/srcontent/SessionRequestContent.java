@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Class supposed to retrieve and store all the necessary data from request object
+ * Class supposed to retrieve and store all the necessary data from request object.
  *
  * @author Beseda
  */
@@ -25,7 +25,7 @@ public class SessionRequestContent {
     }
 
     /**
-     * Constructor retrieves data from HttpServletRequest object into inner data storage maps
+     * Constructor retrieves data from HttpServletRequest object into inner data storage maps.
      *
      * @param request data source
      */

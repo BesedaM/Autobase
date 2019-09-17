@@ -3,7 +3,6 @@ package by.epam.javatraining.beseda.webproject.dao.entitydao;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
@@ -16,6 +15,7 @@ import java.sql.SQLException;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.ROUTE_NAME;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.ROUTE_STATUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.ID;
 
 public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
 
@@ -28,7 +28,7 @@ public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
         Route route = null;
         if (result != null) {
             route = new Route();
-            route.setId(result.getInt(SQLQuery.ROUTE_ID));
+            route.setId(result.getInt(ID));
             route.setName(result.getString(ROUTE_NAME));
             route.setStatus(result.getString(ROUTE_STATUS));
         }
@@ -48,7 +48,7 @@ public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
                 st.executeUpdate();
                 id = route.getId();
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -115,7 +115,7 @@ public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
                 st.setInt(2, id);
                 st.executeUpdate();
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating route status", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();

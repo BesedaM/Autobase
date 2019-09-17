@@ -6,9 +6,9 @@ import by.epam.javatraining.beseda.webproject.entity.car.Car;
 
 import java.util.List;
 
-public interface CarInterface extends EntityDAO<Car>{
+public interface CarInterface extends EntityDAO<Car> {
 
-    List<Car> getCarsByType(String carType) throws DAOLayerException;
+	List<Car> getCarsByType(String carType) throws DAOLayerException;
 
-    void updateCarState(int id, String state) throws DAOTechnicalException;
+	void updateCarState(int id, String state) throws DAOTechnicalException;
 }

@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import by.epam.javatraining.beseda.webproject.dao.entitydao.CarInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.entity.car.Bus;
@@ -24,8 +24,19 @@ public class CarService extends AbstractEntityService<Car> {
         entityDAO = mySQLDAOEntityFactory.getCarDAO();
     }
 
+
     /**
-     * Creates entityservice WITHOUT ID with the given data
+     * Creates entity WITHOUT ID with the given data.
+     * 
+     * @param carType
+     * @param carNumber
+     * @param model
+     * @param status
+     * @param state
+     * @param seatsNumber
+     * @param capacity
+     * @return
+     * @throws ServiceLogicException
      */
     public Car createCar(String carType, String carNumber, String model, String status, String state,
                          int seatsNumber, int capacity) throws ServiceLogicException {
@@ -59,7 +70,14 @@ public class CarService extends AbstractEntityService<Car> {
     }
 
 
-    public List<Car> getCarsByType(String carType) throws ServiceLayerException {
+    /**
+     * Returns the list of cars of given type
+     * 
+     * @param carType the type of car
+     * @return list of entities
+     * @throws ServiceLayerException
+     */
+    public final List<Car> getCarsByType(String carType) throws ServiceLayerException {
         List<Car> carList = null;
         if (carType != null) {
             try {
@@ -71,7 +89,7 @@ public class CarService extends AbstractEntityService<Car> {
         return carList;
     }
 
-    public void updateCarState(int carId, String state) throws ServiceTechnicalException {
+    public final void updateCarState(int carId, String state) throws ServiceTechnicalException {
         if (carId > 0 && state != null) {
             try {
                 ((CarInterface) entityDAO).updateCarState(carId, state);

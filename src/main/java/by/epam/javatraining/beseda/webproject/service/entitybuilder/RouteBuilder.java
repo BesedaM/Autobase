@@ -4,7 +4,7 @@ import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.entity.exception.task.IllegalAddressException;
+import by.epam.javatraining.beseda.webproject.entity.exception.TaskException;
 import by.epam.javatraining.beseda.webproject.service.dependenceservice.CarRouteService;
 import by.epam.javatraining.beseda.webproject.service.dependenceservice.TaskAddressService;
 import by.epam.javatraining.beseda.webproject.service.dependenceservice.TaskRouteService;
@@ -55,7 +55,7 @@ public class RouteBuilder extends EntityBuilder<Route> {
                             if (address != null) {
                                 task.setAddress(address);
                             }
-                        } catch (IllegalAddressException e) {
+                        } catch (TaskException e) {
                             throw new ServiceLogicException(e);
                         }
                     }

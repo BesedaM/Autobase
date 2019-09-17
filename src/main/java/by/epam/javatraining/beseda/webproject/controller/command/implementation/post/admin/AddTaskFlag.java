@@ -12,12 +12,12 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class AddTaskFlag implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        Map<String, String[]> requestParam = content.requestParameters();
-        HttpSession session = content.getSession();
+	@Override
+	public String execute(SessionRequestContent content) {
+		Map<String, String[]> requestParam = content.requestParameters();
+		HttpSession session = content.getSession();
 
-        session.setAttribute(ADD_TASK_FLAG,STATUS_TRUE);
-        return requestParam.get(CURRENT_PAGE)[0];
-    }
+		session.setAttribute(ADD_TASK_FLAG, STATUS_TRUE);
+		return requestParam.get(CURRENT_PAGE)[0];
+	}
 }

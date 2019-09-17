@@ -18,29 +18,29 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 
 public class GoToAddNewRoutePage implements ActionCommand {
 
-    private static Logger log = Logger.getLogger(ERROR_LOGGER);
-    private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-    private CustomerService customerService = serviceEntityFactory.getCustomerService();
+	private static Logger log = Logger.getLogger(ERROR_LOGGER);
+	private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
+	private CustomerService customerService = serviceEntityFactory.getCustomerService();
 
-    @Override
-    public String execute(SessionRequestContent content) {
+	@Override
+	public String execute(SessionRequestContent content) {
 
-        Map<String, String[]> requestParam = content.requestParameters();
-        Map<String, Object> requestAttributes = content.requestAttributes();
-        HttpSession session=content.getSession();
-        Integer requestId = Integer.parseInt(requestParam.get(ID)[0]);
-        int customerId = Integer.parseInt(requestParam.get(CUSTOMER_ID)[0]);
-        try {
-            Customer customer = customerService.getEntityById(customerId);
-            requestAttributes.put(CUSTOMER, customer);
-        } catch (ServiceLayerException e) {
-            log.error(e);
-        }
+		Map<String, String[]> requestParam = content.requestParameters();
+		Map<String, Object> requestAttributes = content.requestAttributes();
+		HttpSession session = content.getSession();
+		Integer requestId = Integer.parseInt(requestParam.get(ID)[0]);
+		int customerId = Integer.parseInt(requestParam.get(CUSTOMER_ID)[0]);
+		try {
+			Customer customer = customerService.getEntityById(customerId);
+			requestAttributes.put(CUSTOMER, customer);
+		} catch (ServiceLayerException e) {
+			log.error(e);
+		}
 
-        String text = requestParam.get(REQUEST_TEXT)[0];
+		String text = requestParam.get(REQUEST_TEXT)[0];
 
-        session.setAttribute(NEW_REQUEST_ID, requestId);
-        session.setAttribute(NEW_REQUEST_TEXT, text);
-        return ADD_NEW_ROUTE_PAGE;
-    }
+		session.setAttribute(NEW_REQUEST_ID, requestId);
+		session.setAttribute(NEW_REQUEST_TEXT, text);
+		return ADD_NEW_ROUTE_PAGE;
+	}
 }

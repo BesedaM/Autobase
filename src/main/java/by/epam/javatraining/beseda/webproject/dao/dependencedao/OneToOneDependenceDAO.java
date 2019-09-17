@@ -41,7 +41,7 @@ public abstract class OneToOneDependenceDAO<M extends EntityBase, K extends Enti
                     entityId = res.getInt(1);
                 }
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();

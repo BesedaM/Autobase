@@ -1,7 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLogicException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
@@ -16,6 +15,7 @@ import java.sql.SQLException;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.LOGIN;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.PASSWORD;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.USER_ROLE;
+import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
 public class UserDAO extends AbstractDAO<User> implements UserInterface {
@@ -39,9 +39,9 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
                     user = buildEntity(res);
                 }
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } catch (EntityLogicException e) {
-                throw new DAOTechnicalException("Error creating entityservice ", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -64,9 +64,9 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
                     user = buildEntity(res);
                 }
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } catch (EntityLogicException e) {
-                throw new DAOTechnicalException("Error creating entityservice ", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -88,7 +88,7 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
                 st.executeUpdate();
                 succeed = true;
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -101,9 +101,9 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
     protected User buildEntity(ResultSet result) throws SQLException, EntityLogicException {
         User user = null;
         if (result != null) {
-            user = new User();
+            user = new User();          
             user.setRole(result.getString(USER_ROLE));
-            user.setId(result.getInt(SQLQuery.USER_ID));
+            user.setId(result.getInt(ID));
             user.setLogin(result.getString(LOGIN));
             user.setPassword(result.getBytes(PASSWORD));
         }

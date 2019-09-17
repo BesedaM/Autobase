@@ -10,17 +10,17 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LOCALE_FILE;
 
 public class LogoutCommand implements ActionCommand {
-    @Override
-    public String execute(SessionRequestContent content) {
-        HttpSession httpSession = content.getSession();
-        String language = (String) httpSession.getAttribute(LANGUAGE);
-        String locale_file = (String) httpSession.getAttribute(LOCALE_FILE);
-        httpSession.invalidate();
+	@Override
+	public String execute(SessionRequestContent content) {
+		HttpSession httpSession = content.getSession();
+		String language = (String) httpSession.getAttribute(LANGUAGE);
+		String localeFile = (String) httpSession.getAttribute(LOCALE_FILE);
+		httpSession.invalidate();
 
-        httpSession = content.renewSession();
-        httpSession.setAttribute(LANGUAGE, language);
-        httpSession.setAttribute(LOCALE_FILE, locale_file);
+		httpSession = content.renewSession();
+		httpSession.setAttribute(LANGUAGE, language);
+		httpSession.setAttribute(LOCALE_FILE, localeFile);
 
-        return LOGIN_PAGE;
-    }
+		return LOGIN_PAGE;
+	}
 }

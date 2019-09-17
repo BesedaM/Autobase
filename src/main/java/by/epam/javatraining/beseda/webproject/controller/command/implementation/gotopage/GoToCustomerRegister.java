@@ -7,8 +7,8 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class GoToCustomerRegister implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        return CUSTOMER_REGISTER_PAGE;
-    }
+	@Override
+	public String execute(SessionRequestContent content) {
+		return CUSTOMER_REGISTER_PAGE;
+	}
 }

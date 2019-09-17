@@ -10,11 +10,11 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class GoToAdminMain implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        HttpSession session=content.getSession();
-        session.setAttribute(REQUEST_CUSTOMER_MAP, null);
-        return ADMIN_MAIN_PAGE;
-    }
+	@Override
+	public String execute(SessionRequestContent content) {
+		HttpSession session = content.getSession();
+		session.setAttribute(REQUEST_CUSTOMER_MAP, null);
+		return ADMIN_MAIN_PAGE;
+	}
 
 }

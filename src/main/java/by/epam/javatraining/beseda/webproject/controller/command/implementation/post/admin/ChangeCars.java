@@ -24,67 +24,65 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 
 public class ChangeCars implements ActionCommand {
 
-    private static Logger log = Logger.getLogger(ERROR_LOGGER);
-    private static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
-    private static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
+	private static Logger log = Logger.getLogger(ERROR_LOGGER);
+	private static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
+	private static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
 
+	private CarRouteService carRouteService = serviceDependenceFactory.getCarRouteService();
+	private CarService carService = serviceEntityFactory.getCarService();
 
-    private CarRouteService carRouteService = serviceDependenceFactory.getCarRouteService();
-    private CarService carService = serviceEntityFactory.getCarService();
+	@Override
+	public String execute(SessionRequestContent content) {
+		Map<String, String[]> requestParam = content.requestParameters();
+		HttpSession session = content.getSession();
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        Map<String, String[]> requestParam = content.requestParameters();
-        HttpSession session = content.getSession();
+		Route route = (Route) session.getAttribute(CHANGING_ROUTE);
 
-        Route route = (Route) session.getAttribute(CHANGING_ROUTE);
+		Set<Integer> previousCars = new HashSet<>();
+		try {
+			int[] prevCarsArr = carRouteService.getEntities01Id(route);
+			for (int i = 0; i < prevCarsArr.length; i++) {
+				previousCars.add(prevCarsArr[i]);
+			}
+		} catch (ServiceLayerException e) {
+			log.error(e);
+		}
 
-        Set<Integer> previousCars = new HashSet<>();
-        try {
-            int[] prevCarsArr = carRouteService.getEntities01Id(route);
-            for (int i = 0; i < prevCarsArr.length; i++) {
-                previousCars.add(prevCarsArr[i]);
-            }
-        } catch (ServiceLayerException e) {
-            log.error(e);
-        }
+		Set<Integer> newCars = new HashSet<>();
 
-        Set<Integer> newCars = new HashSet<>();
+		String[] carsId = requestParam.get(CARS_ID);
+		for (int i = 0; i < carsId.length; i++) {
+			int carId = Integer.parseInt(carsId[i]);
+			newCars.add(carId);
+		}
 
-        String[] carsId = requestParam.get(CARS_ID);
-        for (int i = 0; i < carsId.length; i++) {
-            int carId = Integer.parseInt(carsId[i]);
-            newCars.add(carId);
-        }
+		processCarsData(route, newCars, previousCars);
 
-        processCarsData(route, newCars, previousCars);
+		session.setAttribute(CHANGE_CAR, null);
+		return requestParam.get(CURRENT_PAGE)[0];
+	}
 
-        session.setAttribute(CHANGE_CAR, null);
-        return requestParam.get(CURRENT_PAGE)[0];
-    }
+	private void processCarsData(Route route, Set<Integer> newCars, Set<Integer> previousCars) {
+		int routeId = route.getId();
+		try {
+			for (Integer carId : previousCars) {
+				if (!newCars.contains(carId)) {
+					carRouteService.deleteDependence(carId, routeId);
+					route.removeCar(carId);
+				}
+			}
 
+			for (Integer carId : newCars) {
+				if (!previousCars.contains(carId)) {
+					carRouteService.addDependence(carId, routeId);
+					Car car = carService.getEntityById(carId);
+					route.addCar(car);
+				}
+			}
 
-    private void processCarsData(Route route, Set<Integer> newCars, Set<Integer> previousCars) {
-        int routeId = route.getId();
-        try {
-            for (Integer carId : previousCars) {
-                if (!newCars.contains(carId)) {
-                    carRouteService.deleteDependence(carId, routeId);
-                    route.removeCar(carId);
-                }
-            }
+		} catch (ServiceLayerException e) {
+			log.error(e);
+		}
 
-            for (Integer carId : newCars) {
-                if (!previousCars.contains(carId)) {
-                    carRouteService.addDependence(carId, routeId);
-                    Car car = carService.getEntityById(carId);
-                    route.addCar(car);
-                }
-            }
-
-        } catch (ServiceLayerException e) {
-            log.error(e);
-        }
-
-    }
+	}
 }
