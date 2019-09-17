@@ -28,7 +28,7 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
                 ResultSet res = st.executeQuery();
                 id = res.getInt(1);
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -49,13 +49,13 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
                 ResultSet res = st.executeQuery();
                 res.last();
                 ids = new int[res.getRow()];
-                res.beforeFirst();
                 int i = 0;
+                res.beforeFirst();
                 while (res.next()) {
                     ids[i++] = res.getInt(1);
                 }
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();

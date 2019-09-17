@@ -4,8 +4,6 @@ import by.epam.javatraining.beseda.webproject.dao.interfacedao.AddressInterface;
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +22,7 @@ public class AddressDAO extends AbstractDAO<Address> implements AddressInterface
         Address addr = null;
         if (result != null) {
             addr = new Address();
-            addr.setId(result.getInt(SQLQuery.ADDRESS_ID));
+            addr.setId(result.getInt(ID));
             addr.setCountry(result.getString(COUNTRY));
             addr.setDistrict(result.getString(DISTRICT));
             addr.setCity(result.getString(CITY));

@@ -7,8 +7,8 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class GoToPersonalCustomerData implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        return CUSTOMER_PERSONAL_DATA_PAGE;
-    }
+	@Override
+	public String execute(SessionRequestContent content) {
+		return CUSTOMER_PERSONAL_DATA_PAGE;
+	}
 }

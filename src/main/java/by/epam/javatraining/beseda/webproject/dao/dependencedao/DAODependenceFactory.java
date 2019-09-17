@@ -3,7 +3,7 @@ package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 public class DAODependenceFactory {
 
     private static class SingletonHolder {
-        public static final DAODependenceFactory instance = new DAODependenceFactory();
+        public static DAODependenceFactory instance = new DAODependenceFactory();
     }
 
     private final CarDriverDependenceDAO carDriverDAO;

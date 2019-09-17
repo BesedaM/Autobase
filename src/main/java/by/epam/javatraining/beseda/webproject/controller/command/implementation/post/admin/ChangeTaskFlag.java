@@ -17,21 +17,21 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class ChangeTaskFlag implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        Map<String, String[]> requestParam = content.requestParameters();
-        HttpSession session = content.getSession();
-        int taskId = Integer.parseInt(requestParam.get(ID)[0]);
-        Route route=(Route) session.getAttribute(CHANGING_ROUTE);
-        List<Task> taskList=route.getTasksList();
-        Task changingTask=null;
-        for(Task task:taskList){
-            if(task.getId()==taskId){
-                changingTask=task;
-            }
-        }
-        session.setAttribute(CHANGE_CAR, null);
-        session.setAttribute(TASK_TO_CHANGE,changingTask);
-        return requestParam.get(CURRENT_PAGE)[0];
-    }
+	@Override
+	public String execute(SessionRequestContent content) {
+		Map<String, String[]> requestParam = content.requestParameters();
+		HttpSession session = content.getSession();
+		int taskId = Integer.parseInt(requestParam.get(ID)[0]);
+		Route route = (Route) session.getAttribute(CHANGING_ROUTE);
+		List<Task> taskList = route.getTasksList();
+		Task changingTask = null;
+		for (Task task : taskList) {
+			if (task.getId() == taskId) {
+				changingTask = task;
+			}
+		}
+		session.setAttribute(CHANGE_CAR, null);
+		session.setAttribute(TASK_TO_CHANGE, changingTask);
+		return requestParam.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+	}
 }

@@ -20,6 +20,6 @@ public class ChangeCarListFlag implements ActionCommand {
 
 
         session.setAttribute(CHANGE_CAR, STATUS_TRUE);
-        return requestParam.get(CURRENT_PAGE)[0];
+        return requestParam.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
     }
 }

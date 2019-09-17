@@ -14,14 +14,15 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class UpdateCustomerRequestsCommand implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        HttpSession session = content.getSession();
-        Map<String, String[]> parameters = content.requestParameters();
-        List<Request> requestList=(List<Request>)session.getAttribute(REQUEST_LIST);
-        Request newRequest=(Request)session.getAttribute(NEW_REQUEST);
-        requestList.add(newRequest);
-        session.setAttribute(NEW_REQUEST,null);
-        return parameters.get(CURRENT_PAGE)[0];
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public String execute(SessionRequestContent content) {
+		HttpSession session = content.getSession();
+		Map<String, String[]> parameters = content.requestParameters();
+		List<Request> requestList = (List<Request>) session.getAttribute(REQUEST_LIST);
+		Request newRequest = (Request) session.getAttribute(NEW_REQUEST);
+		requestList.add(newRequest);
+		session.setAttribute(NEW_REQUEST, null);
+		return parameters.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+	}
 }

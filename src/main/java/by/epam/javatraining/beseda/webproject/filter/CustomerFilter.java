@@ -12,18 +12,21 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 @WebFilter(filterName = "CustomerFilter", urlPatterns = "/view/customer/*")
 public class CustomerFilter implements Filter {
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+	public void init(FilterConfig filterConfig) throws ServletException {
+	}
 
-        HttpServletRequest req = (HttpServletRequest) request;
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 
-        if (USER_CUSTOMER.equals(req.getSession().getAttribute(USER_ROLE))) {
-            chain.doFilter(request, response);
-        } else {
-            req.getSession().invalidate();
-            request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
-        }
+		HttpServletRequest req = (HttpServletRequest) request;
 
-    }
+		if (USER_CUSTOMER.equals(req.getSession().getAttribute(USER_ROLE))) {
+			chain.doFilter(request, response);
+		} else {
+			req.getSession().invalidate();
+			request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+		}
+
+	}
 }

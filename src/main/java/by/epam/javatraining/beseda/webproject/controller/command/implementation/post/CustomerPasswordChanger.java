@@ -21,33 +21,33 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 
 public class CustomerPasswordChanger implements ActionCommand {
 
-    private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-    private UserService userService = serviceEntityFactory.getUserService();
-    private static Logger log = Logger.getLogger(ERROR_LOGGER);
+	private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
+	private UserService userService = serviceEntityFactory.getUserService();
+	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 
-    @Override
-    public String execute(SessionRequestContent content) {
+	@Override
+	public String execute(SessionRequestContent content) {
 
-        Map<String, String[]> data = content.requestParameters();
-        Map<String, Object> attributes = content.requestAttributes();
-        HttpSession session = content.getSession();
-        String newPassword = data.get(NEW_PASSWORD)[0];
-        String password = data.get(PASSWORD)[0];
-        String passwordConfirm = data.get(PASSWORD_CONFIRM)[0];
+		Map<String, String[]> data = content.requestParameters();
+		Map<String, Object> attributes = content.requestAttributes();
+		HttpSession session = content.getSession();
+		String newPassword = data.get(NEW_PASSWORD)[0];
+		String password = data.get(PASSWORD)[0];
+		String passwordConfirm = data.get(PASSWORD_CONFIRM)[0];
 
-        if (password.equals(passwordConfirm) && RegisterLogic.legalPassword(newPassword)) {
-            User user = (User) session.getAttribute(USER_DATA);
-            try {
-                if (userService.changePassword(user.getId(), newPassword)) {
-                    attributes.put(PASSWORD_CHANGED, STATUS_TRUE);
-                }
-            } catch (ServiceLayerException e) {
-                log.error(e + " Impossible to change user's password");
-            }
-        } else {
-            attributes.put(ERROR_MESSAGE, STATUS_TRUE);
-        }
+		if (password.equals(passwordConfirm) && RegisterLogic.legalPassword(newPassword)) {
+			User user = (User) session.getAttribute(USER_DATA);
+			try {
+				if (userService.changePassword(user.getId(), newPassword)) {
+					attributes.put(PASSWORD_CHANGED, STATUS_TRUE);
+				}
+			} catch (ServiceLayerException e) {
+				log.error(e + " Impossible to change user's password");
+			}
+		} else {
+			attributes.put(ERROR_MESSAGE, STATUS_TRUE);
+		}
 
-        return data.get(CURRENT_PAGE)[0];
-    }
+		return data.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+	}
 }

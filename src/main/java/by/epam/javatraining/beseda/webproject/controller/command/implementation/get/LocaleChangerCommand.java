@@ -12,24 +12,24 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class LocaleChangerCommand implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
+	@Override
+	public String execute(SessionRequestContent content) {
 
-        HttpSession session = content.getSession();
-        Map<String, String[]> data = content.requestParameters();
+		HttpSession session = content.getSession();
+		Map<String, String[]> data = content.requestParameters();
 
-        String language = data.get(LANGUAGE_SELECT)[0];
-        String locale = null;
-        session.setAttribute(LANGUAGE, language);
+		String language = data.get(LANGUAGE_SELECT)[0];
+		String locale = null;
+		session.setAttribute(LANGUAGE, language);
 
-        if (language.equals(LANGUAGE_EN)) {
-            locale = LOCALE_EN;
-        } else if (language.equals(LANGUAGE_RU)) {
-            locale = LOCALE_RU;
-        }
+		if (language.equals(LANGUAGE_EN)) {
+			locale = LOCALE_EN;
+		} else if (language.equals(LANGUAGE_RU)) {
+			locale = LOCALE_RU;
+		}
 
-        session.setAttribute(LOCALE_FILE, locale);
+		session.setAttribute(LOCALE_FILE, locale);
 
-        return data.get(CURRENT_PAGE)[0];
-    }
+		return data.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+	}
 }
