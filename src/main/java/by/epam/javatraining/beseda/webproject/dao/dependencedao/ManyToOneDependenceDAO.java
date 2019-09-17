@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Class represents relationship in database one-to-many
+ * Class represents relationship in database one-to-many.
  *
  * @param <M> entityservice type parameter
  * @param <K> dependenceservice type parameter

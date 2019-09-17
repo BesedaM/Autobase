@@ -39,7 +39,7 @@ public class AddRequestCommand implements ActionCommand {
         } catch (ServiceLayerException e) {
             log.error(this.getClass().getSimpleName() + " " + e);
         }
-        return parameters.get(CURRENT_PAGE)[0];
+        return parameters.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
     }
 
 }

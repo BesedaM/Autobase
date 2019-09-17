@@ -12,6 +12,8 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 @WebFilter(filterName = "DriverFilter", urlPatterns = "/view/driver/*")
 public class DriverFilter implements Filter {
 
+	public void init(FilterConfig filterConfig) throws ServletException {}
+	
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

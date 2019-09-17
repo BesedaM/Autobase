@@ -1,8 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.*;
-import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.car.Truck;
@@ -15,9 +13,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.*;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.*;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
+import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.ID;
 
 public class CarDAO extends AbstractDAO<Car> implements by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface {
 
@@ -30,10 +30,11 @@ public class CarDAO extends AbstractDAO<Car> implements by.epam.javatraining.bes
         Car car = null;
         if (result != null) {
             String carType = result.getString(CAR_TYPE);
+            
             switch (carType) {
                 case BUS:
                     car = new Bus();
-                    ((Bus) car).setSeats(result.getInt(SEATS_NUMBER));
+                    ((Bus) car).setSeats(result.getInt(SEATS_NUMBER));    
                     break;
                 case TRUCK:
                     car = new Truck();
@@ -42,7 +43,7 @@ public class CarDAO extends AbstractDAO<Car> implements by.epam.javatraining.bes
                 default:
                     throw new CarTypeNotPresentException();
             }
-            car.setId(result.getInt(SQLQuery.CAR_ID));
+            car.setId(result.getInt(ID));
             car.setModel(result.getString(MODEL));
             car.setNumber(result.getString(CAR_NUMBER));
             car.setState(result.getString(CAR_STATE));
@@ -81,7 +82,7 @@ public class CarDAO extends AbstractDAO<Car> implements by.epam.javatraining.bes
                 res.first();
                 id = res.getInt(1);
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -112,7 +113,7 @@ public class CarDAO extends AbstractDAO<Car> implements by.epam.javatraining.bes
                 st.setInt(updateIdParameterNumber(), car.getId());
                 st.executeUpdate();
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -135,9 +136,9 @@ public class CarDAO extends AbstractDAO<Car> implements by.epam.javatraining.bes
                 list.add(entity);
             }
         } catch (SQLException e) {
-            throw new DAOTechnicalException("Error retrieving data from database", e);
+            throw new DAOTechnicalException(e);
         } catch (EntityLogicException e) {
-            throw new DAOTechnicalException("Error creating entity", e);
+            throw new DAOTechnicalException(e);
         } finally {
             lock.unlock();
             connector.closeStatement(st);
@@ -218,7 +219,7 @@ public class CarDAO extends AbstractDAO<Car> implements by.epam.javatraining.bes
                 st.setInt(2, id);
                 st.executeUpdate();
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating car state", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();

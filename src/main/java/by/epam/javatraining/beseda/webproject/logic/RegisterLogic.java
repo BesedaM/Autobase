@@ -7,14 +7,14 @@ import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.PA
 
 public class RegisterLogic {
 
-    private static Pattern pattern = Pattern.compile(PASSWORD_VALIDATE);
+	private static Pattern pattern = Pattern.compile(PASSWORD_VALIDATE);
 
-    public static boolean legalPassword(String password) {
-        boolean isLegal = false;
-        if (password != null) {
-            Matcher matcher = pattern.matcher(password);
-            isLegal = matcher.matches();
-        }
-        return isLegal;
-    }
+	public static boolean legalPassword(String password) {
+		boolean isLegal = false;
+		if (password != null) {
+			Matcher matcher = pattern.matcher(password);
+			isLegal = matcher.matches();
+		}
+		return isLegal;
+	}
 }

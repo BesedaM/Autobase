@@ -20,48 +20,48 @@ import java.sql.SQLException;
 import static by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseProperties.*;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
-@WebServlet(name="TruckingCompany",urlPatterns="/controller")
+@WebServlet(name = "TruckingCompany", urlPatterns = "/controller")
 public class Controller extends HttpServlet {
 
-    private static Logger log;
-    private static ConnectionPool pool;
+	private static Logger log;
+	private static ConnectionPool pool;
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        log = Logger.getLogger(ERROR_LOGGER);
-        pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
-    }
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		log = Logger.getLogger(ERROR_LOGGER);
+		pool = DBConnector.createConnectionPool(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processRequest(req, resp);
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		processRequest(req, resp);
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processRequest(req, resp);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		processRequest(req, resp);
+	}
 
-    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        SessionRequestContent requestContent = new SessionRequestContent(req);
+	private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		SessionRequestContent requestContent = new SessionRequestContent(req);
 
-        ActionCommand command = ActionCommandFactory.defineCommand(requestContent);
+		ActionCommand command = ActionCommandFactory.defineCommand(requestContent);
 
-        String page = command.execute(requestContent);
+		String page = command.execute(requestContent);
 
-        requestContent.insertAttributes(req);
+		requestContent.insertAttributes(req);
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-        dispatcher.forward(req, resp);
-    }
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+		dispatcher.forward(req, resp);
+	}
 
-    @Override
-    public void destroy() {
-        try {
-            pool.closePool();
-        } catch (SQLException e) {
-            log.error("Error closing connection pool: " + e);
-        }
-    }
+	@Override
+	public void destroy() {
+		try {
+			pool.closePool();
+		} catch (SQLException e) {
+			log.error("Error closing connection pool: " + e);
+		}
+	}
 }

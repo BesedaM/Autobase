@@ -1,7 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
@@ -38,7 +37,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
                 st.setInt(7, id);
                 st.executeUpdate();
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -53,7 +52,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
         if (result != null) {
             customer = new Customer();
             customer.setRole(USER_CUSTOMER);
-            customer.setId(result.getInt(SQLQuery.CUSTOMER_ID));
+            customer.setId(result.getInt(ID));
             customer.setLogin(result.getString(LOGIN));
             customer.setPassword(result.getBytes(PASSWORD));
             customer.setName(result.getString(NAME));

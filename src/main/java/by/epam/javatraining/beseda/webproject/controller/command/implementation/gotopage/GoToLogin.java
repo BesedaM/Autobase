@@ -7,8 +7,8 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 
 public class GoToLogin implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        return LOGIN_PAGE;
-    }
+	@Override
+	public String execute(SessionRequestContent content) {
+		return LOGIN_PAGE;
+	}
 }

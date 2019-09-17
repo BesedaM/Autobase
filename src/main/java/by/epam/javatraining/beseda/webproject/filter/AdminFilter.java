@@ -12,19 +12,22 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 @WebFilter(filterName = "AdminFilter", urlPatterns = "/view/admin/*")
 public class AdminFilter implements Filter {
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+	public void init(FilterConfig filterConfig) throws ServletException {
+	}
 
-        HttpServletRequest req = (HttpServletRequest) request;
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 
-        if (USER_ADMIN.equals(req.getSession().getAttribute(USER_ROLE))) {
-            chain.doFilter(request, response);
-            req.getRequestDispatcher(req.getPathInfo()).forward(request,response);
-        } else {
-            req.getSession().invalidate();
-            chain.doFilter(request, response);
-            request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
-        }
-    }
+		HttpServletRequest req = (HttpServletRequest) request;
+
+		if (USER_ADMIN.equals(req.getSession().getAttribute(USER_ROLE))) {
+			chain.doFilter(request, response);
+			req.getRequestDispatcher(req.getPathInfo()).forward(request, response);
+		} else {
+			req.getSession().invalidate();
+			chain.doFilter(request, response);
+			request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+		}
+	}
 }
