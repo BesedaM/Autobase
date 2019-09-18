@@ -5,7 +5,7 @@ import by.epam.javatraining.beseda.webproject.dao.interfacedao.*;
 public class MySQLDAOEntityFactory implements EntityFactoryInterface {
 
 	private static class SingletonHolder {
-		public static MySQLDAOEntityFactory instance = new MySQLDAOEntityFactory();
+		public static final MySQLDAOEntityFactory instance = new MySQLDAOEntityFactory();
 	}
 
 	private final AddressInterface addressDAO;
