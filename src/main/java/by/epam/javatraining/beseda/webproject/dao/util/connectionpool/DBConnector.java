@@ -50,7 +50,6 @@ public class DBConnector implements ConnectionPool {
 
 	private static void registerDriver() throws SQLException {
 		driver = new org.postgresql.Driver();
-		log.error(driver);
 		DriverManager.registerDriver(driver);
 	}
 

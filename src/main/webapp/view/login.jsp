@@ -29,12 +29,12 @@
 <fmt:bundle basename="${locale}" prefix="error.">
 	<fmt:message key="incorrect_login_or_password"
 		var="incorrect_login_or_password" />
+
 </fmt:bundle>
 
 <fmt:bundle basename="${locale}" prefix="build.">
 	<fmt:message key="timestamp" var="timestamp" />
 </fmt:bundle>
-
 
 <html lang="${lang}">
 <head>
@@ -78,7 +78,7 @@
 		<input type="submit" value="${register}" />
 	</form>
 
-
+	<p></p>
 
 </body>
 </html>
