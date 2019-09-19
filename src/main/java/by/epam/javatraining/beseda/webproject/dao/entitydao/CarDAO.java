@@ -37,10 +37,7 @@ public class CarDAO extends AbstractDAO<Car>
 			String carType = result.getString(CAR_TYPE);
 
 			log.error(carType);
-			
-			log.error(BUS);
-			log.error(TRUCK);
-			
+					
 			switch (carType) {
 			case BUS:
 				car = new Bus();
