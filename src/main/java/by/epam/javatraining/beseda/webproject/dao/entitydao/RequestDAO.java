@@ -175,18 +175,14 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 	}
 
 	private int[] getSpecifiedRequestsId(String sqlStatement) throws DAOTechnicalException {
-		logger.debug("UPS1 !!!");
 		int[] array = new int[1];
 		Statement st = null;
 		try {
 			lock.lock();
 			st = connector.createStatement();
-			logger.debug("UPS2 !!!");
 			ResultSet result = st.executeQuery(sqlStatement + END_OF_STATEMENT);
-			logger.debug("UPS3 !!!");
 			if (result.last()) {
 				array = new int[result.getRow()];
-				logger.debug("UPS4 !!!");
 				result.first();
 				for (int i = 0; i < array.length; i++) {
 					array[i] = result.getInt(1);
