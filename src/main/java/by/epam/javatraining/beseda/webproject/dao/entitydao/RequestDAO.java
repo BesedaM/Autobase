@@ -1,6 +1,8 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
+
+
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
 import by.epam.javatraining.beseda.webproject.entity.Request;
@@ -13,13 +15,20 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.COMMENT;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.REQUEST_DATE;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.REQUEST_STATUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.ID;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
 
 public class RequestDAO extends AbstractDAO<Request> implements RequestInterface {
+	
+	private static Logger logger = LogManager.getLogger(ERROR_LOGGER);
 
 	RequestDAO() {
 		super();
@@ -166,14 +175,18 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 	}
 
 	private int[] getSpecifiedRequestsId(String sqlStatement) throws DAOTechnicalException {
-		int[] array = null;
+		logger.debug("UPS1 !!!");
+		int[] array = new int[1];
 		Statement st = null;
 		try {
 			lock.lock();
 			st = connector.createStatement();
+			logger.debug("UPS2 !!!");
 			ResultSet result = st.executeQuery(sqlStatement + END_OF_STATEMENT);
+			logger.debug("UPS3 !!!");
 			if (result.last()) {
 				array = new int[result.getRow()];
+				logger.debug("UPS4 !!!");
 				result.first();
 				for (int i = 0; i < array.length; i++) {
 					array[i] = result.getInt(1);
