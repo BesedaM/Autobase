@@ -34,10 +34,7 @@ public class CarDAO extends AbstractDAO<Car>
 	protected Car buildEntity(ResultSet result) throws CarTypeNotPresentException, SQLException, EntityLogicException {
 		Car car = null;
 		if (result != null) {
-			String carType = result.getString(CAR_TYPE);
-
-			log.error(carType);
-					
+			String carType = result.getString(CAR_TYPE);				
 			switch (carType) {
 			case BUS:
 				car = new Bus();
