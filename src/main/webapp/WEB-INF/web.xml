@@ -12,9 +12,9 @@
         <session-timeout>20</session-timeout>
     </session-config>
 
-<!--     <error-page> -->
-<!--         <location>/view/error_page.jsp</location> -->
-<!--     </error-page> -->
+    <error-page>
+        <location>/view/error_page.jsp</location>
+    </error-page>
     
  
 </web-app>
