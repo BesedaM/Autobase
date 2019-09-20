@@ -185,6 +185,8 @@
     <span>&nbsp;&nbsp;&nbsp;</span>
     <input type="submit" value="${back_to_login}"/>
 </form>
+
+<%@include file="../footer/footer.jsp" %>
 </body>
 </html>
 

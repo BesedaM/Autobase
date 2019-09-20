@@ -27,5 +27,6 @@
 		<input type="hidden" name="command" value="admin_main_redirect" /> <input
 			type="submit" value="${admin_main_redirect}" />
 	</form>
+	<%@include file="../footer/footer.jsp" %>
 </body>
 </html>

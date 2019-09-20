@@ -154,6 +154,6 @@
     </form>
 </c:if>
 
-
+<%@include file="../footer/footer.jsp" %>
 </body>
 </html>

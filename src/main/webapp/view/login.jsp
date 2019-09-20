@@ -83,7 +83,7 @@
 </form>
 
 
-<p>${timestamp}</p>
+<%@include file="footer/footer.jsp" %>
 
 </body>
 </html>

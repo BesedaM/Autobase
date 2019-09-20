@@ -160,3 +160,7 @@ table.menu button{
 table.align_left{
     align-self: left;
 }
+
+p.align_right{
+	align-self: right;
+}

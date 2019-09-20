@@ -191,5 +191,7 @@
     <input type="submit" value="${back_to_customer_main}"/>
 </form>
 
+<%@include file="../footer/footer.jsp" %>
+
 </body>
 </html>

@@ -28,4 +28,5 @@
 			type="submit" value="${admin_main_redirect}" />
 	</form>
 </body>
+<%@include file="../footer/footer.jsp" %>
 </html>

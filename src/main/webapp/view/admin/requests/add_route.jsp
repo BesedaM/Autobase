@@ -143,50 +143,6 @@
         <fieldset>
             <legend>${new_task}</legend>
             <%@include file="../../route/part_task_form.jsp"%>
-            <%--<table class="for_form">--%>
-                <%--<tr>--%>
-                    <%--<td><label for="date">${date}${required_sign}${colon}</label></td>--%>
-                    <%--<td><input type="date" name="date" id="date" required/></td>--%>
-                <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--<td><label for="time">${time}${required_sign}${colon}</label></td>--%>
-                    <%--<td><input type="time" name="time" id="time" required/></td>--%>
-                <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--<td><label for="country">${country}${colon}</label></td>--%>
-                    <%--<td><input type="text" name="country" id="country" value="Беларусь"/></td>--%>
-                <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--<td><label for="district">${district}${colon}</label></td>--%>
-                    <%--<td><input type="text" name="district" id="district" value="Минский"/></td>--%>
-                <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--<td><label for="city">${city}${required_sign}${colon}</label></td>--%>
-                    <%--<td><input type="text" name="city" id="city" required/></td>--%>
-                <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--<td><label for="street">${street}${required_sign}${colon}</label></td>--%>
-                    <%--<td><input type="text" name="street" id="street" required/></td>--%>
-                <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--<td><label for="house">${house}${colon}</label></td>--%>
-                    <%--<td><input type="text" name="house" id="house" pattern="^[0-9]{0,5}$"/></td>--%>
-                <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--<td><label for="building">${building}${colon}</label></td>--%>
-                    <%--<td><input type="text" name="building" id="building"/></td>--%>
-                <%--</tr>--%>
-                <%--<tr>--%>
-                    <%--<td><label for="details">${details}${required_sign}${colon}</label></td>--%>
-                    <%--<td><input type="text" name="details" id="details"/></td>--%>
-                <%--</tr>--%>
-
-                <%--<tr>--%>
-                    <%--<td colspan="2"><input type="submit" value="${add_task}"/>--%>
-                        <%--<input type="reset" value="${reset}"/></td>--%>
-                <%--</tr>--%>
-            <%--</table>--%>
-            <%--<p class="information">${required_sign}${required_info}</p>--%>
         </fieldset>
     </form>
 </c:if>
@@ -196,5 +152,6 @@
     <input type="submit" value="${new_requests_page}"/>
 </form>
 
+<%@include file="../../footer/footer.jsp" %>
 </body>
 </html>
