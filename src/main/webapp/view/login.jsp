@@ -30,10 +30,6 @@
     <fmt:message key="incorrect_login_or_password" var="incorrect_login_or_password"/>
 </fmt:bundle>
 
-<fmt:bundle basename="${locale}" prefix="build.">
-    <fmt:message key="timestamp" var="timestamp"/>
-</fmt:bundle>
-
 <html lang="${lang}">
 <head>
     <title>${title}</title>

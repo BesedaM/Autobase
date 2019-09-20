@@ -39,7 +39,7 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
 
 
     public int[] getActivePlannedRoutesId(Car car) throws DAOTechnicalException {
-        int[] ids = null;
+        int[] ids = new int[1];
         if (car != null) {
             PreparedStatement st = null;
             try {

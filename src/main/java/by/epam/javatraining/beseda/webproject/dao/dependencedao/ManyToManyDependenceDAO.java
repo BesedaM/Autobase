@@ -27,7 +27,7 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
 	 * @throws DAOTechnicalException
 	 */
 	public int[] getDependenceId(EntityBase entity) throws DAOTechnicalException {
-		int[] dependencyId = null;
+		int[] dependencyId =  new int[1];
 		if (entity != null) {
 			PreparedStatement st = null;
 			try {
