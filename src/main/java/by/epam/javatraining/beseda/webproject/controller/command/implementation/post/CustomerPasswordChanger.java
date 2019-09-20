@@ -18,6 +18,9 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.*;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_DATA;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
+
 
 public class CustomerPasswordChanger implements ActionCommand {
 
@@ -48,6 +51,6 @@ public class CustomerPasswordChanger implements ActionCommand {
 			attributes.put(ERROR_MESSAGE, STATUS_TRUE);
 		}
 
-		return data.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+		return data.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
 	}
 }

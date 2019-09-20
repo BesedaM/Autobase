@@ -9,6 +9,8 @@ import java.util.Map;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CURRENT_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.ADD_TASK_FLAG;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.STATUS_TRUE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
 
 public class AddTaskFlag implements ActionCommand {
 
@@ -18,6 +20,6 @@ public class AddTaskFlag implements ActionCommand {
 		HttpSession session = content.getSession();
 
 		session.setAttribute(ADD_TASK_FLAG, STATUS_TRUE);
-		return requestParam.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+		return requestParam.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
 	}
 }

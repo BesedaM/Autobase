@@ -21,6 +21,9 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CURRENT_ROUTE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_LIST;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
+
 
 public class AddNewRoute implements ActionCommand {
 
@@ -56,6 +59,6 @@ public class AddNewRoute implements ActionCommand {
         }
         session.setAttribute(CURRENT_ROUTE, route);
         session.setAttribute(TASK_LIST,new ArrayList<Task>());
-        return requestParam.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+        return requestParam.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
     }
 }

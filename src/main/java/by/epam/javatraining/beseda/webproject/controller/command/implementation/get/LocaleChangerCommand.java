@@ -9,6 +9,9 @@ import java.util.Map;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CURRENT_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.LANGUAGE_SELECT;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.*;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
+
 
 public class LocaleChangerCommand implements ActionCommand {
 
@@ -30,6 +33,6 @@ public class LocaleChangerCommand implements ActionCommand {
 
 		session.setAttribute(LOCALE_FILE, locale);
 
-		return data.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+		return data.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
 	}
 }

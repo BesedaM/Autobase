@@ -14,6 +14,9 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CAR_STATE_CHANGER;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CURRENT_PAGE;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
+
 
 public class CarStateChanger implements ActionCommand {
 
@@ -33,6 +36,6 @@ public class CarStateChanger implements ActionCommand {
 		} catch (ServiceLayerException e) {
 			log.error(this.getClass().getSimpleName() + e);
 		}
-		return parameters.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+		return parameters.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
 	}
 }

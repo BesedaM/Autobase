@@ -11,6 +11,9 @@ import java.util.Map;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CURRENT_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.NEW_REQUEST;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.REQUEST_LIST;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
+
 
 public class UpdateCustomerRequestsCommand implements ActionCommand {
 
@@ -23,6 +26,6 @@ public class UpdateCustomerRequestsCommand implements ActionCommand {
 		Request newRequest = (Request) session.getAttribute(NEW_REQUEST);
 		requestList.add(newRequest);
 		session.setAttribute(NEW_REQUEST, null);
-		return parameters.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+		return parameters.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
 	}
 }

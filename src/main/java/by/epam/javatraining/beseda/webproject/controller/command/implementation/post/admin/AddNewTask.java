@@ -24,6 +24,8 @@ import java.util.*;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.*;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_LIST;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
 
 public class AddNewTask implements ActionCommand {
 
@@ -65,7 +67,7 @@ public class AddNewTask implements ActionCommand {
 		} catch (ServiceLayerException | TaskException e) {
 			log.error(e);
 		}
-		return requestParam.get(CURRENT_PAGE)[0].replace("/Trucking_company", "");
+		return requestParam.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
 	}
 
 	private Address getAddress(Map<String, String[]> requestParam) throws ServiceLayerException {
