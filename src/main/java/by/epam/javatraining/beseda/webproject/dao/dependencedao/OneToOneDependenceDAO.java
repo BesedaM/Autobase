@@ -1,13 +1,14 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.NULL;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.NULL;
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 
 /**
  * Class represents relationship in database one-to-one
@@ -19,6 +20,10 @@ public abstract class OneToOneDependenceDAO<M extends EntityBase, K extends Enti
 
     protected OneToOneDependenceDAO() {
         super();
+    }
+    
+    protected OneToOneDependenceDAO(ConnectionPool pool) {
+        super(pool);
     }
 
     /**
@@ -41,7 +46,7 @@ public abstract class OneToOneDependenceDAO<M extends EntityBase, K extends Enti
                     entityId = res.getInt(1);
                 }
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();

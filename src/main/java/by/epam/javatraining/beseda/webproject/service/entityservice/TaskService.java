@@ -12,7 +12,11 @@ public class TaskService extends AbstractEntityService<Task> {
     }
 
     /**
-     * Creates entityservice WITHOUT ID with the given data
+     * Creates entity WITHOUT ID with the given data.
+     * 
+     * @param time
+     * @param details
+     * @return
      */
     public Task createTask(GregorianCalendar time, String details) {
         Task task = null;

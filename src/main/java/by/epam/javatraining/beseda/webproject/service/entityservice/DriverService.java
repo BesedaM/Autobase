@@ -11,7 +11,13 @@ public class DriverService extends AbstractEntityService<Driver> {
     }
 
     /**
-     * Creates entityservice with the given data
+     * Creates entity with the given data.
+     * 
+     * @param userData
+     * @param name
+     * @param surname
+     * @param phone
+     * @return
      */
     public Driver createDriver(User userData, String name, String surname, String phone) {
         Driver driver = null;

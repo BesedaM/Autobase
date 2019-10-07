@@ -1,118 +1,108 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
-import by.epam.javatraining.beseda.webproject.entity.user.Customer;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_CUSTOMER;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_CUSTOMER_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_CUSTOMERS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CUSTOMERS_BY_ID_LIST;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CUSTOMER_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_CUSTOMER;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
 import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.*;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.CUSTOMER_TYPE;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.USER_CUSTOMER;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
+import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 
 public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterface {
 
-    CustomerDAO() {
-        super();
-    }
+	{
+		builder = entityBuilderFactory.getCustomerBuilder();
+	}
+
+	CustomerDAO() {
+		super();
+	}
+
+	CustomerDAO(ConnectionPool pool) {
+		super(pool);
+	}
+
+	@Override
+	public int add(Customer user) throws DAOLayerException {
+		int id = -1;
+		if (user != null) {
+			PreparedStatement st = null;
+			try {
+				lock.lock();
+				st = connector.prepareStatement(addStatement());
+				setDataOnPreparedStatement(st, user);
+				id = user.getId();
+				st.setInt(7, id);
+				st.executeUpdate();
+			} catch (SQLException e) {
+				throw new DAOTechnicalException(e);
+			} finally {
+				connector.closeStatement(st);
+				lock.unlock();
+			}
+		}
+		return id;
+	}
 
 
-    @Override
-    public int add(Customer user) throws DAOLayerException {
-        int id = -1;
-        if (user != null) {
-            PreparedStatement st = null;
-            try {
-                lock.lock();
-                st = connector.prepareStatement(addStatement());
-                setDataOnPreparedStatement(st, user);
-                id = user.getId();
-                st.setInt(7, id);
-                st.executeUpdate();
-            } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
-            } finally {
-                connector.closeStatement(st);
-                lock.unlock();
-            }
-        }
-        return id;
-    }
+	@Override
+	protected String getAllStatement() {
+		return SELECT_ALL_CUSTOMERS;
+	}
 
-    @Override
-    protected Customer buildEntity(ResultSet result) throws SQLException, EntityLogicException {
-        Customer customer = null;
-        if (result != null) {
-            customer = new Customer();
-            customer.setRole(USER_CUSTOMER);
-            customer.setId(result.getInt(SQLQuery.CUSTOMER_ID));
-            customer.setLogin(result.getString(LOGIN));
-            customer.setPassword(result.getBytes(PASSWORD));
-            customer.setName(result.getString(NAME));
-            customer.setSurname(result.getString(SURNAME));
-            customer.setPhone(result.getString(PHONE));
-            customer.setCustomerType(result.getString(CUSTOMER_TYPE));
-            customer.setCompanyName(result.getString(COMPANY_NAME));
-            customer.setEmail(result.getString(EMAIL));
-        }
-        return customer;
-    }
+	@Override
+	protected String getEntityByIdStatement() {
+		return SELECT_CUSTOMER_BY_ID;
+	}
 
-    @Override
-    protected String getAllStatement() {
-        return SELECT_ALL_CUSTOMERS;
-    }
+	@Override
+	protected String getEntityListByIdStatement() {
+		return SELECT_CUSTOMERS_BY_ID_LIST;
+	}
 
-    @Override
-    protected String getEntityByIdStatement() {
-        return SELECT_CUSTOMER_BY_ID;
-    }
+	@Override
+	protected String deleteStatement() {
+		return DELETE_CUSTOMER_BY_ID;
+	}
 
-    @Override
-    protected String getEntityListByIdStatement() {
-        return SELECT_CUSTOMERS_BY_ID_LIST;
-    }
+	@Override
+	protected String addStatement() {
+		return ADD_NEW_CUSTOMER;
+	}
 
-    @Override
-    protected String deleteStatement() {
-        return DELETE_CUSTOMER_BY_ID;
-    }
+	@Override
+	protected String updateStatement() {
+		return UPDATE_CUSTOMER;
+	}
 
-    @Override
-    protected String addStatement() {
-        return ADD_NEW_CUSTOMER;
-    }
+	@Override
+	protected int updateIdParameterNumber() {
+		return 7;
+	}
 
-    @Override
-    protected String updateStatement() {
-        return UPDATE_CUSTOMER;
-    }
-
-    @Override
-    protected int updateIdParameterNumber() {
-        return 7;
-    }
-
-    @Override
-    protected void setDataOnPreparedStatement(PreparedStatement st, Customer user) throws SQLException, NotEnoughArgumentsException {
-        if (st != null && user != null) {
-            int typeIndex = DatabaseEnumLoader.CUSTOMER_TYPE_MAP.getKey(user.getCustomerType());
-            st.setInt(1, typeIndex);
-            st.setString(2, user.getName());
-            st.setString(3, user.getSurname());
-            st.setString(4, user.getPhone());
-            st.setString(5, user.getEmail());
-            st.setString(6, user.getCompanyName());
-        } else {
-            throw new NotEnoughArgumentsException();
-        }
-    }
+	@Override
+	protected void setDataOnPreparedStatement(PreparedStatement st, Customer user)
+			throws SQLException, NotEnoughArgumentsException {
+		if (st != null && user != null) {
+			int typeIndex = DatabaseEnumLoader.CUSTOMER_TYPE_MAP.getKey(user.getCustomerType());
+			st.setInt(1, typeIndex);
+			st.setString(2, user.getName());
+			st.setString(3, user.getSurname());
+			st.setString(4, user.getPhone());
+			st.setString(5, user.getEmail());
+			st.setString(6, user.getCompanyName());
+		} else {
+			throw new NotEnoughArgumentsException();
+		}
+	}
 }

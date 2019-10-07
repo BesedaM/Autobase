@@ -11,9 +11,10 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntit
  */
 public abstract class EntityBuilder<E extends EntityBase> {
 
-    protected static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-    protected static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
+    protected static final ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
+    protected static final ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 
+        
     /**
      * Returns the whole entityservice with 'tree' of inner objects by entityservice's id
      *

@@ -5,8 +5,8 @@ import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.
 
 public class GoToClientList implements ActionCommand {
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        return null;
-    }
+	@Override
+	public String execute(SessionRequestContent content) {
+		return null;
+	}
 }

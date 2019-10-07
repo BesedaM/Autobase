@@ -9,30 +9,41 @@ import static by.epam.javatraining.beseda.webproject.dao.util.dataloader.Databas
 
 public class RouteService extends AbstractEntityService<Route> {
 
-    RouteService() {
-        super();
-        entityDAO = mySQLDAOEntityFactory.getRouteDAO();
-    }
+	RouteService() {
+		super();
+		entityDAO = mySQLDAOEntityFactory.getRouteDAO();
+	}
 
-    /**
-     * Creates entityservice WITHOUT ID with the given data
-     */
-    public Route createRoute(int id,String routeName) {
-        Route route = null;
-        if (routeName != null) {
-            String routeStatus = ROUTE_STATUS_MAP.get(1);
-            route = new Route(id, routeName, routeStatus);
-        }
-        return route;
-    }
+	/**
+	 * Creates entity WITHOUT ID with the given data.
+	 * 
+	 * @param id
+	 * @param routeName
+	 * @return
+	 */
+	public Route createRoute(int id, String routeName) {
+		Route route = null;
+		if (routeName != null) {
+			String routeStatus = ROUTE_STATUS_MAP.get(1);
+			route = new Route(id, routeName, routeStatus);
+		}
+		return route;
+	}
 
-    public void updateRouteStatus(int id, String status) throws ServiceTechnicalException {
-        if (id > 0 && status != null) {
-            try {
-                ((RouteDAO)entityDAO).updateRouteStatus(id,status);
-            } catch (DAOTechnicalException e) {
-                throw new ServiceTechnicalException(e);
-            }
-        }
-    }
+	/**
+	 * Updates status of route by route id.
+	 * 
+	 * @param id     route id
+	 * @param status new status value
+	 * @throws ServiceTechnicalException
+	 */
+	public void updateRouteStatus(int id, String status) throws ServiceTechnicalException {
+		if (id > 0 && status != null) {
+			try {
+				((RouteDAO) entityDAO).updateRouteStatus(id, status);
+			} catch (DAOTechnicalException e) {
+				throw new ServiceTechnicalException(e);
+			}
+		}
+	}
 }

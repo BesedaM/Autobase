@@ -14,74 +14,110 @@ import static by.epam.javatraining.beseda.webproject.dao.util.dataloader.Databas
 
 public class RequestService extends AbstractEntityService<Request> {
 
-    RequestService() {
-        super();
-        entityDAO = mySQLDAOEntityFactory.getRequestDAO();
-    }
+	RequestService() {
+		super();
+		entityDAO = mySQLDAOEntityFactory.getRequestDAO();
+	}
 
-    /**
-     * Creates entityservice WITHOUT ID with the given data
-     */
-    public Request createRequest(Customer customer, String comment) {
-        Request req = null;
-        if (comment != null) {
-            String status = REQUEST_STATUS_MAP.get(1);
-            req = new Request(customer, comment, status);
-        }
-        return req;
-    }
+	/**
+	 * Creates entity WITHOUT ID with the given data.
+	 * 
+	 * @param customer
+	 * @param comment
+	 * @return
+	 */
+	public Request createRequest(Customer customer, String comment) {
+		Request req = null;
+		if (comment != null) {
+			String status = REQUEST_STATUS_MAP.get(1);
+			req = new Request(customer, comment, status);
+		}
+		return req;
+	}
 
-    public int[] selectActiveCustomerRequestsId(int customerId) throws ServiceLayerException {
-        int[] array = null;
-        if (customerId > 0) {
-            try {
-                array = ((RequestDAO) entityDAO).selectActiveCustomerRequestsId(customerId);
-            } catch (DAOTechnicalException e) {
-                throw new ServiceLayerException(e + " Impossible to get info on active customer requests");
-            }
-        }
-        return array;
-    }
+	/**
+	 * Return an array, containing requests id for the specified customer.
+	 * 
+	 * @param customerId customer id
+	 * @return array of requests id
+	 * @throws ServiceLayerException
+	 */
+	public int[] selectActiveCustomerRequestsId(int customerId) throws ServiceLayerException {
+		int[] array = null;
+		if (customerId > 0) {
+			try {
+				array = ((RequestDAO) entityDAO).selectActiveCustomerRequestsId(customerId);
+			} catch (DAOTechnicalException e) {
+				throw new ServiceLayerException(e + " Impossible to get info on active customer requests");
+			}
+		}
+		return array;
+	}
 
-    public List<Request> getNewRequests() throws ServiceLayerException {
-        List<Request> list = null;
-        try {
-            list = ((RequestDAO)entityDAO).getNewRequests();
-            Collections.sort(list);
-        } catch (DAOLayerException e) {
-            throw new ServiceLayerException(e);
-        }
-        return list;
-    }
+	/**
+	 * Returns list of new requests (which weren't considered or submitted, but left
+	 * without route).
+	 * 
+	 * @return list of new requests
+	 * @throws ServiceLayerException
+	 */
+	public List<Request> getNewRequests() throws ServiceLayerException {
+		List<Request> list = null;
+		try {
+			list = ((RequestDAO) entityDAO).getNewRequests();
+			Collections.sort(list);
+		} catch (DAOLayerException e) {
+			throw new ServiceLayerException(e);
+		}
+		return list;
+	}
 
-    public int[] getCurrentRequestsId() throws ServiceLayerException {
-        int[] array;
-        try {
-            array=((RequestDAO)entityDAO).getCurrentRequestsId();
-        } catch (DAOLayerException e) {
-            throw new ServiceLayerException(e);
-        }
-        return array;
-    }
+	/**
+	 * Returns an array of current requests id.
+	 * 
+	 * @return array of current requests id
+	 * @throws ServiceLayerException
+	 */
+	public int[] getCurrentRequestsId() throws ServiceLayerException {
+		int[] array;
+		try {
+			array = ((RequestDAO) entityDAO).getCurrentRequestsId();
+		} catch (DAOLayerException e) {
+			throw new ServiceLayerException(e);
+		}
+		return array;
+	}
 
-    public int[] getFulfilledRequestsId() throws ServiceLayerException {
-        int[] array;
-        try {
-            array=((RequestDAO)entityDAO).getFulfilledRequestsId();
-        } catch (DAOLayerException e) {
-            throw new ServiceLayerException(e);
-        }
-        return array;
-    }
+	/**
+	 * Returns an array of fulfilled requests id.
+	 * 
+	 * @return array of fulfilled requests id
+	 * @throws ServiceLayerException
+	 */
+	public int[] getFulfilledRequestsId() throws ServiceLayerException {
+		int[] array;
+		try {
+			array = ((RequestDAO) entityDAO).getFulfilledRequestsId();
+		} catch (DAOLayerException e) {
+			throw new ServiceLayerException(e);
+		}
+		return array;
+	}
 
-    public int[] getRejectedRequestsId() throws ServiceLayerException {
-        int[] array;
-        try {
-            array=((RequestDAO)entityDAO).getRejectedRequestsId();
-        } catch (DAOLayerException e) {
-            throw new ServiceLayerException(e);
-        }
-        return array;
-    }
-
+	/**
+	 * Returns an array of rejected requests id.
+	 * 
+	 * @return array of rejected requests id
+	 * @throws ServiceLayerException
+	 */
+	public int[] getRejectedRequestsId() throws ServiceLayerException {
+		int[] array;
+		try {
+			array = ((RequestDAO) entityDAO).getRejectedRequestsId();
+		} catch (DAOLayerException e) {
+			throw new ServiceLayerException(e);
+		}
+		return array;
+	}
+	
 }

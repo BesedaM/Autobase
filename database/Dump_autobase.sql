@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
+﻿-- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
 -- Host: 127.0.0.1    Database: autobase
 -- ------------------------------------------------------

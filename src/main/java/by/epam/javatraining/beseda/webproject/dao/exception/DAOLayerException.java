@@ -2,6 +2,7 @@ package by.epam.javatraining.beseda.webproject.dao.exception;
 
 import by.epam.javatraining.beseda.webproject.exception.AutobaseProjectException;
 
+@SuppressWarnings("serial")
 public class DAOLayerException extends AutobaseProjectException{
 
     public DAOLayerException() {

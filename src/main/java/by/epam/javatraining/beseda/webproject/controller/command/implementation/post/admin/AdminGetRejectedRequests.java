@@ -24,32 +24,32 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 
 public class AdminGetRejectedRequests implements ActionCommand {
 
-    private static Logger log = Logger.getLogger(ERROR_LOGGER);
-    private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-    private ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
+	private static Logger log = Logger.getLogger(ERROR_LOGGER);
+	private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
+	private ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 
-    @Override
-    public String execute(SessionRequestContent content) {
-        Map<Request, Customer> requestCustomerMap = new TreeMap<>();
-        HttpSession httpSession = content.getSession();
-        RequestService requestService = serviceEntityFactory.getRequestService();
-        CustomerService customerService = serviceEntityFactory.getCustomerService();
-        RequestCustomerService requestCustomerService = serviceDependenceFactory.getRequestCustomerService();
+	@Override
+	public String execute(SessionRequestContent content) {
+		Map<Request, Customer> requestCustomerMap = new TreeMap<>();
+		HttpSession httpSession = content.getSession();
+		RequestService requestService = serviceEntityFactory.getRequestService();
+		CustomerService customerService = serviceEntityFactory.getCustomerService();
+		RequestCustomerService requestCustomerService = serviceDependenceFactory.getRequestCustomerService();
 
-        try {
-            int[] requestId=requestService.getRejectedRequestsId();
-            List<Request> requestList = requestService.getEntitiesByIdList(requestId);
-            Collections.sort(requestList);
-            for (int i = 0; i < requestList.size(); i++) {
-                int customerId = requestCustomerService.getEntity02Id(requestList.get(i));
-                Customer customer = customerService.getEntityById(customerId);
-                requestCustomerMap.put(requestList.get(i), customer);
-            }
-            httpSession.setAttribute(REQUEST_CUSTOMER_MAP, requestCustomerMap);
-        } catch (ServiceLayerException e) {
-            log.error(e);
-        }
+		try {
+			int[] requestId = requestService.getRejectedRequestsId();
+			List<Request> requestList = requestService.getEntitiesByIdList(requestId);
+			Collections.sort(requestList);
+			for (int i = 0; i < requestList.size(); i++) {
+				int customerId = requestCustomerService.getEntity02Id(requestList.get(i));
+				Customer customer = customerService.getEntityById(customerId);
+				requestCustomerMap.put(requestList.get(i), customer);
+			}
+			httpSession.setAttribute(REQUEST_CUSTOMER_MAP, requestCustomerMap);
+		} catch (ServiceLayerException e) {
+			log.error(e);
+		}
 
-        return REJECTED_REQUESTS_PAGE;
-    }
+		return REJECTED_REQUESTS_PAGE;
+	}
 }

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public interface ConnectionPool {
     /**
-     * Method for getting a valid Connection object from ConnectionPool
+     * Method for getting a valid Connection object from ConnectionPool.
      *
      * @return Connection object
      * @throws SQLException
@@ -14,7 +14,7 @@ public interface ConnectionPool {
 
 
     /**
-     * Method for getting a valid Connection object from ConnectionPool
+     * Method for getting a valid Connection object from ConnectionPool.
      *
      * @param user     the database user on whose behalf the connection is being made
      * @param password user's password
@@ -25,11 +25,11 @@ public interface ConnectionPool {
 
 
     /**
-     * Returns used connection back to the pool
+     * Returns used connection back to the pool.
      *
      * @param с used connection
      */
-    void releaseConnection(Connection с);
+    void releaseConnection(Connection conn);
 
     /**
      * @return current pool size
@@ -43,7 +43,7 @@ public interface ConnectionPool {
     int connectionsInUse();
 
     /**
-     * Closes the pool
+     * Closes the pool.
      *
      * @throws SQLException
      */

@@ -1,7 +1,7 @@
 package by.epam.javatraining.beseda.webproject.controller.command.util.constant;
 
 /**
- * Class of constants for all the request attributes used in program
+ * Class of constants for all the request attributes used in program.
  */
 public class JSPAttribute {
 

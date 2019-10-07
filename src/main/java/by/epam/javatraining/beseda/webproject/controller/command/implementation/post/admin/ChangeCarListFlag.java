@@ -9,6 +9,9 @@ import java.util.Map;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CURRENT_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CHANGE_CAR;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.STATUS_TRUE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
+
 
 public class ChangeCarListFlag implements ActionCommand {
 
@@ -20,6 +23,6 @@ public class ChangeCarListFlag implements ActionCommand {
 
 
         session.setAttribute(CHANGE_CAR, STATUS_TRUE);
-        return requestParam.get(CURRENT_PAGE)[0];
+        return requestParam.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
     }
 }

@@ -1,9 +1,12 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_GET_DEPENDENCE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_GET_ENTITIES_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_UPDATE_DEPENDENCE;
+
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.user.Driver;
-
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
 public class CarDriverDependenceDAO extends OneToOneDependenceDAO<Car,Driver> {
 
@@ -11,6 +14,10 @@ public class CarDriverDependenceDAO extends OneToOneDependenceDAO<Car,Driver> {
         super();
     }
 
+    CarDriverDependenceDAO(ConnectionPool pool) {
+        super(pool);
+    }
+    
 
     @Override
     protected String getDependenceIdStatement() {

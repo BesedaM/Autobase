@@ -1,14 +1,21 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ROUTE_GET_DEPENDENCE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ROUTE_GET_ENTITIES;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ROUTE_UPDATE_DEPENDENCE;
+
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
-
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
 public class TaskRouteDependenceDAO extends ManyToOneDependenceDAO<Task, Route> {
 
     TaskRouteDependenceDAO() {
         super();
+    }
+    
+    TaskRouteDependenceDAO(ConnectionPool pool) {
+        super(pool);
     }
 
     @Override

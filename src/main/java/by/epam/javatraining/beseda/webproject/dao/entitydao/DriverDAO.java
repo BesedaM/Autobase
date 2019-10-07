@@ -1,25 +1,35 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.dao.interfacedao.DriverInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
-import by.epam.javatraining.beseda.webproject.entity.user.Driver;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_DRIVER;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_DRIVER_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_DRIVERS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_DRIVERS_BY_ID_LIST;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_DRIVER_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_DRIVER;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.DriverInterface;
+import by.epam.javatraining.beseda.webproject.entity.user.Driver;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.*;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.USER_DRIVER;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
 public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 
+	{
+		builder=entityBuilderFactory.getDriverBuilder();
+	}
+	
     DriverDAO() {
         super();
+    }
+    
+    DriverDAO(ConnectionPool pool) {
+        super(pool);
     }
 
     @Override
@@ -35,7 +45,7 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
                 st.setInt(4, id);
                 st.executeUpdate();
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -44,21 +54,6 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
         return id;
     }
 
-    @Override
-    protected Driver buildEntity(ResultSet res) throws SQLException, EntityLogicException {
-        Driver driver = null;
-        if (res != null) {
-            driver = new Driver();
-            driver.setId(res.getInt(SQLQuery.DRIVER_ID));
-            driver.setName(res.getString(NAME));
-            driver.setSurname(res.getString(SURNAME));
-            driver.setPhone(res.getString(PHONE));
-            driver.setLogin(res.getString(LOGIN));
-            driver.setPassword(res.getBytes(PASSWORD));
-            driver.setRole(USER_DRIVER);
-        }
-        return driver;
-    }
 
     @Override
     protected String getAllStatement() {
@@ -98,8 +93,8 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
     @Override
     protected void setDataOnPreparedStatement(PreparedStatement st, Driver driver) throws SQLException, NotEnoughArgumentsException {
         if (st != null && driver != null) {
-            st.setString(1, driver.getName());
-            st.setString(2, driver.getSurname());
+            st.setString(1, driver.getSurname());
+        	st.setString(2, driver.getName());
             st.setString(3, driver.getPhone());
         } else {
             throw new NotEnoughArgumentsException();

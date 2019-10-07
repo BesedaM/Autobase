@@ -1,14 +1,15 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+
 /**
- * Class represents relationship in database one-to-many
+ * Class represents relationship in database one-to-many.
  *
  * @param <M> entityservice type parameter
  * @param <K> dependenceservice type parameter
@@ -17,6 +18,10 @@ public abstract class ManyToOneDependenceDAO<M extends EntityBase, K extends Ent
 
     protected ManyToOneDependenceDAO() {
         super();
+    }
+    
+    protected ManyToOneDependenceDAO(ConnectionPool pool) {
+        super(pool);
     }
 
     /**
@@ -27,7 +32,7 @@ public abstract class ManyToOneDependenceDAO<M extends EntityBase, K extends Ent
      * @throws DAOTechnicalException
      */
     public int[] getEntitiesIdByDependenceId(K dependence) throws DAOTechnicalException {
-        int[] entityId = null;
+        int[] entityId =  new int[1];
         if (dependence != null) {
             PreparedStatement st = null;
             try {

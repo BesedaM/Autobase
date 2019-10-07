@@ -12,13 +12,13 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_TO_CHANGE;
 
 public class GoToCurrentRequests implements ActionCommand {
-    @Override
-    public String execute(SessionRequestContent content) {
-        HttpSession session = content.getSession();
-        session.setAttribute(CHANGE_CAR, null);
-        session.setAttribute(CHANGING_ROUTE, null);
-        session.setAttribute(TASK_TO_CHANGE, null);
-        CarsDataProcessor.processCarsData(session);
-        return CURRENT_REQUESTS_PAGE;
-    }
+	@Override
+	public String execute(SessionRequestContent content) {
+		HttpSession session = content.getSession();
+		session.setAttribute(CHANGE_CAR, null);
+		session.setAttribute(CHANGING_ROUTE, null);
+		session.setAttribute(TASK_TO_CHANGE, null);
+		CarsDataProcessor.processCarsData(session);
+		return CURRENT_REQUESTS_PAGE;
+	}
 }

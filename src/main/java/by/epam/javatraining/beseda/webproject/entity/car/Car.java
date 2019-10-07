@@ -7,89 +7,92 @@ import java.util.Objects;
 
 public class Car extends EntityBase {
 
-    protected String number;
-    protected String model;
-    protected String status;
-    protected String state;
+	protected String number;
+	protected String model;
+	protected String status;
+	protected String state;
 
-    public Car() {
-        super();
-    }
+	{
+		state = "нормальное";
+		status = "готов к отправке";
+	}
 
-    public Car(String number, String model) {
-        super();
-        this.number = number;
-        this.model = model;
-    }
+	public Car() {
+		super();
+	}
 
-    public void setNumber(String number) throws CarException {
-        if (number != null) {
-            this.number = number;
-        } else {
-            throw new CarException();
-        }
-    }
+	public Car(String number, String model) {
+		super();
+		this.number = number;
+		this.model = model;
+	}
 
-    public void setModel(String model) throws CarException {
-        if (model != null) {
-            this.model = model;
-        } else {
-            throw new CarException();
-        }
-    }
+	public void setNumber(String number) throws CarException {
+		if (number != null) {
+			this.number = number;
+		} else {
+			throw new CarException();
+		}
+	}
 
-    public void setStatus(String status) throws CarException {
-        if (status != null) {
-            this.status = status;
-        } else {
-            throw new CarException();
-        }
-    }
+	public void setModel(String model) throws CarException {
+		if (model != null) {
+			this.model = model;
+		} else {
+			throw new CarException();
+		}
+	}
 
-    public void setState(String state) throws CarException {
-        if (state != null) {
-            this.state = state;
-        } else {
-            throw new CarException();
-        }
-    }
+	public void setStatus(String status) throws CarException {
+		if (status != null) {
+			this.status = status;
+		} else {
+			throw new CarException();
+		}
+	}
 
-    public String getNumber() {
-        return number;
-    }
+	public void setState(String state) throws CarException {
+		if (state != null) {
+			this.state = state;
+		} else {
+			throw new CarException();
+		}
+	}
 
-    public String getModel() {
-        return model;
-    }
+	public String getNumber() {
+		return number;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getModel() {
+		return model;
+	}
 
-    public String getState() {
-        return state;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Car)) return false;
-        Car car = (Car) o;
-        return Objects.equals(number, car.number) &&
-                Objects.equals(model, car.model);
-    }
+	public String getState() {
+		return state;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(number, model);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof Car))
+			return false;
+		Car car = (Car) o;
+		return Objects.equals(number, car.number) && Objects.equals(model, car.model);
+	}
 
-    @Override
-    public String toString() {
-        return "Car{" + "id=" + id +
-                ", number='" + number + '\'' +
-                ", model='" + model + '\'' +
-                ", status=" + status +
-                ", state=" + state + '}';
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(number, model);
+	}
+
+	@Override
+	public String toString() {
+		return "Car{" + "id=" + id + ", number='" + number + '\'' + ", model='" + model + '\'' + ", status=" + status
+				+ ", state=" + state + '}';
+	}
 }

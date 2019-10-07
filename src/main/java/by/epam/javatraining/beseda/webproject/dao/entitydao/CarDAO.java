@@ -1,13 +1,19 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.dao.exception.*;
-import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery;
-import by.epam.javatraining.beseda.webproject.entity.car.Bus;
-import by.epam.javatraining.beseda.webproject.entity.car.Car;
-import by.epam.javatraining.beseda.webproject.entity.car.Truck;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_BUS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_TRUCK;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_CAR_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.END_OF_STATEMENT;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_CARS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CARS_BY_ID_LIST;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CARS_BY_TYPE;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CAR_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_BUS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_CAR_STATE;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_TRUCK;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.BUS;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.TRUCK;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,215 +21,210 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.*;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.*;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
+import org.apache.log4j.Logger;
 
-public class CarDAO extends AbstractDAO<Car> implements by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface {
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.CarTypeNotPresentException;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOLogicException;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
+import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.entity.car.Bus;
+import by.epam.javatraining.beseda.webproject.entity.car.Car;
+import by.epam.javatraining.beseda.webproject.entity.car.Truck;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 
-    CarDAO() {
-        super();
-    }
+public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 
-    @Override
-    protected Car buildEntity(ResultSet result) throws CarTypeNotPresentException, SQLException, EntityLogicException {
-        Car car = null;
-        if (result != null) {
-            String carType = result.getString(CAR_TYPE);
-            switch (carType) {
-                case BUS:
-                    car = new Bus();
-                    ((Bus) car).setSeats(result.getInt(SEATS_NUMBER));
-                    break;
-                case TRUCK:
-                    car = new Truck();
-                    ((Truck) car).setCapacity(result.getInt(TRUCK_CAPACITY));
-                    break;
-                default:
-                    throw new CarTypeNotPresentException();
-            }
-            car.setId(result.getInt(SQLQuery.CAR_ID));
-            car.setModel(result.getString(MODEL));
-            car.setNumber(result.getString(CAR_NUMBER));
-            car.setState(result.getString(CAR_STATE));
-            car.setStatus(result.getString(CAR_STATUS));
-        }
-        return car;
-    }
+	private Logger log = Logger.getLogger(ERROR_LOGGER);
 
-    @Override
-    public int add(Car car) throws DAOLayerException {
-        int id = -1;
-        int carTypeIndex;
-        if (car != null) {
-            PreparedStatement st = null;
-            try {
-                lock.lock();
-                if (car instanceof Truck) {
-                    st = connector.prepareStatementWithAutoGeneratedKeys(ADD_NEW_TRUCK);
-                    carTypeIndex = DatabaseEnumLoader.CAR_TYPE_MAP.getKey(TRUCK);
-                    int truckCapacity = ((Truck) car).getCapacity();
-                    int capacityID = DatabaseEnumLoader.TRUCK_CAPACITY_MAP.getKey(truckCapacity + "");
-                    st.setInt(2, capacityID);
-                } else if (car instanceof Bus) {
-                    st = connector.prepareStatementWithAutoGeneratedKeys(ADD_NEW_BUS);
-                    carTypeIndex = DatabaseEnumLoader.CAR_TYPE_MAP.getKey(BUS);
-                    int seatsNumber = ((Bus) car).getSeats();
-                    st.setInt(2, seatsNumber);
-                } else {
-                    lock.unlock();
-                    throw new DAOLogicException(new CarTypeNotPresentException());
-                }
-                setDataOnPreparedStatement(st, car);
-                st.setInt(1, carTypeIndex);
-                st.executeUpdate();
-                ResultSet res = st.getGeneratedKeys();
-                res.first();
-                id = res.getInt(1);
-            } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
-            } finally {
-                connector.closeStatement(st);
-                lock.unlock();
-            }
-        }
-        return id;
-    }
+	{
+		builder = entityBuilderFactory.getCarBuilder();
+	}
 
-    @Override
-    public synchronized void update(Car car) throws DAOLayerException {
-        if (car != null) {
-            PreparedStatement st = null;
-            try {
-                lock.lock();
-                if (car instanceof Truck) {
-                    st = connector.prepareStatement(UPDATE_TRUCK);
-                    String truckCapacity = ((Truck) car).getCapacity() + "";
-                    int truckCapacityIndex = DatabaseEnumLoader.TRUCK_CAPACITY_MAP.getKey(truckCapacity);
-                    st.setInt(1, truckCapacityIndex);
-                } else if (car instanceof Bus) {
-                    st = connector.prepareStatement(UPDATE_BUS);
-                    st.setInt(1, ((Bus) car).getSeats());
-                } else {
-                    lock.unlock();
-                    throw new CarTypeNotPresentException();
-                }
-                setDataOnPreparedStatement(st, car);
-                st.setInt(updateIdParameterNumber(), car.getId());
-                st.executeUpdate();
-            } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating database", e);
-            } finally {
-                connector.closeStatement(st);
-                lock.unlock();
-            }
-        }
-    }
+	CarDAO() {
+		super();
+	}
 
-    @Override
-    public List<Car> getCarsByType(String carType) throws DAOLayerException {
-        List<Car> list = new ArrayList<>();
-        PreparedStatement st = null;
-        Car entity = null;
-        try {
-            lock.lock();
-            st = connector.prepareStatement(SELECT_CARS_BY_TYPE + END_OF_STATEMENT);
-            st.setString(1,carType);
-            ResultSet result = st.executeQuery();
-            while (result.next()) {
-                entity = buildEntity(result);
-                list.add(entity);
-            }
-        } catch (SQLException e) {
-            throw new DAOTechnicalException("Error retrieving data from database", e);
-        } catch (EntityLogicException e) {
-            throw new DAOTechnicalException("Error creating entity", e);
-        } finally {
-            lock.unlock();
-            connector.closeStatement(st);
-        }
-        return list;
-    }
-
-    @Override
-    protected String getAllStatement() {
-        return SELECT_ALL_CARS;
-    }
-
-    @Override
-    protected String getEntityByIdStatement() {
-        return SELECT_CAR_BY_ID;
-    }
-
-    @Override
-    protected String getEntityListByIdStatement() {
-        return SELECT_CARS_BY_ID_LIST;
-    }
+	CarDAO(ConnectionPool pool) {
+		super(pool);
+	}
 
 
-    /**
-     * Undefined
-     *
-     * @return null
-     */
-    @Override
-    protected String addStatement() {
-        return null;
-    }
+	@Override
+	public int add(Car car) throws DAOLayerException {
+		int id = -1;
+		if (car != null) {
+			PreparedStatement st = null;
+			try {
+				lock.lock();
+				if (car instanceof Truck) {
+					st = connector.prepareStatementWithAutoGeneratedKeys(ADD_NEW_TRUCK);
+				} else if (car instanceof Bus) {
+					st = connector.prepareStatementWithAutoGeneratedKeys(ADD_NEW_BUS);
+				} else {
+					throw new DAOLogicException(new CarTypeNotPresentException());
+				}
+				setDataOnPreparedStatement(st, car);
+				st.executeUpdate();
+				ResultSet res = st.getGeneratedKeys();
+				res.next();
+				id = res.getInt(1);
+			} catch (SQLException e) {
+				throw new DAOTechnicalException(e);
+			} finally {
+				connector.closeStatement(st);
+				lock.unlock();
+			}
+		}
+		return id;
+	}
 
-    @Override
-    protected String deleteStatement() {
-        return DELETE_CAR_BY_ID;
-    }
+	@Override
+	public synchronized void update(Car car) throws DAOLayerException {
+		if (car != null) {
+			PreparedStatement st = null;
+			try {
+				lock.lock();
+				if (car instanceof Truck) {
+					st = connector.prepareStatement(UPDATE_TRUCK);
+				} else if (car instanceof Bus) {
+					st = connector.prepareStatement(UPDATE_BUS);
+				} else {
+					throw new CarTypeNotPresentException();
+				}
+				setDataOnPreparedStatement(st, car);
+				st.setInt(updateIdParameterNumber(), car.getId());
+				st.executeUpdate();
+			} catch (SQLException e) {
+				throw new DAOTechnicalException(e);
+			} finally {
+				connector.closeStatement(st);
+				lock.unlock();
+			}
+		}
+	}
 
+	@Override
+	public List<Car> getCarsByType(String carType) throws DAOLayerException {
+		List<Car> list = new ArrayList<>();
+		PreparedStatement st = null;
+		Car entity = null;
+		try {
+			lock.lock();
+			st = connector.prepareStatement(SELECT_CARS_BY_TYPE + END_OF_STATEMENT);
+			st.setString(1, carType);
+			ResultSet result = st.executeQuery();
+			while (result.next()) {
+				entity = builder.buildEntity(result);
+				list.add(entity);
+			}
+		} catch (SQLException e) {
+			throw new DAOTechnicalException(e);
+		} catch (EntityLogicException e) {
+			throw new DAOTechnicalException(e);
+		} finally {
+			lock.unlock();
+			connector.closeStatement(st);
+		}
+		return list;
+	}
 
-    /**
-     * Undefined
-     *
-     * @return null
-     */
-    @Override
-    protected String updateStatement() {
-        return null;
-    }
+	@Override
+	protected String getAllStatement() {
+		return SELECT_ALL_CARS;
+	}
 
-    @Override
-    protected int updateIdParameterNumber() {
-        return 6;
-    }
+	@Override
+	protected String getEntityByIdStatement() {
+		return SELECT_CAR_BY_ID;
+	}
 
-    @Override
-    protected void setDataOnPreparedStatement(PreparedStatement st, Car car) throws SQLException, NotEnoughArgumentsException {
-        if (st != null && car != null) {
-            int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(car.getState());
-            int carStatusIndex = DatabaseEnumLoader.CAR_STATUS_MAP.getKey(car.getStatus());
-            st.setString(2, car.getNumber());
-            st.setString(3, car.getModel());
-            st.setInt(4, carStatusIndex);
-            st.setInt(5, carStateIndex);
-        } else {
-            throw new NotEnoughArgumentsException();
-        }
-    }
+	@Override
+	protected String getEntityListByIdStatement() {
+		return SELECT_CARS_BY_ID_LIST;
+	}
 
-    @Override
-    public void updateCarState(int id, String state) throws DAOTechnicalException {
-        if (id > 0 && state != null) {
-            int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(state);
-            PreparedStatement st = null;
-            try {
-                lock.lock();
-                st = connector.prepareStatement(UPDATE_CAR_STATE);
-                st.setInt(1, carStateIndex);
-                st.setInt(2, id);
-                st.executeUpdate();
-            } catch (SQLException e) {
-                throw new DAOTechnicalException("Error updating car state", e);
-            } finally {
-                connector.closeStatement(st);
-                lock.unlock();
-            }
-        }
-    }
+	/**
+	 * Undefined
+	 *
+	 * @return null
+	 */
+	@Override
+	protected String addStatement() {
+		return null;
+	}
+
+	@Override
+	protected String deleteStatement() {
+		return DELETE_CAR_BY_ID;
+	}
+
+	/**
+	 * Undefined
+	 *
+	 * @return null
+	 */
+	@Override
+	protected String updateStatement() {
+		return null;
+	}
+
+	@Override
+	protected int updateIdParameterNumber() {
+		return 7;
+	}
+
+	@Override
+	protected void setDataOnPreparedStatement(PreparedStatement st, Car car)
+			throws SQLException, NotEnoughArgumentsException {
+		if (st != null && car != null) {
+			int carTypeIndex=0;
+			if (car instanceof Truck) {
+				carTypeIndex = DatabaseEnumLoader.CAR_TYPE_MAP.getKey(TRUCK);
+				int truckCapacity = ((Truck) car).getCapacity();
+				int capacityID = DatabaseEnumLoader.TRUCK_CAPACITY_MAP.getKey(truckCapacity + "");
+				st.setInt(2, capacityID);
+			} else if (car instanceof Bus) {
+				carTypeIndex = DatabaseEnumLoader.CAR_TYPE_MAP.getKey(BUS);
+				int seatsNumber = ((Bus) car).getSeats();
+				st.setInt(2, seatsNumber);
+			} else {
+				log.fatal(new CarTypeNotPresentException());
+			}
+			st.setInt(1, carTypeIndex);
+
+			int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(car.getState());
+			int carStatusIndex = DatabaseEnumLoader.CAR_STATUS_MAP.getKey(car.getStatus());
+			st.setString(3, car.getNumber());
+			st.setString(4, car.getModel());
+			st.setInt(5, carStatusIndex);
+			st.setInt(6, carStateIndex);
+		} else {
+			throw new NotEnoughArgumentsException();
+		}
+	}
+
+	@Override
+	public void updateCarState(int id, String state) throws DAOTechnicalException {
+		if (id > 0 && state != null) {
+			int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(state);
+			PreparedStatement st = null;
+			try {
+				lock.lock();
+				st = connector.prepareStatement(UPDATE_CAR_STATE);
+				st.setInt(1, carStateIndex);
+				st.setInt(2, id);
+				st.executeUpdate();
+			} catch (SQLException e) {
+				throw new DAOTechnicalException(e);
+			} finally {
+				connector.closeStatement(st);
+				lock.unlock();
+			}
+		}
+	}
 
 }

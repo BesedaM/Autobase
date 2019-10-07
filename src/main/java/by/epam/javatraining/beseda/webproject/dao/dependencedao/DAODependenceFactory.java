@@ -11,7 +11,7 @@ public class DAODependenceFactory {
     private final RequestCustomerDependenceDAO requestCustomerDAO;
     private final TaskAddressDependenceDAO taskAddressDAO;
     private final TaskRouteDependenceDAO taskRouteDAO;
-
+    
     private DAODependenceFactory() {
         carDriverDAO = new CarDriverDependenceDAO();
         carRouteDAO = new CarRouteDependenceDAO();

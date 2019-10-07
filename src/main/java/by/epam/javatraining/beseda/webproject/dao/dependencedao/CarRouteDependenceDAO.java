@@ -1,15 +1,21 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.car.Car;
-import by.epam.javatraining.beseda.webproject.entity.route.Route;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_DELETE_DEPENDENCE;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_DEPENDENCE_ACTIVE_PLANNED_ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_DEPENDENCE_ACTIVE_ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_DEPENDENCE_CAR_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_UPDATE_DEPENDENCE;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+import by.epam.javatraining.beseda.webproject.entity.car.Car;
+import by.epam.javatraining.beseda.webproject.entity.route.Route;
 
 public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
 
@@ -17,6 +23,10 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
         super();
     }
 
+    CarRouteDependenceDAO(ConnectionPool pool) {
+        super(pool);
+    }
+    
     public int getActiveRouteId(Car car) throws DAOTechnicalException {
         int id = 0;
         if (car != null) {
@@ -28,7 +38,7 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
                 ResultSet res = st.executeQuery();
                 id = res.getInt(1);
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();
@@ -39,7 +49,7 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
 
 
     public int[] getActivePlannedRoutesId(Car car) throws DAOTechnicalException {
-        int[] ids = null;
+        int[] ids = new int[1];
         if (car != null) {
             PreparedStatement st = null;
             try {
@@ -49,13 +59,13 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
                 ResultSet res = st.executeQuery();
                 res.last();
                 ids = new int[res.getRow()];
-                res.beforeFirst();
                 int i = 0;
+                res.beforeFirst();
                 while (res.next()) {
                     ids[i++] = res.getInt(1);
                 }
             } catch (SQLException e) {
-                throw new DAOTechnicalException("Error retrieving data from database", e);
+                throw new DAOTechnicalException(e);
             } finally {
                 connector.closeStatement(st);
                 lock.unlock();

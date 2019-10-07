@@ -6,17 +6,16 @@ import by.epam.javatraining.beseda.webproject.entity.Request;
 
 import java.util.List;
 
-public interface RequestInterface extends EntityDAO<Request>{
+public interface RequestInterface extends EntityDAO<Request> {
 
-    int[] selectActiveCustomerRequestsId(int customerId) throws DAOTechnicalException;
+	int[] selectActiveCustomerRequestsId(int customerId) throws DAOTechnicalException;
 
-    List<Request> getNewRequests() throws DAOLayerException;
+	List<Request> getNewRequests() throws DAOLayerException;
 
-    int[] getCurrentRequestsId() throws DAOLayerException;
+	int[] getCurrentRequestsId() throws DAOLayerException;
 
-    int[] getFulfilledRequestsId() throws DAOLayerException;
+	int[] getFulfilledRequestsId() throws DAOLayerException;
 
-    int[] getRejectedRequestsId() throws DAOLayerException;
-
+	int[] getRejectedRequestsId() throws DAOLayerException;
 
 }

@@ -14,7 +14,16 @@ public class CustomerService extends AbstractEntityService<Customer> {
     }
 
     /**
-     * Creates entityservice with the given data
+     * Creates entity with the given data.
+     * 
+     * @param userData
+     * @param name
+     * @param surname
+     * @param customerType
+     * @param phone
+     * @param email
+     * @param companyName
+     * @return
      */
     public Customer createCustomer(User userData, String name, String surname, String customerType,
                                    String phone, String email, String companyName) {
