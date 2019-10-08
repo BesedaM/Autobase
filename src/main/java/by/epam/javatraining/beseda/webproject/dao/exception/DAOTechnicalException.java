@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.exception;
 
+@SuppressWarnings("serial")
 public class DAOTechnicalException extends DAOLayerException {
 
     public DAOTechnicalException(String message, Throwable cause) {

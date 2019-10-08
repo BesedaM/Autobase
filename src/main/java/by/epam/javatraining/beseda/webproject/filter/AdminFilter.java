@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.USER_ADMIN;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_ADMIN;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.LOGIN_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_ROLE;
 

@@ -22,7 +22,7 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.PASSWORD;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.*;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_DATA;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.*;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.*;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.AUTHORIZATION_LOGGER;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
@@ -113,5 +113,4 @@ public class LoginCommand implements ActionCommand {
 			authLog.trace(fullUserData);
 		}
 	}
-
 }

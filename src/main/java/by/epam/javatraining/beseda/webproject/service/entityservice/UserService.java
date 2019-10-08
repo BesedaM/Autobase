@@ -53,7 +53,7 @@ public class UserService extends AbstractEntityService<User> {
 	 * @return true if login exists
 	 * @throws ServiceTechnicalException
 	 */
-	public final boolean loginExists(String login) throws ServiceTechnicalException {
+	public final boolean loginExists(String login) throws ServiceLayerException {
 		return getUserByLogin(login) != null;
 	}
 
@@ -85,13 +85,13 @@ public class UserService extends AbstractEntityService<User> {
 	 * @return user
 	 * @throws ServiceTechnicalException
 	 */
-	public final User getUserByLogin(String login) throws ServiceTechnicalException {
+	public final User getUserByLogin(String login) throws ServiceLayerException {
 		User user = null;
 		if (login != null) {
 			try {
 				user = ((UserDAO) entityDAO).getUserByLogin(login);
-			} catch (DAOTechnicalException e) {
-				throw new ServiceTechnicalException(e);
+			} catch (DAOLayerException e) {
+				throw new ServiceLayerException(e);
 			}
 		}
 		return user;
@@ -105,14 +105,14 @@ public class UserService extends AbstractEntityService<User> {
 	 * @return user
 	 * @throws ServiceTechnicalException
 	 */
-	public final User getUserByLoginAndPassword(String login, String password) throws ServiceTechnicalException {
+	public final User getUserByLoginAndPassword(String login, String password) throws ServiceLayerException {
 		User user = null;
 		if (login != null && password != null) {
 			byte[] pw = PasswordHash.getHash(password);
 			try {
 				user = ((UserDAO) entityDAO).getUserByLoginAndPassword(login, pw);
-			} catch (DAOTechnicalException e) {
-				throw new ServiceTechnicalException(e);
+			} catch (DAOLayerException e) {
+				throw new ServiceLayerException(e);
 			}
 		}
 		return user;

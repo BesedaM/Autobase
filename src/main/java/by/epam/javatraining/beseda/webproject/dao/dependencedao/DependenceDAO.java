@@ -1,12 +1,16 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.locks.ReentrantLock;
+
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.ConnectionWrap;
+import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.TestWrapperConnector;
+import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 
 /**
  * Top hierarchy class for dependenceDAO.
@@ -16,13 +20,17 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> {
 
-	protected WrapperConnector connector;
+	protected ConnectionWrap connector;
 	protected final ReentrantLock lock = new ReentrantLock();
 
 	protected DependenceDAO() {
 		this.connector = new WrapperConnector();
 	}
 
+	protected DependenceDAO(ConnectionPool pool) {
+		this.connector = new TestWrapperConnector(pool);
+	}
+	
 	/**
 	 * Sets the dependence to the object
 	 *
@@ -84,5 +92,4 @@ public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> 
 		connector.closeConnector();
 		lock.unlock();
 	}
-
 }

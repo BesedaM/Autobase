@@ -14,5 +14,4 @@ public abstract class ActionCommandBase implements ActionCommand {
 	private static final ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
 	private static final ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 	private static final EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
-
 }

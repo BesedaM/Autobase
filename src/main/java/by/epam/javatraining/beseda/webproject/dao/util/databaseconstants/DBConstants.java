@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.dao.util.database;
+package by.epam.javatraining.beseda.webproject.dao.util.databaseconstants;
 
 public class DBConstants {
 

@@ -1,10 +1,9 @@
 package by.epam.javatraining.beseda.webproject.logic;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class RegisterLogicTest {
 

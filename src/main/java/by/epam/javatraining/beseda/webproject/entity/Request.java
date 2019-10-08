@@ -1,11 +1,13 @@
 package by.epam.javatraining.beseda.webproject.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+import java.util.Objects;
+
 import by.epam.javatraining.beseda.webproject.entity.exception.RequestException;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
-
-import java.util.GregorianCalendar;
-import java.util.Objects;
+import static by.epam.javatraining.beseda.webproject.entity.DefaultValue.REQUEST_DEFAULT_STATUS;
 
 public class Request extends EntityBase {
 
@@ -21,8 +23,15 @@ public class Request extends EntityBase {
 
 	{
 		this.creationTime = new GregorianCalendar();
+		this.status = REQUEST_DEFAULT_STATUS;
 	}
 
+	public Request(Customer customer, String comment) {
+		super();
+		this.customer = customer;
+		this.comment = comment;
+	}
+	
 	public Request(Customer customer, String comment, String status) {
 		super();
 		this.customer = customer;
@@ -118,7 +127,8 @@ public class Request extends EntityBase {
 
 	@Override
 	public String toString() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return "Request{" + "id=" + id + ", route=" + route + ", customer=" + customer + ", status=" + status
-				+ ", comment='" + comment + '\'' + ", set on " + creationTime + '}';
+				+ ", comment='" + comment + '\'' + ", set on " + sdfDate.format(creationTime) + '}';
 	}
 }

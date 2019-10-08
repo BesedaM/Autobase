@@ -1,6 +1,14 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.dao.interfacedao.*;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.AddressInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.DriverInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityFactoryInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.TaskInterface;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
 
 public class MySQLDAOEntityFactory implements EntityFactoryInterface {
 

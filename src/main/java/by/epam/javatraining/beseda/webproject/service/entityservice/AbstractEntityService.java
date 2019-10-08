@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import by.epam.javatraining.beseda.webproject.dao.entitydao.MySQLDAOEntityFactory;
+import by.epam.javatraining.beseda.webproject.dao.entitydao.DAOEntityFactory;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public abstract class AbstractEntityService<E extends EntityBase> implements EntityService<E> {
 
-    protected static MySQLDAOEntityFactory mySQLDAOEntityFactory = MySQLDAOEntityFactory.getFactory();
+    protected static DAOEntityFactory mySQLDAOEntityFactory = DAOEntityFactory.getFactory();
     protected EntityDAO<E> entityDAO;
 
     @Override

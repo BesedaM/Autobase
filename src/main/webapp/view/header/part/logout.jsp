@@ -18,4 +18,3 @@
     <input type="hidden" name="command" value="logout">
     <input type="submit" value="${logout}">
 </form>
-

@@ -1,21 +1,32 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLogicException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperConnector;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.END_OF_STATEMENT;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.CLOSING_SQUARE_BRACKET;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.EMPTY_CHARACTER;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.OPENING_SQUARE_BRACKET;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.QUESTION_MARK;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.SPACE;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBConstants.*;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.END_OF_STATEMENT;
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.entitybuilder.EntityBuilder;
+import by.epam.javatraining.beseda.webproject.dao.entitybuilder.EntityBuilderFactory;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
+import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.ConnectionWrap;
+import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.TestWrapperConnector;
+import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperConnector;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 
 /**
  * Abstract class, containing generic methods for entity DAO.
@@ -24,11 +35,18 @@ import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.
  */
 public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> {
 
-	protected WrapperConnector connector;
+	protected static EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
+
+	protected ConnectionWrap connector;
+	protected EntityBuilder<E> builder;
 	protected final ReentrantLock lock = new ReentrantLock();
 
 	protected AbstractDAO() {
 		this.connector = new WrapperConnector();
+	}
+
+	protected AbstractDAO(ConnectionPool pool) {
+		this.connector = new TestWrapperConnector(pool);
 	}
 
 	public List<E> getAll() throws DAOLayerException {
@@ -40,8 +58,7 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 			st = connector.createStatement();
 			ResultSet result = st.executeQuery(getAllStatement() + END_OF_STATEMENT);
 			while (result.next()) {
-				entity = buildEntity(result);
-
+				entity = builder.buildEntity(result);
 				list.add(entity);
 			}
 		} catch (SQLException e) {
@@ -69,11 +86,9 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 			st.setInt(1, id);
 			ResultSet res = st.executeQuery();
 			if (res.first()) {
-				entity = buildEntity(res);
+				entity = builder.buildEntity(res);
 			}
-		} catch (SQLException e) {
-			throw new DAOTechnicalException(e);
-		} catch (EntityLogicException e) {
+		} catch (SQLException | EntityLogicException e) {
 			throw new DAOTechnicalException(e);
 		} finally {
 			connector.closeStatement(st);
@@ -95,12 +110,10 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 			ResultSet res = st.executeQuery(modifiedStatement);
 
 			while (res.next()) {
-				E entity = buildEntity(res);
+				E entity = builder.buildEntity(res);
 				list.add(entity);
 			}
-		} catch (SQLException e) {
-			throw new DAOTechnicalException(e);
-		} catch (EntityLogicException e) {
+		} catch (SQLException | EntityLogicException e) {
 			throw new DAOTechnicalException(e);
 		} finally {
 			connector.closeStatement(st);
@@ -116,7 +129,6 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 */
 	protected abstract String getEntityByIdStatement();
 
-	protected abstract E buildEntity(ResultSet res) throws DAOLogicException, SQLException, EntityLogicException;
 
 	public void delete(int id) throws DAOTechnicalException {
 		PreparedStatement st = null;
@@ -170,9 +182,10 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 * @param st     prepared statement
 	 * @param entity source of data
 	 * @throws SQLException
+	 * @throws DAOTechnicalException
 	 */
 	protected abstract void setDataOnPreparedStatement(PreparedStatement st, E entity)
-			throws SQLException, DAOLogicException;
+			throws SQLException, DAOLayerException;
 
 	/**
 	 * Returns string representation of SQL 'add entity service' query.
@@ -207,5 +220,4 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	public void close() {
 		connector.closeConnector();
 	}
-
 }

@@ -1,11 +1,11 @@
 package by.epam.javatraining.beseda.webproject.entity.route;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.exception.TaskException;
-
-
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Objects;
+
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+import by.epam.javatraining.beseda.webproject.entity.exception.TaskException;
 
 public class Task extends EntityBase {
 
@@ -88,6 +88,8 @@ public class Task extends EntityBase {
 
 	@Override
 	public String toString() {
-		return "Task{" + "address=" + address + ", time=" + time + ", details='" + details + '\'' + '}';
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return "Task{" + "address=" + address + ", time=" + sdfDate.format(time) + ", details='" + details + '\'' + '}';
 	}
+
 }

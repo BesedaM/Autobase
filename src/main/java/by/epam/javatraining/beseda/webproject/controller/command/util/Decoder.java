@@ -1,7 +1,7 @@
 package by.epam.javatraining.beseda.webproject.controller.command.util;
 
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.util.resourceloader.GeneralProperties;
+import by.epam.javatraining.beseda.webproject.util.GeneralProperties;
 
 import java.io.UnsupportedEncodingException;
 
@@ -32,5 +32,4 @@ public class Decoder {
 		}
 		return newStr;
 	}
-
 }

@@ -1,57 +1,46 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_REQUEST;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_REQUEST_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.END_OF_STATEMENT;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ACTIVE_CUSTOMER_REQUESTS_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_REQUESTS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CURRENT_REQUESTS_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_FULFILLED_REQUESTS_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_NEW_REQUESTS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_REJECTED_REQUESTS_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_REQUESTS_BY_ID_LIST;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_REQUEST_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_REQUEST;
 
-
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
-import by.epam.javatraining.beseda.webproject.entity.Request;
-import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
-
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.COMMENT;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEntityTable.REQUEST_DATE;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.REQUEST_STATUS;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.ID;
-import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
-
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
+import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.entity.Request;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 
 public class RequestDAO extends AbstractDAO<Request> implements RequestInterface {
-	
-	private static Logger logger = LogManager.getLogger(ERROR_LOGGER);
+
+	{
+		builder = entityBuilderFactory.getRequestBuilder();
+	}
 
 	RequestDAO() {
 		super();
 	}
 
-	@Override
-	protected Request buildEntity(ResultSet res) throws SQLException, EntityLogicException {
-		Request request = null;
-		if (res != null) {
-			request = new Request();
-			request.setId(res.getInt(ID));
-			request.setStatus(res.getString(REQUEST_STATUS));
-
-			String comment = res.getString(COMMENT);
-			if (comment != null) {
-				request.setComment(res.getString(COMMENT));
-			}
-			GregorianCalendar time = new GregorianCalendar();
-			time.setTimeInMillis(res.getDate(REQUEST_DATE).getTime());
-
-			request.setCreationTime(time);
-		}
-		return request;
+	RequestDAO(ConnectionPool pool) {
+		super(pool);
 	}
 
 	@Override
@@ -104,7 +93,7 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 
 	@Override
 	public int[] selectActiveCustomerRequestsId(int customerId) throws DAOTechnicalException {
-		int[] array = null;
+		int[] array = new int[0];
 		if (customerId > 0) {
 			PreparedStatement st = null;
 			try {
@@ -136,11 +125,13 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 			try {
 				lock.lock();
 				st = connector.prepareStatement(updateStatement());
-				int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
-				st.setInt(1, statusId);
-				st.setString(2, request.getComment());
-				st.setInt(3, request.getId());
-				st.executeUpdate();
+				if (DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus()) != null) {
+					int statusId = DatabaseEnumLoader.REQUEST_STATUS_MAP.getKey(request.getStatus());
+					st.setInt(1, statusId);
+					st.setString(2, request.getComment());
+					st.setInt(3, request.getId());
+					st.executeUpdate();
+				}
 			} catch (SQLException e) {
 				throw new DAOTechnicalException(e);
 			} finally {
@@ -160,7 +151,7 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 			st = connector.createStatement();
 			ResultSet result = st.executeQuery(SELECT_NEW_REQUESTS + END_OF_STATEMENT);
 			while (result.next()) {
-				entity = buildEntity(result);
+				entity = builder.buildEntity(result);
 				list.add(entity);
 			}
 		} catch (SQLException e) {
@@ -175,7 +166,7 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 	}
 
 	private int[] getSpecifiedRequestsId(String sqlStatement) throws DAOTechnicalException {
-		int[] array = new int[1];
+		int[] array = new int[0];
 		Statement st = null;
 		try {
 			lock.lock();

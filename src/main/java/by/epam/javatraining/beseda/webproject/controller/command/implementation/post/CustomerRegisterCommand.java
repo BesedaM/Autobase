@@ -1,5 +1,31 @@
 package by.epam.javatraining.beseda.webproject.controller.command.implementation.post;
 
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.MINIMUM_COMPANY_NAME_LENGTH;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.ERROR_REGISTER_LOGIN;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.ERROR_REGISTER_PASSWORD;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.STATUS_TRUE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.UNSAFE_PASSWORD;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.COMPANY_NAME;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.EMAIL;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.LOGIN;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.NAME;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.PASSWORD;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.PASSWORD_CONFIRM;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.PHONE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.SURNAME;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.CUSTOMER_MAIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.CUSTOMER_REGISTER_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_DATA;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.CUSTOMER_INDIVIDUAL;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.CUSTOMER_LEGAL;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_CUSTOMER;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_ROLE;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
 import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
 import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
@@ -7,22 +33,10 @@ import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
 import by.epam.javatraining.beseda.webproject.logic.RegisterLogic;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CustomerService;
+import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
 import by.epam.javatraining.beseda.webproject.service.entityservice.UserService;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
-import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
-import org.apache.log4j.Logger;
 
-import java.util.Map;
-
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.*;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.*;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.CUSTOMER_MAIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.CUSTOMER_REGISTER_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_DATA;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.*;
-import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.MINIMUM_COMPANY_NAME_LENGTH;
 
 public class CustomerRegisterCommand implements ActionCommand {
 
@@ -80,7 +94,7 @@ public class CustomerRegisterCommand implements ActionCommand {
 				attributes.put(UNSAFE_PASSWORD, STATUS_TRUE);
 				correctData = false;
 			}
-		} catch (ServiceTechnicalException e) {
+		} catch (ServiceLayerException e) {
 			log.error(e);
 		}
 		return correctData;

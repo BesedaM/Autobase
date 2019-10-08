@@ -10,14 +10,19 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<postgres.version>42.2.7</postgres.version>
+		<pg-embedded.version>0.7.1</pg-embedded.version>
+
 	</properties>
 
 
 	<build>
-
+		<finalName>Trucking_company</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -29,6 +34,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -41,19 +47,34 @@
 				<version>3.2.3</version>
 			</plugin>
 
-
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 			</plugin>
 
-
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M2</version>
+				<version>3.0.0-M3</version>
+				<configuration>
+					<skipTests>false</skipTests>
+					<property>
+						<name>junit</name>
+						<value>false</value>
+					</property>
+					<suiteXmlFiles>
+						<file>src/test/resources/suite.xml</file>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.0.0-M3</version>
 				<configuration>
 					<skipTests>false</skipTests>
 				</configuration>
@@ -105,6 +126,14 @@
 					</excludeRoots>
 				</configuration>
 			</plugin>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.0.0-M3</version>
+			</plugin>
+
 		</plugins>
 	</reporting>
 
@@ -162,11 +191,11 @@
 			<version>42.2.7</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<!-- https://mvnrepository.com/artifact/com.opentable.components/otj-pg-embedded -->
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.5.2</version>
+			<groupId>com.opentable.components</groupId>
+			<artifactId>otj-pg-embedded</artifactId>
+			<version>0.13.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -176,6 +205,60 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.junit/junit-engine-api -->
+
+		<dependency>
+			<groupId>org.junit</groupId>
+			<artifactId>junit-engine-api</artifactId>
+			<version>5.0.0-ALPHA</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.0.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/surefire-testng -->
+		<dependency>
+			<groupId>org.apache.maven.surefire</groupId>
+			<artifactId>surefire-testng</artifactId>
+			<version>3.0.0-M3</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/com.github.slavaz/embedded-postgresql-maven-plugin -->
+		<dependency>
+			<groupId>com.github.slavaz</groupId>
+			<artifactId>embedded-postgresql-maven-plugin</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.ibatis/ibatis-sqlmap -->
+		<dependency>
+			<groupId>org.apache.ibatis</groupId>
+			<artifactId>ibatis-sqlmap</artifactId>
+			<version>3.0-beta-10</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.8.0-beta4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.8.0-beta4</version>
+			<scope>test</scope>
+		</dependency>
+
 
 	</dependencies>
 

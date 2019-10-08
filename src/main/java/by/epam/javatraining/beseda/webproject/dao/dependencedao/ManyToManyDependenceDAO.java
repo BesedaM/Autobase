@@ -1,11 +1,12 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 
 /**
  * Class represents relationship in database many-to-many.
@@ -19,6 +20,11 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
 		super();
 	}
 
+
+	protected ManyToManyDependenceDAO(ConnectionPool pool) {
+		super(pool);
+	}
+	
 	/**
 	 * Returns dependence ids according to specified entity.
 	 *
@@ -99,4 +105,5 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
 	}
 
 	protected abstract String deleteDependenceStatement();
+
 }

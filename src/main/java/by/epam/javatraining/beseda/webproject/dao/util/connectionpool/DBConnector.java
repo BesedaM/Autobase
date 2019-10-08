@@ -30,7 +30,7 @@ public class DBConnector implements ConnectionPool {
 	private Queue<Connection> connectionInUse;
 
 	private static class SingletonHolder {
-		public static DBConnector pool = new DBConnector(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+		public static final DBConnector pool = new DBConnector(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
 	}
 
 	private DBConnector(String url, String user, String password) {
@@ -66,7 +66,7 @@ public class DBConnector implements ConnectionPool {
 	 * @param password database access password
 	 * @return DBConnector instance
 	 */
-	public static DBConnector createConnectionPool(String url, String user, String password) {
+	public static DBConnector createConnectionPool() {
 		try {
 			registerDriver();
 		} catch (SQLException e) {
@@ -133,5 +133,4 @@ public class DBConnector implements ConnectionPool {
 		}
 		deregisterDriver();
 	}
-
 }

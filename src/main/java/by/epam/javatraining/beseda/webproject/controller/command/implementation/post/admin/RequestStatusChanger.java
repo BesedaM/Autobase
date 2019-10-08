@@ -17,7 +17,7 @@ import java.util.Set;
 
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.*;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.REQUEST_CUSTOMER_MAP;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.ADOPTED_REQUEST;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.ADOPTED_REQUEST;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;

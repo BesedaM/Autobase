@@ -1,9 +1,13 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.REQUEST_CUSTOMER_GET_DEPENDENCE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.REQUEST_CUSTOMER_GET_ENTITIES;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.REQUEST_CUSTOMER_UPDATE_DEPENDENCE;
+
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
 
 public class RequestCustomerDependenceDAO extends ManyToOneDependenceDAO<Request, Customer> {
 
@@ -11,7 +15,10 @@ public class RequestCustomerDependenceDAO extends ManyToOneDependenceDAO<Request
         super();
     }
 
-
+    RequestCustomerDependenceDAO(ConnectionPool pool) {
+        super(pool);
+    }
+    
     @Override
     protected String getDependenceIdStatement() {
         return REQUEST_CUSTOMER_GET_DEPENDENCE_ID;

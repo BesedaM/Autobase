@@ -3,6 +3,7 @@ package by.epam.javatraining.beseda.webproject.entity.route;
 import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.exception.RouteException;
+import static by.epam.javatraining.beseda.webproject.entity.DefaultValue.ROUTE_DEFAULT_STATUS;
 
 import java.util.*;
 
@@ -16,6 +17,7 @@ public class Route extends EntityBase {
 	{
 		tasks = new ArrayList<>();
 		cars = new HashSet<>();
+		status = ROUTE_DEFAULT_STATUS;
 	}
 
 	public Route() {

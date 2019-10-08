@@ -51,5 +51,4 @@ public class AdminGetNewRequests implements ActionCommand {
 
 		return NEW_REQUESTS_PAGE;
 	}
-
 }

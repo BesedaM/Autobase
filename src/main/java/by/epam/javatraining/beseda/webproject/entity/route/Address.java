@@ -18,6 +18,7 @@ public class Address extends EntityBase {
 	{
 		country = DefaultValue.COUNTRY;
 		district = DefaultValue.DISTRICT;
+		city = DefaultValue.EMPTY_STRING;
 		street = DefaultValue.EMPTY_STRING;
 		house = DefaultValue.ZERO;
 		building = DefaultValue.EMPTY_STRING;

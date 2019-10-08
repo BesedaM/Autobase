@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.END_OF_STATEMENT;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.SELECT_ENUM;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.END_OF_STATEMENT;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ENUM;
 
 /**
  * Class for getting data from tables, representing enum.
@@ -48,5 +48,4 @@ public class EnumDAO {
 		}
 		return map;
 	}
-
 }

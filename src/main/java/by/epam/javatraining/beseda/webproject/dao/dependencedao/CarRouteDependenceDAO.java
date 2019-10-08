@@ -1,21 +1,33 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.car.Car;
-import by.epam.javatraining.beseda.webproject.entity.route.Route;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_DELETE_DEPENDENCE;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_DEPENDENCE_ACTIVE_PLANNED_ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_DEPENDENCE_ACTIVE_ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_DEPENDENCE_CAR_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_UPDATE_DEPENDENCE;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.*;
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+import by.epam.javatraining.beseda.webproject.entity.car.Car;
+import by.epam.javatraining.beseda.webproject.entity.route.Route;
 
 public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
 
     CarRouteDependenceDAO() {
         super();
     }
+
+
+    CarRouteDependenceDAO(ConnectionPool pool) {
+        super(pool);
+    }
+    
 
     public int getActiveRouteId(Car car) throws DAOTechnicalException {
         int id = 0;
@@ -84,5 +96,6 @@ public class CarRouteDependenceDAO extends ManyToManyDependenceDAO<Car, Route> {
     @Override
     protected String deleteDependenceStatement() {
         return CAR_ROUTE_DELETE_DEPENDENCE;
+
     }
 }

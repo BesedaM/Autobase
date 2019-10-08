@@ -1638,5 +1638,3 @@ ALTER TABLE ONLY trucking_company.users
 
 --
 -- PostgreSQL database dump complete
---
-

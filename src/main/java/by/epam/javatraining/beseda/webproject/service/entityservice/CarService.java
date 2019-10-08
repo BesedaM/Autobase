@@ -14,8 +14,8 @@ import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnical
 
 import java.util.List;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.BUS;
-import static by.epam.javatraining.beseda.webproject.dao.util.database.DBEnumTable.TRUCK;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.BUS;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.TRUCK;
 
 public class CarService extends AbstractEntityService<Car> {
 

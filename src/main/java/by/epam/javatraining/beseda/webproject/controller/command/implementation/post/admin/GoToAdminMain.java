@@ -16,5 +16,4 @@ public class GoToAdminMain implements ActionCommand {
 		session.setAttribute(REQUEST_CUSTOMER_MAP, null);
 		return ADMIN_MAIN_PAGE;
 	}
-
 }

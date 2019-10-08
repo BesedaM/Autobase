@@ -1,11 +1,12 @@
 package by.epam.javatraining.beseda.webproject.controller.servlet;
 
-import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
-import by.epam.javatraining.beseda.webproject.controller.command.ActionCommandFactory;
-import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
-import by.epam.javatraining.beseda.webproject.dao.util.connectionpool.ConnectionPool;
-import by.epam.javatraining.beseda.webproject.dao.util.connectionpool.DBConnector;
-import org.apache.log4j.Logger;
+import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_PASSWORD;
+import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_URL;
+import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_USER;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -14,11 +15,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
+import org.apache.log4j.Logger;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseProperties.*;
-import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.connectionpool.DBConnector;
+import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
+import by.epam.javatraining.beseda.webproject.controller.command.ActionCommandFactory;
+import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
 
 @WebServlet(name = "TruckingCompany", urlPatterns = "/controller")
 public class Controller extends HttpServlet {

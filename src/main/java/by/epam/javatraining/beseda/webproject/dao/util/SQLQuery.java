@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.dao.util.database;
+package by.epam.javatraining.beseda.webproject.dao.util;
 
 public class SQLQuery {
 
@@ -195,8 +195,8 @@ public class SQLQuery {
 		ADD_NEW_BUS = "INSERT INTO trucking_company.cars  (type_id, seatsNumber, car_number, model, status_id, state_id) VALUES (?, ?, ?, ?, ?, ?)";
 		ADD_NEW_TRUCK = "INSERT INTO trucking_company.cars  (type_id, capacity_id, car_number, model, status_id, state_id) VALUES (?, ?, ?, ?, ?, ?)";
 		DELETE_CAR_BY_ID = "DELETE FROM trucking_company.cars WHERE id=?";
-		UPDATE_BUS = "UPDATE trucking_company.cars SET seatsNumber=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
-		UPDATE_TRUCK = "UPDATE trucking_company.cars SET capacity_id=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
+		UPDATE_BUS = "UPDATE trucking_company.cars SET type_id=?, seatsNumber=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
+		UPDATE_TRUCK = "UPDATE trucking_company.cars SET type_id=?, capacity_id=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
 		UPDATE_CAR_STATE = "UPDATE trucking_company.cars SET state_id=? WHERE cars.id=?";
 
 		// Address DAO

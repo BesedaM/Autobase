@@ -12,6 +12,11 @@ public class Car extends EntityBase {
 	protected String status;
 	protected String state;
 
+	{
+		state = "нормальное";
+		status = "готов к отправке";
+	}
+
 	public Car() {
 		super();
 	}

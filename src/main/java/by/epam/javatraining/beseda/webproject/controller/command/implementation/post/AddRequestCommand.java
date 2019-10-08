@@ -44,5 +44,4 @@ public class AddRequestCommand implements ActionCommand {
         }
         return parameters.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
     }
-
 }

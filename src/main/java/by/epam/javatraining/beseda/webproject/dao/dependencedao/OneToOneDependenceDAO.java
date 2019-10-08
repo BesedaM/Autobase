@@ -1,13 +1,15 @@
 package by.epam.javatraining.beseda.webproject.dao.dependencedao;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.NULL;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.database.SQLQuery.NULL;
+import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 
 /**
  * Class represents relationship in database one-to-one
@@ -19,6 +21,10 @@ public abstract class OneToOneDependenceDAO<M extends EntityBase, K extends Enti
 
     protected OneToOneDependenceDAO() {
         super();
+    }
+    
+    protected OneToOneDependenceDAO(ConnectionPool pool) {
+        super(pool);
     }
 
     /**
@@ -54,5 +60,4 @@ public abstract class OneToOneDependenceDAO<M extends EntityBase, K extends Enti
      * @return string representation of getEntityIdByDependence statement
      */
     protected abstract String getEntityByDependenceStatement();
-
 }
