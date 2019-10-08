@@ -91,5 +91,4 @@ public abstract class DependenceDAO<M extends EntityBase, K extends EntityBase> 
 		connector.closeConnector();
 		lock.unlock();
 	}
-
 }

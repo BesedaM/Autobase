@@ -23,4 +23,5 @@ public class EntityLogicException extends AutobaseProjectException {
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
+
 }

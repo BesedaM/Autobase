@@ -28,3 +28,4 @@ public class ServiceTechnicalException extends ServiceLayerException {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 }
+

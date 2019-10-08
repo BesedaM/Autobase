@@ -19,9 +19,6 @@ public class ChangeCarListFlag implements ActionCommand {
     public String execute(SessionRequestContent content) {
         Map<String, String[]> requestParam = content.requestParameters();
         HttpSession session = content.getSession();
-
-
-
         session.setAttribute(CHANGE_CAR, STATUS_TRUE);
         return requestParam.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);
     }

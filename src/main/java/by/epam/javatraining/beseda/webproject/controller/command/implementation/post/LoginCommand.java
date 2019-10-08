@@ -113,5 +113,4 @@ public class LoginCommand implements ActionCommand {
 			authLog.trace(fullUserData);
 		}
 	}
-
 }

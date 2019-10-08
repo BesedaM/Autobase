@@ -49,4 +49,5 @@ public abstract class EntityBase implements Serializable, Comparable<EntityBase>
 
 	@Override
 	public abstract String toString();
+
 }

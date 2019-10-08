@@ -104,4 +104,5 @@ public abstract class ManyToManyDependenceDAO<M extends EntityBase, K extends En
 	}
 
 	protected abstract String deleteDependenceStatement();
+
 }

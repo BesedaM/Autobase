@@ -30,4 +30,5 @@ public class DefaultValue {
 		ZERO = 0;
 
 	}
+
 }

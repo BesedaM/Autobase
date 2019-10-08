@@ -81,3 +81,4 @@ public class AddressDAO extends AbstractDAO<Address> implements AddressInterface
 	}
 
 }
+

@@ -88,4 +88,5 @@ public class User extends EntityBase {
 	public String toString() {
 		return "User{" + "id=" + id + ", login='" + login + '\'' + '}';
 	}
+
 }

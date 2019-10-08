@@ -221,5 +221,4 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	public void close() {
 		connector.closeConnector();
 	}
-
 }

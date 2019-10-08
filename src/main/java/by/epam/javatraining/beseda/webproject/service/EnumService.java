@@ -38,4 +38,5 @@ public class EnumService {
 	public static Map<String, ReversalHashMap<Integer, String>> getEnumCollection() {
 		return collection;
 	}
+
 }

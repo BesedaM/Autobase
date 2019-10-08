@@ -32,4 +32,5 @@ public class ReversalHashMap<K, V> extends HashMap<K, V> {
     public K getKey(V value) {
         return reverseMap.get(value);
     }
+
 }

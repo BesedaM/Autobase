@@ -24,7 +24,6 @@ import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.ActionCommandFactory;
 import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
 
-@SuppressWarnings("serial")
 @WebServlet(name = "TruckingCompany", urlPatterns = "/controller")
 public class Controller extends HttpServlet {
 

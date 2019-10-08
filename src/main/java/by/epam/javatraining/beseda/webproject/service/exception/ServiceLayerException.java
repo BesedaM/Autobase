@@ -29,4 +29,5 @@ public class ServiceLayerException extends AutobaseProjectException {
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
+
 }

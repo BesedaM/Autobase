@@ -157,5 +157,4 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
 			throw new NotEnoughArgumentsException();
 		}
 	}
-
 }

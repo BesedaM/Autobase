@@ -91,4 +91,5 @@ public class Task extends EntityBase {
 		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return "Task{" + "address=" + address + ", time=" + sdfDate.format(time) + ", details='" + details + '\'' + '}';
 	}
+
 }

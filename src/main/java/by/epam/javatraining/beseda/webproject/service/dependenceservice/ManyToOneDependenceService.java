@@ -23,4 +23,5 @@ public abstract class ManyToOneDependenceService<M extends EntityBase, K extends
 		}
 		return entityId02;
 	}
+
 }

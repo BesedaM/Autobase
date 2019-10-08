@@ -205,3 +205,4 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 	}
 
 }
+

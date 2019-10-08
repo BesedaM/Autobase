@@ -90,4 +90,5 @@ public class Person extends User {
 		return "Person{" + "id=" + id + '\'' + ", name='" + name + '\'' + ", surname='" + surname + '\'' + ", phone='"
 				+ phone + '}';
 	}
+
 }

@@ -16,5 +16,4 @@
         <location>/view/error_page.jsp</location>
     </error-page>
     
- 
-</web-app>
+ </web-app>

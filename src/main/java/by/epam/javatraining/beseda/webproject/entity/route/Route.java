@@ -124,4 +124,5 @@ public class Route extends EntityBase {
 		return "Route{" + "id='" + id + ", name='" + name + '\'' + ", tasks=" + tasks + ", cars=" + cars + ", status="
 				+ status + '}';
 	}
+
 }

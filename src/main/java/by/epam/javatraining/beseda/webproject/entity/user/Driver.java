@@ -57,4 +57,5 @@ public class Driver extends Person {
 		return "Driver{" + "id=" + id + ", car=" + car + ", name='" + name + '\'' + ", surname='" + surname + '\''
 				+ ", phone='" + phone + '\'' + '}';
 	}
+
 }

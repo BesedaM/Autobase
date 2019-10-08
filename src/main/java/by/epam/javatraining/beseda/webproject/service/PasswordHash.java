@@ -46,4 +46,5 @@ public class PasswordHash {
 		}
 		return hash;
 	}
+
 }

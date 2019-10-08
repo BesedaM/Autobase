@@ -48,5 +48,4 @@ public class EnumDAO {
 		}
 		return map;
 	}
-
 }

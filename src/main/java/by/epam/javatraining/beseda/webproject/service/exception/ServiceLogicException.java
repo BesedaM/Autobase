@@ -27,4 +27,5 @@ public class ServiceLogicException extends ServiceLayerException {
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
+
 }

@@ -48,4 +48,5 @@ public interface ConnectionPool {
      * @throws SQLException
      */
     void closePool() throws SQLException;
+
 }
