@@ -6,18 +6,31 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_AL
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CUSTOMERS_BY_ID_LIST;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CUSTOMER_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_CUSTOMER;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.COMPANY_NAME;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CUSTOMER_TYPE_ID_CUSTOMERS;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.EMAIL;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.NAME;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.PHONE;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.SURNAME;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
 import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 
+@Repository
 public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterface {
 
 	{
@@ -33,27 +46,17 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
 	}
 
 	@Override
-	public int add(Customer user) throws DAOLayerException {
-		int id = -1;
-		if (user != null) {
-			PreparedStatement st = null;
-			try {
-				lock.lock();
-				st = connector.prepareStatement(addStatement());
-				setDataOnPreparedStatement(st, user);
-				id = user.getId();
-				st.setInt(7, id);
-				st.executeUpdate();
-			} catch (SQLException e) {
-				throw new DAOTechnicalException(e);
-			} finally {
-				connector.closeStatement(st);
-				lock.unlock();
-			}
-		}
-		return id;
+	@Autowired
+	@Qualifier("customerMapper")
+	protected void setRowMapper(RowMapper<Customer> rowMapper) {
+		this.rowMapper = rowMapper;
 	}
 
+	@Override
+	public int add(Customer entity) throws DAOLayerException {
+		jdbcTemplate.update(addStatement(), createEntityParamArray(entity), entity.getId());
+		return entity.getId();
+	}
 
 	@Override
 	protected String getAllStatement() {
@@ -86,23 +89,30 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
 	}
 
 	@Override
-	protected int updateIdParameterNumber() {
-		return 7;
+	protected MapSqlParameterSource createMapSqlParameterSource(Customer entity) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		int typeIndex = DatabaseEnumLoader.CUSTOMER_TYPE_MAP.getKey(entity.getCustomerType());
+		parameters.addValue(CUSTOMER_TYPE_ID_CUSTOMERS, typeIndex);
+		parameters.addValue(NAME, entity.getName());
+		parameters.addValue(SURNAME, entity.getSurname());
+		parameters.addValue(PHONE, entity.getPhone());
+		parameters.addValue(EMAIL, entity.getEmail());
+		parameters.addValue(COMPANY_NAME, entity.getCompanyName());
+		parameters.addValue(ID, entity.getId());
+		return parameters;
 	}
 
 	@Override
-	protected void setDataOnPreparedStatement(PreparedStatement st, Customer user)
-			throws SQLException, NotEnoughArgumentsException {
-		if (st != null && user != null) {
-			int typeIndex = DatabaseEnumLoader.CUSTOMER_TYPE_MAP.getKey(user.getCustomerType());
-			st.setInt(1, typeIndex);
-			st.setString(2, user.getName());
-			st.setString(3, user.getSurname());
-			st.setString(4, user.getPhone());
-			st.setString(5, user.getEmail());
-			st.setString(6, user.getCompanyName());
-		} else {
-			throw new NotEnoughArgumentsException();
-		}
+	protected Object[] createEntityParamArray(Customer entity) {
+		Object[] array = new Object[6];
+		int typeIndex = DatabaseEnumLoader.CUSTOMER_TYPE_MAP.getKey(entity.getCustomerType());
+		array[0] = typeIndex;
+		array[1] = entity.getName();
+		array[2] = entity.getSurname();
+		array[3] = entity.getPhone();
+		array[4] = entity.getEmail();
+		array[5] = entity.getCompanyName();
+		return array;
 	}
+
 }

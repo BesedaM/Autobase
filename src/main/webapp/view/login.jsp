@@ -1,4 +1,3 @@
-<%--@elvariable id="errorMessage" type="java.lang.String"--%>
 <%--
   Created by IntelliJ IDEA.
   User: User
@@ -33,7 +32,7 @@
 <html lang="${lang}">
 <head>
     <title>${title}</title>
-    <link rel="stylesheet" href="<c:url value="${urlPrefix}/css/styles.css"/>" type="text/css"/>
+    <link rel="stylesheet" href="<@spring.url '/css/styles.css'/>" type="text/css"/>
 </head>
 <body>
 

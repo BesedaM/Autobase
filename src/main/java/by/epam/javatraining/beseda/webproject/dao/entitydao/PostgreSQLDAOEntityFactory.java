@@ -1,5 +1,9 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.AddressInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
@@ -10,33 +14,50 @@ import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.TaskInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
 
-public class MySQLDAOEntityFactory implements EntityFactoryInterface {
+@Component
+public class PostgreSQLDAOEntityFactory implements EntityFactoryInterface {
 
 	private static class SingletonHolder {
-		public static final MySQLDAOEntityFactory instance = new MySQLDAOEntityFactory();
+		public static final PostgreSQLDAOEntityFactory instance = new PostgreSQLDAOEntityFactory();
 	}
 
-	private final AddressInterface addressDAO;
-	private final CarInterface carDAO;
-	private final CustomerInterface customerDAO;
-	private final DriverInterface driverDAO;
-	private final RequestInterface requestDAO;
-	private final RouteInterface routeDAO;
-	private final TaskInterface taskDAO;
-	private final UserInterface userDAO;
+	@Autowired
+	private AddressInterface addressDAO;
+	
+	@Autowired
+	private CarInterface carDAO;
+	
+	@Autowired
+	private CustomerInterface customerDAO;
+	
+	@Autowired
+	private DriverInterface driverDAO;
+	
+	@Autowired
+	private RequestInterface requestDAO;
+	
+	@Autowired
+	private RouteInterface routeDAO;
+	
+	@Autowired
+	private TaskInterface taskDAO;
+	
+	@Autowired
+	@Qualifier("postgresqlUserDAO")
+	private UserInterface userDAO;
 
-	private MySQLDAOEntityFactory() {
-		addressDAO = new AddressDAO();
-		carDAO = new CarDAO();
-		customerDAO = new CustomerDAO();
-		driverDAO = new DriverDAO();
-		requestDAO = new RequestDAO();
-		routeDAO = new RouteDAO();
-		taskDAO = new TaskDAO();
-		userDAO = new UserDAO();
-	}
+//	private PostgreSQLDAOEntityFactory() {
+//		addressDAO = new AddressDAO();
+//		carDAO = new CarDAO();
+//		customerDAO = new CustomerDAO();
+//		driverDAO = new DriverDAO();
+//		requestDAO = new RequestDAO();
+//		routeDAO = new RouteDAO();
+//		taskDAO = new TaskDAO();
+//		userDAO = new UserDAO();
+//	}
 
-	public static MySQLDAOEntityFactory getFactory() {
+	public static PostgreSQLDAOEntityFactory getFactory() {
 		return SingletonHolder.instance;
 	}
 

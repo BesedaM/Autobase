@@ -6,15 +6,24 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_AD
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ADDRESS_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_ADDRESSES;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_ADDRESS;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.BUILDING;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CITY;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.COUNTRY;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.DISTRICT;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.HOUSE_NUMBER;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.STREET;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
-import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.AddressInterface;
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 
+@Repository
 public class AddressDAO extends AbstractDAO<Address> implements AddressInterface {
 
 	{
@@ -30,6 +39,13 @@ public class AddressDAO extends AbstractDAO<Address> implements AddressInterface
 	}
 
 
+	@Autowired
+	@Qualifier("addressMapper")
+	@Override
+	protected void setRowMapper(RowMapper<Address> rowMapper) {
+		this.rowMapper = rowMapper;
+	}
+	
 	@Override
 	protected String getAllStatement() {
 		return SELECT_ALL_ADDRESSES;
@@ -61,24 +77,27 @@ public class AddressDAO extends AbstractDAO<Address> implements AddressInterface
 	}
 
 	@Override
-	protected int updateIdParameterNumber() {
-		return 7;
+	protected MapSqlParameterSource createMapSqlParameterSource(Address entity) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		parameters.addValue(COUNTRY, entity.getCountry());
+		parameters.addValue(DISTRICT, entity.getDistrict());
+		parameters.addValue(CITY, entity.getCity());
+		parameters.addValue(STREET, entity.getStreet());
+		parameters.addValue(HOUSE_NUMBER, entity.getHouse());
+		parameters.addValue(BUILDING, entity.getBuilding());
+		return parameters;
 	}
 
 	@Override
-	protected void setDataOnPreparedStatement(PreparedStatement st, Address addr)
-			throws SQLException, NotEnoughArgumentsException {
-		if (st != null && addr != null) {
-			st.setString(1, addr.getCountry());
-			st.setString(2, addr.getDistrict());
-			st.setString(3, addr.getCity());
-			st.setString(4, addr.getStreet());
-			st.setInt(5, addr.getHouse());
-			st.setString(6, addr.getBuilding());
-		} else {
-			throw new NotEnoughArgumentsException();
-		}
+	protected Object[] createEntityParamArray(Address entity) {
+		Object[] array = new Object[6];
+		array[0] = entity.getCountry();
+		array[1] = entity.getDistrict();
+		array[2] = entity.getCity();
+		array[3] = entity.getStreet();
+		array[4] = entity.getHouse();
+		array[5] = entity.getBuilding();
+		return array;
 	}
 
 }
-

@@ -113,15 +113,15 @@ public class SQLQuery {
 	public static final String REQUEST_ID;
 	public static final String SELECT_ALL_REQUESTS;
 	public static final String SELECT_REQUESTS_BY_ID_LIST;
-	public static final String SELECT_ACTIVE_CUSTOMER_REQUESTS_ID;
+	public static final String SELECT_ACTIVE_CUSTOMER_REQUESTS;
 	public static final String SELECT_REQUEST_BY_ID;
 	public static final String DELETE_REQUEST_BY_ID;
 	public static final String ADD_NEW_REQUEST;
 	public static final String UPDATE_REQUEST;
 	public static final String SELECT_NEW_REQUESTS;
-	public static final String SELECT_CURRENT_REQUESTS_ID;
-	public static final String SELECT_FULFILLED_REQUESTS_ID;
-	public static final String SELECT_REJECTED_REQUESTS_ID;
+	public static final String SELECT_CURRENT_REQUESTS;
+	public static final String SELECT_FULFILLED_REQUESTS;
+	public static final String SELECT_REJECTED_REQUESTS;
 
 	public static final String END_OF_STATEMENT = ";";
 
@@ -178,7 +178,7 @@ public class SQLQuery {
 		SELECT_USER_BY_LOGIN_AND_PASSWORD = SELECT_ALL_USERS + " WHERE login=? AND password=?";
 		SELECT_USER_BY_LOGIN = SELECT_ALL_USERS + " WHERE login=?";
 		DELETE_USER_BY_ID = "DELETE FROM trucking_company.users WHERE id=?";
-		ADD_NEW_USER = "INSERT INTO trucking_company.users (login, password, role_id) VALUES (?, ?, ?)";
+		ADD_NEW_USER = "INSERT INTO trucking_company.users (login, password, role_id) VALUES (:login, :password, :role_id)";
 		UPDATE_USER_PASSWORD = "UPDATE trucking_company.users SET password=? WHERE users.id=?";
 		UPDATE_USER = "UPDATE trucking_company.users SET login=?, password=?, role_id=? WHERE id=?";
 
@@ -252,25 +252,23 @@ public class SQLQuery {
 		REQUEST_ID = "requests.id";
 		SELECT_ALL_REQUESTS = "SELECT * FROM trucking_company.requests LEFT JOIN trucking_company.request_status ON requests.status_id=request_status.id";
 		SELECT_REQUESTS_BY_ID_LIST = SELECT_ALL_REQUESTS + " WHERE requests.id IN (?)";
-		SELECT_ACTIVE_CUSTOMER_REQUESTS_ID = "SELECT a.id FROM \n"
-				+ "(SELECT requests.customer_id, requests.id FROM trucking_company.requests WHERE requests.status_id IN(1,3) "
-				+ "UNION SELECT requests.customer_id, requests.id \n"
-				+ "FROM trucking_company.requests JOIN trucking_company.routes ON requests.id=routes.id \n"
+		SELECT_ACTIVE_CUSTOMER_REQUESTS = "SELECT * FROM \n"
+				+ "(SELECT * FROM trucking_company.requests WHERE requests.status_id IN(1,3) "
+				+ "UNION SELECT * FROM trucking_company.requests JOIN trucking_company.routes ON requests.id=routes.id \n"
 				+ "WHERE routes.status_id IN(1,2) ) AS a WHERE a.customer_id=?";
-		SELECT_NEW_REQUESTS = "SELECT * FROM trucking_company.requests LEFT JOIN trucking_company.routes ON requests.id=routes.id  "
-				+ "LEFT JOIN trucking_company.request_status ON requests.status_id=request_status.id\n"
+		SELECT_NEW_REQUESTS = SELECT_ALL_REQUESTS 
+				+ " LEFT JOIN trucking_company.routes ON requests.id=routes.id  "
 				+ "WHERE request_status.status='рассматривается' OR (request_status.status='принята' AND coalesce(routes.id,0)=0)";
-		SELECT_CURRENT_REQUESTS_ID = "SELECT requests.id FROM trucking_company.requests RIGHT JOIN trucking_company.routes ON requests.id=routes.id  \n"
-				+ "LEFT JOIN trucking_company.request_status ON requests.status_id=request_status.id\n"
+		SELECT_CURRENT_REQUESTS = SELECT_ALL_REQUESTS
+				+ " RIGHT JOIN trucking_company.routes ON requests.id=routes.id  \n"
 				+ "LEFT JOIN trucking_company.route_status ON routes.status_id=route_status.id\n"
 				+ "WHERE request_status.status='принята' AND route_status.status!='выполнен'";
-		SELECT_FULFILLED_REQUESTS_ID = "SELECT requests.id FROM trucking_company.requests RIGHT JOIN trucking_company.routes ON requests.id=routes.id  \n"
-				+ "LEFT JOIN trucking_company.request_status ON requests.status_id=request_status.id\n"
+		SELECT_FULFILLED_REQUESTS = SELECT_ALL_REQUESTS
+				+ " RIGHT JOIN trucking_company.routes ON requests.id=routes.id  \n"
 				+ "LEFT JOIN trucking_company.route_status ON routes.status_id=route_status.id\n"
-				+ "WHERE route_status.status='выполнен' LIMIT 10";
-		SELECT_REJECTED_REQUESTS_ID = "SELECT requests.id FROM trucking_company.requests \n"
-				+ "LEFT JOIN trucking_company.request_status ON requests.status_id=request_status.id\n"
-				+ "WHERE request_status.status='отклонена' LIMIT 10";
+				+ "WHERE route_status.status='выполнен' LIMIT 20";
+		SELECT_REJECTED_REQUESTS = SELECT_ALL_REQUESTS
+				+ " WHERE request_status.status='отклонена' LIMIT 20";
 
 		SELECT_REQUEST_BY_ID = SELECT_ALL_REQUESTS + " WHERE requests.id=?";
 		DELETE_REQUEST_BY_ID = "DELETE FROM trucking_company.requests WHERE id=?";

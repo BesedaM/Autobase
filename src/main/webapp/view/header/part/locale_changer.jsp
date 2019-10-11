@@ -21,7 +21,7 @@
 <html lang="${lang}">
 <head>
     <title>Locale</title>
-    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="<@spring.url '/css/styles.css'/>">
 </head>
 <body>
  <form name="LocaleChanger" method="get" action="${urlPrefix}/controller">

@@ -6,17 +6,20 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_AL
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_TASKS_BY_ID_LIST;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_TASK_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_TASK;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.DETAILS;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.TIME;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.GregorianCalendar;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
-import by.epam.javatraining.beseda.webproject.dao.exception.NotEnoughArgumentsException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.TaskInterface;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
 
+@Repository
 public class TaskDAO extends AbstractDAO<Task> implements TaskInterface {
 
 	{
@@ -31,6 +34,12 @@ public class TaskDAO extends AbstractDAO<Task> implements TaskInterface {
 		super(pool);
 	}
 
+	@Autowired
+	@Qualifier("taskMapper")
+	@Override
+	protected void setRowMapper(RowMapper<Task> rowMapper) {
+		this.rowMapper=rowMapper;
+	}
 
 	@Override
 	protected String getAllStatement() {
@@ -61,20 +70,21 @@ public class TaskDAO extends AbstractDAO<Task> implements TaskInterface {
 	protected String updateStatement() {
 		return UPDATE_TASK;
 	}
+	
 
 	@Override
-	protected int updateIdParameterNumber() {
-		return 3;
+	protected MapSqlParameterSource createMapSqlParameterSource(Task entity) {
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		parameters.addValue(TIME, entity.getTime());
+		parameters.addValue(DETAILS, entity.getDetails());
+		return parameters;
 	}
 
 	@Override
-	protected void setDataOnPreparedStatement(PreparedStatement st, Task task)
-			throws SQLException, NotEnoughArgumentsException {
-		if (st != null && task != null) {
-			st.setTimestamp(1, (new Timestamp(task.getTime().getTimeInMillis())), new GregorianCalendar());
-			st.setString(2, task.getDetails());
-		} else {
-			throw new NotEnoughArgumentsException();
-		}
+	protected Object[] createEntityParamArray(Task entity) {
+		Object[] array = new Object[2];
+		array[0] = entity.getTime();
+		array[1] = entity.getDetails();
+		return array;
 	}
 }

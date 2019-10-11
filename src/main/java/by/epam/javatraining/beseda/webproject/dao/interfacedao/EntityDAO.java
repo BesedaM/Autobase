@@ -1,9 +1,11 @@
 package by.epam.javatraining.beseda.webproject.dao.interfacedao;
 
+import java.util.List;
+
+import org.springframework.jdbc.core.RowMapper;
+
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-
-import java.util.List;
 
 /**
  * Contains method declarations for entity DAO.
@@ -68,5 +70,4 @@ public interface EntityDAO<E> {
 	 * @throws DAOLayerException
 	 */
 	void update(E entity) throws DAOLayerException;
-
 }

@@ -10,5 +10,5 @@ public interface UserInterface extends EntityDAO<User> {
 
     User getUserByLogin(String login) throws DAOLayerException;
 
-    boolean updatePassword(int id, byte[] password) throws DAOTechnicalException;
+    void updatePassword(int id, byte[] password) throws DAOTechnicalException;
 }

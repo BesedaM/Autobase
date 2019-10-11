@@ -42,16 +42,16 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return array of requests id
 	 * @throws ServiceLayerException
 	 */
-	public int[] selectActiveCustomerRequestsId(int customerId) throws ServiceLayerException {
-		int[] array = null;
+	public List<Request> selectActiveCustomerRequests(int customerId) throws ServiceLayerException {
+		List<Request> list = null;
 		if (customerId > 0) {
 			try {
-				array = ((RequestDAO) entityDAO).selectActiveCustomerRequestsId(customerId);
+				list= ((RequestDAO) entityDAO).selectActiveCustomerRequests(customerId);
 			} catch (DAOTechnicalException e) {
 				throw new ServiceLayerException(e + " Impossible to get info on active customer requests");
 			}
 		}
-		return array;
+		return list;
 	}
 
 	/**
@@ -78,14 +78,14 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return array of current requests id
 	 * @throws ServiceLayerException
 	 */
-	public int[] getCurrentRequestsId() throws ServiceLayerException {
-		int[] array;
+	public List<Request> getCurrentRequests() throws ServiceLayerException {
+		List<Request> list;
 		try {
-			array = ((RequestDAO) entityDAO).getCurrentRequestsId();
+			list = ((RequestDAO) entityDAO).getCurrentRequests();
 		} catch (DAOLayerException e) {
 			throw new ServiceLayerException(e);
 		}
-		return array;
+		return list;
 	}
 
 	/**
@@ -94,14 +94,14 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return array of fulfilled requests id
 	 * @throws ServiceLayerException
 	 */
-	public int[] getFulfilledRequestsId() throws ServiceLayerException {
-		int[] array;
+	public List<Request> getFulfilledRequests() throws ServiceLayerException {
+		List<Request> list;
 		try {
-			array = ((RequestDAO) entityDAO).getFulfilledRequestsId();
+			list = ((RequestDAO) entityDAO).getFulfilledRequests();
 		} catch (DAOLayerException e) {
 			throw new ServiceLayerException(e);
 		}
-		return array;
+		return list;
 	}
 
 	/**
@@ -110,14 +110,14 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return array of rejected requests id
 	 * @throws ServiceLayerException
 	 */
-	public int[] getRejectedRequestsId() throws ServiceLayerException {
-		int[] array;
+	public List<Request> getRejectedRequests() throws ServiceLayerException {
+		List<Request> list;
 		try {
-			array = ((RequestDAO) entityDAO).getRejectedRequestsId();
+			list = ((RequestDAO) entityDAO).getRejectedRequests();
 		} catch (DAOLayerException e) {
 			throw new ServiceLayerException(e);
 		}
-		return array;
+		return list;
 	}
 	
 }

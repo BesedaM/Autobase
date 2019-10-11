@@ -18,7 +18,7 @@
 <html lang="${lang}">
 <head>
     <title>header</title>
-    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="<@spring.url '/css/styles.css'/>">
 </head>
 <body>
 <h1>${trucking_company}</h1>

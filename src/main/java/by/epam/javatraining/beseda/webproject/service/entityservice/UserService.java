@@ -1,26 +1,110 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAO;
-import by.epam.javatraining.beseda.webproject.entity.user.User;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
-import by.epam.javatraining.beseda.webproject.logic.RegisterLogic;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
-import by.epam.javatraining.beseda.webproject.service.PasswordHash;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAO;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.entity.user.User;
+import by.epam.javatraining.beseda.webproject.logic.RegisterLogic;
+import by.epam.javatraining.beseda.webproject.service.PasswordHash;
+import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
+import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
+import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
+
+@Service
 public class UserService extends AbstractEntityService<User> {
 
-	UserService() {
+	@Autowired
+	private UserInterface entityDAO;
+	
+	public UserService() {
 		super();
-		entityDAO = mySQLDAOEntityFactory.getUserDAO();
 	}
 
+	
+	
+//    @Override
+//    public final List<User> getAll() throws ServiceLayerException {
+//        List<User> list = null;
+//        try {
+//            list = entityDAO.getAll();
+//        } catch (DAOLayerException e) {
+//            throw new ServiceLayerException(e);
+//        }
+//        return list;
+//    }
+//	
+//    @Override
+//    public final User getEntityById(int id) throws ServiceLayerException {
+//        User entity = null;
+//        if (id > 0) {
+//            try {
+//                entity = entityDAO.getEntityById(id);
+//            } catch (DAOLayerException e) {
+//                throw new ServiceTechnicalException(e);
+//            }
+//        }
+//        return entity;
+//    }
+//
+//    @Override
+//    public List<User> getEntitiesByIdList(int[] idArr) throws ServiceLayerException {
+//        List<User> list = null;
+//        try {
+//            list = entityDAO.getEntitiesByIdList(idArr);
+//        } catch (DAOLayerException e) {
+//            throw new ServiceLayerException(e);
+//        }
+//        return list;
+//    }
+//
+//    /**
+//     * Adds entityservice to database and assigns to entityservice the value of id
+//     *
+//     * @param entity entityservice to add
+//     * @throws ServiceLayerException
+//     */
+//    @Override
+//    public void add(User entity) throws ServiceLayerException {
+//        if (entity != null) {
+//            try {
+//                int id = entityDAO.add(entity);
+//                entity.setId(id);
+//            } catch (DAOLayerException | EntityIdException e) {
+//                throw new ServiceLogicException(e);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void update(User entity) throws ServiceLayerException {
+//        if (entity != null) {
+//            try {
+//                entityDAO.update(entity);
+//            } catch (DAOLayerException e) {
+//                throw new ServiceLogicException(e);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public final void delete(int id) throws ServiceLogicException {
+//        if (id > 0) {
+//            try {
+//                entityDAO.delete(id);
+//            } catch (DAOTechnicalException e) {
+//                throw new ServiceLogicException(e);
+//            }
+//        }
+//    }
 	/**
 	 * Creates entity with the given data WITHOUT id
 	 * 
@@ -126,17 +210,15 @@ public class UserService extends AbstractEntityService<User> {
 	 * @return true if method succeeds
 	 * @throws ServiceLayerException
 	 */
-	public final boolean changePassword(int id, String newPassword) throws ServiceLayerException {
-		boolean succeed = false;
+	public final void changePassword(int id, String newPassword) throws ServiceLayerException {
 		if (id > 0 && newPassword != null) {
 			byte[] pw = PasswordHash.getHash(newPassword);
 			try {
-				succeed = ((UserDAO) entityDAO).updatePassword(id, pw);
+				((UserDAO) entityDAO).updatePassword(id, pw);
 			} catch (DAOLayerException e) {
 				throw new ServiceTechnicalException(e);
 			}
 		}
-		return succeed;
 	}
 
 }

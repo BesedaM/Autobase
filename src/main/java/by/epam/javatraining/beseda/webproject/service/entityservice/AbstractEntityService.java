@@ -25,7 +25,7 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
     protected EntityDAO<E> entityDAO;
 
     @Override
-    public final List<E> getAll() throws ServiceLayerException {
+    public List<E> getAll() throws ServiceLayerException {
         List<E> list = null;
         try {
             list = entityDAO.getAll();
@@ -36,7 +36,7 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
     }
 
     @Override
-    public final E getEntityById(int id) throws ServiceLayerException {
+    public E getEntityById(int id) throws ServiceLayerException {
         E entity = null;
         if (id > 0) {
             try {
@@ -49,7 +49,7 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
     }
 
     @Override
-    public final List<E> getEntitiesByIdList(int[] idArr) throws ServiceLayerException {
+    public List<E> getEntitiesByIdList(int[] idArr) throws ServiceLayerException {
         List<E> list = null;
         try {
             list = entityDAO.getEntitiesByIdList(idArr);
@@ -89,7 +89,7 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
     }
 
     @Override
-    public final void delete(int id) throws ServiceLogicException {
+    public void delete(int id) throws ServiceLogicException {
         if (id > 0) {
             try {
                 entityDAO.delete(id);

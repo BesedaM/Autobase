@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface RequestInterface extends EntityDAO<Request> {
 
-	int[] selectActiveCustomerRequestsId(int customerId) throws DAOTechnicalException;
+	List<Request> selectActiveCustomerRequests(int customerId) throws DAOTechnicalException;
 
 	List<Request> getNewRequests() throws DAOLayerException;
 
-	int[] getCurrentRequestsId() throws DAOLayerException;
+	List<Request> getCurrentRequests() throws DAOLayerException;
 
-	int[] getFulfilledRequestsId() throws DAOLayerException;
+	List<Request> getFulfilledRequests() throws DAOLayerException;
 
-	int[] getRejectedRequestsId() throws DAOLayerException;
+	List<Request> getRejectedRequests() throws DAOLayerException;
 
 }

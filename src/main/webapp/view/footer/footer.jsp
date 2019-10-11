@@ -14,8 +14,7 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-<link rel="stylesheet"
-	href="<c:url value="${urlPrefix}/css/styles.css"/>" type="text/css" />
+<link rel="stylesheet" type="text/css" href="<@spring.url '/css/styles.css'/>">
 </head>
 <body>
 	<p></p>

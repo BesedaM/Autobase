@@ -21,7 +21,6 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
 
-
 public class CustomerPasswordChanger implements ActionCommand {
 
 	private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
@@ -41,9 +40,8 @@ public class CustomerPasswordChanger implements ActionCommand {
 		if (password.equals(passwordConfirm) && RegisterLogic.legalPassword(newPassword)) {
 			User user = (User) session.getAttribute(USER_DATA);
 			try {
-				if (userService.changePassword(user.getId(), newPassword)) {
-					attributes.put(PASSWORD_CHANGED, STATUS_TRUE);
-				}
+				userService.changePassword(user.getId(), newPassword);
+				attributes.put(PASSWORD_CHANGED, STATUS_TRUE);
 			} catch (ServiceLayerException e) {
 				log.error(e + " Impossible to change user's password");
 			}

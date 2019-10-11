@@ -2,17 +2,17 @@
 
 <suite name="TestAll">
 
-	<test name="integration">
-		<classes>
-			<class name="by.epam.javatraining.beseda.webproject.AllTests" />
-			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.CarDAOTest" />
-			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.TaskDAOTest" />
-			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAOTest" />
-			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAOTest" />
-			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAOTest" />
-			<class name="by.epam.javatraining.beseda.webproject.dao.entitybuilder.EntityBuilderTest" />
-		</classes>
-	</test>
+<!-- 	<test name="integration"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="by.epam.javatraining.beseda.webproject.AllTests" /> -->
+<!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.CarDAOTest" /> -->
+<!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.TaskDAOTest" /> -->
+<!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAOTest" /> -->
+<!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAOTest" /> -->
+<!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAOTest" /> -->
+<!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitybuilder.EntityBuilderTest" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
 	
 
 	<test name="logic">

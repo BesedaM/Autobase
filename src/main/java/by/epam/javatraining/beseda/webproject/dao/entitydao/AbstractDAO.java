@@ -1,20 +1,23 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.END_OF_STATEMENT;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.CLOSING_SQUARE_BRACKET;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.EMPTY_CHARACTER;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.OPENING_SQUARE_BRACKET;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.QUESTION_MARK;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.SPACE;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.entitybuilder.EntityBuilder;
@@ -26,7 +29,7 @@ import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.Connecti
 import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.TestWrapperConnector;
 import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperConnector;
 import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
+import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 
 /**
  * Abstract class, containing generic methods for entity DAO.
@@ -37,40 +40,78 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 
 	protected static EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
 
+	@Autowired
+	protected JdbcTemplate jdbcTemplate;
+
+	protected RowMapper<E> rowMapper;
+
+	protected Object[] entityParam;
+
+	protected AbstractDAO(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
 	protected ConnectionWrap connector;
 	protected EntityBuilder<E> builder;
 	protected final ReentrantLock lock = new ReentrantLock();
 
 	protected AbstractDAO() {
 		this.connector = new WrapperConnector();
+		this.jdbcTemplate = null;
 	}
 
 	protected AbstractDAO(ConnectionPool pool) {
 		this.connector = new TestWrapperConnector(pool);
+		this.jdbcTemplate = null;
 	}
 
-	public List<E> getAll() throws DAOLayerException {
-		List<E> list = new ArrayList<>();
-		Statement st = null;
-		E entity = null;
-		try {
-			lock.lock();
-			st = connector.createStatement();
-			ResultSet result = st.executeQuery(getAllStatement() + END_OF_STATEMENT);
-			while (result.next()) {
-				entity = builder.buildEntity(result);
+	protected abstract void setRowMapper(RowMapper<E> rowMapper);
 
-				list.add(entity);
-			}
-		} catch (SQLException e) {
-			throw new DAOTechnicalException(e);
-		} catch (EntityLogicException e) {
-			throw new DAOTechnicalException(e);
-		} finally {
-			connector.closeStatement(st);
-			lock.unlock();
+	@Override
+	public List<E> getAll() throws DAOLayerException {
+		return jdbcTemplate.query(getAllStatement(), rowMapper);
+	}
+
+	@Override
+	public E getEntityById(int id) throws DAOLayerException {
+		return jdbcTemplate.queryForObject(getEntityByIdStatement(), rowMapper, id);
+	}
+
+	@Override
+	public int add(E entity) throws DAOLayerException {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+		MapSqlParameterSource parameters = createMapSqlParameterSource(entity);
+		int rowsNum = namedJdbcTemplate.update(addStatement(), parameters, keyHolder, new String[] { ID });
+		if (rowsNum != 1) {
+			throw new DAOLayerException("Error adding entity to database");
 		}
-		return list;
+		int id = keyHolder.getKey().intValue();
+		try {
+			entity.setId(id);
+		} catch (EntityIdException e) {
+			throw new DAOLayerException(e);
+		}
+		return id;
+	}
+
+	@Override
+	public void update(E entity) throws DAOLayerException {
+		jdbcTemplate.update(updateStatement(), createEntityParamArray(entity), entity.getId());
+	}
+
+	@Override
+	public void delete(int id) throws DAOTechnicalException {
+		jdbcTemplate.update(deleteStatement(), id);
+	}
+
+	@Override
+	public List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException {
+		String array = Arrays.toString(idArr);
+		String newArr = array.replace(OPENING_SQUARE_BRACKET, SPACE).replace(CLOSING_SQUARE_BRACKET, SPACE)
+				.replace(SPACE, EMPTY_CHARACTER);
+		String modifiedStatement = getEntityListByIdStatement().replace(QUESTION_MARK, newArr);
+		return jdbcTemplate.query(modifiedStatement, rowMapper);
 	}
 
 	/**
@@ -78,73 +119,12 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 */
 	protected abstract String getAllStatement();
 
-	public E getEntityById(int id) throws DAOLayerException {
-		E entity = null;
-		PreparedStatement st = null;
-		try {
-			lock.lock();
-			st = connector.prepareStatement(getEntityByIdStatement());
-			st.setInt(1, id);
-			ResultSet res = st.executeQuery();
-			if (res.first()) {
-				entity = builder.buildEntity(res);
-			}
-		} catch (SQLException | EntityLogicException e) {
-			throw new DAOTechnicalException(e);
-		} finally {
-			connector.closeStatement(st);
-			lock.unlock();
-		}
-		return entity;
-	}
-
-	public List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException {
-		List<E> list = new ArrayList<>();
-		Statement st = null;
-		try {
-			lock.lock();
-			st = connector.createStatement();
-			String array = Arrays.toString(idArr);
-			String newArr = array.replace(OPENING_SQUARE_BRACKET, SPACE).replace(CLOSING_SQUARE_BRACKET, SPACE)
-					.replace(SPACE, EMPTY_CHARACTER);
-			String modifiedStatement = getEntityListByIdStatement().replace(QUESTION_MARK, newArr);
-			ResultSet res = st.executeQuery(modifiedStatement);
-
-			while (res.next()) {
-				E entity = builder.buildEntity(res);
-				list.add(entity);
-			}
-		} catch (SQLException | EntityLogicException e) {
-			throw new DAOTechnicalException(e);
-		} finally {
-			connector.closeStatement(st);
-			lock.unlock();
-		}
-		return list;
-	}
-
 	protected abstract String getEntityListByIdStatement();
 
 	/**
 	 * Return string representation of SQL 'select by id' query.
 	 */
 	protected abstract String getEntityByIdStatement();
-
-
-	public void delete(int id) throws DAOTechnicalException {
-		PreparedStatement st = null;
-		try {
-			lock.lock();
-			st = connector.prepareStatement(deleteStatement());
-			st.setInt(1, id);
-			st.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOTechnicalException(e);
-		} finally {
-			connector.closeStatement(st);
-			lock.unlock();
-		}
-	}
 
 	/**
 	 * Return string representation of SQL 'delete entity' query.
@@ -155,28 +135,6 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 		delete(entity.getId());
 	}
 
-	public int add(E entity) throws DAOLayerException {
-		int id = -1;
-		if (entity != null) {
-			PreparedStatement st = null;
-			try {
-				lock.lock();
-				st = connector.prepareStatementWithAutoGeneratedKeys(addStatement());
-				setDataOnPreparedStatement(st, entity);
-				st.executeUpdate();
-				ResultSet rs = st.getGeneratedKeys();
-				rs.next();
-				id = rs.getInt(1);
-			} catch (SQLException e) {
-				throw new DAOTechnicalException(e);
-			} finally {
-				connector.closeStatement(st);
-				lock.unlock();
-			}
-		}
-		return id;
-	}
-
 	/**
 	 * Sets data on prepared statement object.
 	 *
@@ -185,38 +143,35 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 * @throws SQLException
 	 * @throws DAOTechnicalException
 	 */
-	protected abstract void setDataOnPreparedStatement(PreparedStatement st, E entity)
-			throws SQLException, DAOLayerException;
+//	protected abstract void setDataOnPreparedStatement(PreparedStatement st, E entity)
+//			throws SQLException, DAOLayerException;
 
 	/**
 	 * Returns string representation of SQL 'add entity service' query.
 	 */
 	protected abstract String addStatement();
 
-	public void update(E entity) throws DAOLayerException {
-		if (entity != null) {
-			PreparedStatement st = null;
-			try {
-				lock.lock();
-				st = connector.prepareStatement(updateStatement());
-				setDataOnPreparedStatement(st, entity);
-				st.setInt(updateIdParameterNumber(), entity.getId());
-				st.executeUpdate();
-			} catch (SQLException e) {
-				throw new DAOTechnicalException(e);
-			} finally {
-				connector.closeStatement(st);
-				lock.unlock();
-			}
-		}
-	}
+	/**
+	 * Method used in ADD method for inserting values to MapSqlParameterSource
+	 * 
+	 * @param entity source of values
+	 * @return configured MapSqlParameterSource
+	 */
+	protected abstract MapSqlParameterSource createMapSqlParameterSource(E entity);
+
+	/**
+	 * Method used in UPDATE method to create array, filled with entity parameters
+	 * 
+	 * @param entity source of parameters
+	 * @return array of Object
+	 */
+	protected abstract Object[] createEntityParamArray(E entity);
 
 	/**
 	 * Returns string representation of SQL 'update entity' query.
 	 */
 	protected abstract String updateStatement();
 
-	protected abstract int updateIdParameterNumber();
 
 	public void close() {
 		connector.closeConnector();
