@@ -7,6 +7,7 @@ public class DBConstants {
 	public static final String SPACE;
 	public static final String EMPTY_CHARACTER;
 	public static final String QUESTION_MARK;
+	public static final int ZERO_VALUE;
 	public static final int MILLISECONDS_IN_SECOND;
 	public static final int SECONDS_IN_MINUTE;
 	public static final int MINUTES_IN_HOUR;
@@ -20,11 +21,11 @@ public class DBConstants {
 		EMPTY_CHARACTER = "";
 		QUESTION_MARK = "?";
 
+		ZERO_VALUE = 0;
 		MILLISECONDS_IN_SECOND = 1000;
 		SECONDS_IN_MINUTE = 60;
 		MINUTES_IN_HOUR = 60;
 		HOURS_OFFSET = 3;
-		TIME_ZONE_OFFSET_IN_MILLISECONDS = HOURS_OFFSET * MINUTES_IN_HOUR 
-				* SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND;
+		TIME_ZONE_OFFSET_IN_MILLISECONDS = HOURS_OFFSET * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND;
 	}
 }

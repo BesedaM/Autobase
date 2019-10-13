@@ -11,21 +11,24 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_RE
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_REQUESTS_BY_ID_LIST;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_REQUEST_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_REQUEST;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.REQUEST_CUSTOMER_UPDATE_DEPENDENCE;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.REQUEST_CUSTOMER_GET_CUSTOMER_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.EMPTY_CHARACTER;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.QUESTION_MARK;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.COMMENT;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CUSTOMER_ID_REQUESTS;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.REQUEST_STATUS_ID_REQUESTS;
-import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.QUESTION_MARK;
-import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.EMPTY_CHARACTER;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.ZERO_VALUE;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
@@ -35,16 +38,12 @@ import by.epam.javatraining.beseda.webproject.entity.Request;
 @Repository
 public class RequestDAO extends AbstractDAO<Request> implements RequestInterface {
 
-	{
-		builder = entityBuilderFactory.getRequestBuilder();
-	}
-
-	RequestDAO() {
+	public RequestDAO() {
 		super();
 	}
 
-	RequestDAO(ConnectionPool pool) {
-		super(pool);
+	public RequestDAO(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Autowired
@@ -52,6 +51,21 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 	@Override
 	protected void setRowMapper(RowMapper<Request> rowMapper) {
 		this.rowMapper = rowMapper;
+	}
+
+	@Override
+	public void setCustomer(int customerId, int requestId) {
+		jdbcTemplate.update(REQUEST_CUSTOMER_UPDATE_DEPENDENCE, customerId, requestId);
+	}
+
+	@Override
+	public int getCustomerId(int requestId) {
+		return jdbcTemplate.update(REQUEST_CUSTOMER_GET_CUSTOMER_ID, requestId);
+	}
+
+	@Override
+	public void deleteCustomer(int customerId, int requestId) {
+		jdbcTemplate.update(REQUEST_CUSTOMER_UPDATE_DEPENDENCE, ZERO_VALUE, requestId);
 	}
 
 	@Override

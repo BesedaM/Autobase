@@ -20,7 +20,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
@@ -30,20 +29,12 @@ import by.epam.javatraining.beseda.webproject.entity.user.User;
 @Repository
 public class UserDAO extends AbstractDAO<User> implements UserInterface {
 
-	{
-		builder = entityBuilderFactory.getUserBuilder();
-	}
-
 	public UserDAO(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
 	}
 
 	UserDAO() {
 		super();
-	}
-
-	UserDAO(ConnectionPool pool) {
-		super(pool);
 	}
 
 	@Override

@@ -18,8 +18,6 @@ import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.exception.RequestException;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.RequestCustomerService;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.ServiceDependenceFactory;
 import by.epam.javatraining.beseda.webproject.service.entitybuilder.EntityBuilderFactory;
 import by.epam.javatraining.beseda.webproject.service.entitybuilder.RouteBuilder;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CustomerService;
@@ -32,7 +30,6 @@ public class AdminGetFulfilledRequests implements ActionCommand {
 
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 	private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-	private ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 	private EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
 
 	@Override
@@ -41,7 +38,6 @@ public class AdminGetFulfilledRequests implements ActionCommand {
 		HttpSession httpSession = content.getSession();
 		RequestService requestService = serviceEntityFactory.getRequestService();
 		CustomerService customerService = serviceEntityFactory.getCustomerService();
-		RequestCustomerService requestCustomerService = serviceDependenceFactory.getRequestCustomerService();
 		RouteBuilder routeBuilder = entityBuilderFactory.getRouteBuilder();
 
 		try {
@@ -53,7 +49,7 @@ public class AdminGetFulfilledRequests implements ActionCommand {
 					routeBuilder.addCarList(route);
 					request.setRoute(route);
 				}
-				int customerId = requestCustomerService.getEntity02Id(requests.get(i));
+				int customerId = requestService.getCustomerId(requests.get(i).getId());
 				Customer customer = customerService.getEntityById(customerId);
 				requestCustomerMap.put(requests.get(i), customer);
 			}

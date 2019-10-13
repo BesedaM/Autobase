@@ -6,6 +6,7 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_AD
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ADDRESS_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_ADDRESSES;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_ADDRESS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ADDRESS_GET_TASKS_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.BUILDING;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CITY;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.COUNTRY;
@@ -13,29 +14,27 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.HOUSE_NUMBER;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.STREET;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.AddressInterface;
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 
 @Repository
 public class AddressDAO extends AbstractDAO<Address> implements AddressInterface {
 
-	{
-		builder = entityBuilderFactory.getAddressBuilder();
-	}
-
 	AddressDAO() {
 		super();
 	}
 
-	AddressDAO(ConnectionPool pool) {
-		super(pool);
+	public AddressDAO(JdbcTemplate jdbcTemplate) {
+		super(jdbcTemplate);
 	}
 
 
@@ -44,6 +43,11 @@ public class AddressDAO extends AbstractDAO<Address> implements AddressInterface
 	@Override
 	protected void setRowMapper(RowMapper<Address> rowMapper) {
 		this.rowMapper = rowMapper;
+	}
+	
+	@Override
+	public List<Integer> getTasksId(int addressId) {
+		return this.jdbcTemplate.queryForList(TASK_ADDRESS_GET_TASKS_ID, new Object[] { addressId }, Integer.class);
 	}
 	
 	@Override

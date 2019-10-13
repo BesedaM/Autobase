@@ -1,5 +1,9 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_GET_DRIVER_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_UPDATE_DEPENDENCE;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ACTIVE_PLANNED_ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ACTIVE_ROUTE_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_CAR_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_CARS;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CARS_BY_ID_LIST;
@@ -8,6 +12,7 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CA
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_BUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_CAR_STATE;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_TRUCK;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ROUTES_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.QUESTION_MARK;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CAR_NUMBER;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CAR_STATE_ID_CARS;
@@ -18,6 +23,7 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.TRUCK_CAPACITY_ID_CARS;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.BUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.TRUCK;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.ZERO_VALUE;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.util.List;
@@ -25,11 +31,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.CarTypeNotPresentException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
@@ -44,16 +50,12 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 
 	private Logger log = Logger.getLogger(ERROR_LOGGER);
 
-	{
-		builder = entityBuilderFactory.getCarBuilder();
-	}
-
 	CarDAO() {
 		super();
 	}
 
-	CarDAO(ConnectionPool pool) {
-		super(pool);
+	public CarDAO(JdbcTemplate jdbcTemplate) {
+		super(jdbcTemplate);
 	}
 
 	@Autowired
@@ -63,6 +65,35 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 		this.rowMapper = rowMapper;
 	}
 
+	@Override
+	public List<Integer> getRoutesId(int carId) {
+		return jdbcTemplate.queryForList(CAR_ROUTE_GET_ROUTES_ID, new Object[] { carId }, Integer.class);
+	}
+
+	@Override
+	public void setDriver(int driverId, int carId) {
+		jdbcTemplate.update(CAR_DRIVER_UPDATE_DEPENDENCE, driverId, carId);
+	}
+
+	@Override
+	public int getDriverId(int carId) {
+		return jdbcTemplate.queryForObject(CAR_DRIVER_GET_DRIVER_ID, new Object[] { carId }, Integer.class);
+	}
+
+	@Override
+	public void deleteDriver(int carId) {
+		jdbcTemplate.update(CAR_DRIVER_UPDATE_DEPENDENCE, ZERO_VALUE, carId);
+	}
+
+	@Override
+	public List<Integer> getActiveRoutesId(int carId) {
+		return jdbcTemplate.queryForList(CAR_ROUTE_GET_ACTIVE_ROUTE_ID, new Object[] { carId }, Integer.class);
+	}
+
+	@Override
+	public List<Integer> getActivePlannedRoutesId(int carId) {
+		return jdbcTemplate.queryForList(CAR_ROUTE_GET_ACTIVE_PLANNED_ROUTE_ID, new Object[] { carId }, Integer.class);
+	}
 
 	@Override
 	public void update(Car entity) throws DAOLayerException {

@@ -2,7 +2,6 @@ package by.epam.javatraining.beseda.webproject.service.entitybuilder;
 
 import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.ServiceDependenceFactory;
 import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
 
 /**
@@ -12,7 +11,6 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntit
 public abstract class EntityBuilder<E extends EntityBase> {
 
     protected static final ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-    protected static final ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 
         
     /**

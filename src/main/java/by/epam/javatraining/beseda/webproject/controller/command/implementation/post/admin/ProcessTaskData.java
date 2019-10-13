@@ -1,5 +1,34 @@
 package by.epam.javatraining.beseda.webproject.controller.command.implementation.post.admin;
 
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.BUILDING;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CITY;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.COUNTRY;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CURRENT_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.DATE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.DETAILS;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.DISTRICT;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.HOUSE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.STREET;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.TIME;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.ADD_TASK_FLAG;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CHANGING_ROUTE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_LIST;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_TO_CHANGE;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+
 import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
 import by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant;
@@ -8,33 +37,17 @@ import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicExcept
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.ServiceDependenceFactory;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.TaskAddressService;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.TaskRouteService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.AddressService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
 import by.epam.javatraining.beseda.webproject.service.entityservice.TaskService;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
-import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpSession;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.*;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.*;
-import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 public class ProcessTaskData implements ActionCommand {
 
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 	private static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-	private static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 	private static TaskService taskService = serviceEntityFactory.getTaskService();
 	private static AddressService addressService = serviceEntityFactory.getAddressService();
-	private static TaskAddressService taskAddressService = serviceDependenceFactory.getTaskAddressService();
-	private static TaskRouteService taskRouteService = serviceDependenceFactory.getTaskRouteService();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -66,9 +79,9 @@ public class ProcessTaskData implements ActionCommand {
 				taskService.update(newTask);
 			} else {
 				taskService.add(newTask);
-				taskRouteService.addDependence(newTask.getId(), routeId);
+				taskService.setRoute(routeId, newTask.getId());
 			}
-			taskAddressService.addDependence(newTask.getId(), address.getId());
+			taskService.setAddress(address.getId(),newTask.getId());
 			newTask.setAddress(address);
 
 			if (taskToChange != null) {

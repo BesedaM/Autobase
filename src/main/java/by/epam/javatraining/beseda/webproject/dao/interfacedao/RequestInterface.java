@@ -17,5 +17,11 @@ public interface RequestInterface extends EntityDAO<Request> {
 	List<Request> getFulfilledRequests() throws DAOLayerException;
 
 	List<Request> getRejectedRequests() throws DAOLayerException;
+	
+	void setCustomer(int customerId, int requestId);
+
+	int getCustomerId(int requestId);
+
+	void deleteCustomer(int customerId, int requestId);
 
 }

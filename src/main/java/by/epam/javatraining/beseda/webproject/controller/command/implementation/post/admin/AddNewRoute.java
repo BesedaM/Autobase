@@ -1,37 +1,38 @@
 package by.epam.javatraining.beseda.webproject.controller.command.implementation.post.admin;
 
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CARS_ID;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CURRENT_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.ID;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.ROUTE_NAME;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CURRENT_ROUTE;
+import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_LIST;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+
 import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
 import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.CarRouteService;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.ServiceDependenceFactory;
 import by.epam.javatraining.beseda.webproject.service.entityservice.RouteService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
-import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Map;
-
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.*;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CURRENT_ROUTE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_LIST;
-import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
 
 
 public class AddNewRoute implements ActionCommand {
 
     private static Logger log = Logger.getLogger(ERROR_LOGGER);
     private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-    private ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
     private RouteService routeService = serviceEntityFactory.getRouteService();
-    private CarRouteService carRouteService = serviceDependenceFactory.getCarRouteService();
 
     @Override
     public String execute(SessionRequestContent content) {
@@ -52,8 +53,8 @@ public class AddNewRoute implements ActionCommand {
         for (int i = 0; i < carsId.length; i++) {
             int carId = Integer.parseInt(carsId[i]);
             try {
-                carRouteService.addDependence(carId, routeId);
-            } catch (ServiceTechnicalException e) {
+                routeService.addCar(routeId,carId);
+            }  catch (ServiceTechnicalException e) {
                 log.error(e);
             }
         }

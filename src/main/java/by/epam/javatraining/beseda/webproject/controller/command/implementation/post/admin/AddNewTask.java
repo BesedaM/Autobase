@@ -31,11 +31,8 @@ public class AddNewTask implements ActionCommand {
 
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 	private static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-	private static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 	private static TaskService taskService = serviceEntityFactory.getTaskService();
 	private static AddressService addressService = serviceEntityFactory.getAddressService();
-	private static TaskAddressService taskAddressService = serviceDependenceFactory.getTaskAddressService();
-	private static TaskRouteService taskRouteService = serviceDependenceFactory.getTaskRouteService();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -59,8 +56,8 @@ public class AddNewTask implements ActionCommand {
 			taskService.add(task);
 			task.setAddress(address);
 
-			taskAddressService.addDependence(task.getId(), address.getId());
-			taskRouteService.addDependence(task.getId(), route_id);
+			taskService.setAddress(address.getId(), task.getId());
+			taskService.setRoute(route_id, task.getId());
 			List<Task> taskList = (ArrayList<Task>) session.getAttribute(TASK_LIST);
 			taskList.add(task);
 

@@ -19,15 +19,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
-import by.epam.javatraining.beseda.webproject.dao.entitybuilder.EntityBuilder;
 import by.epam.javatraining.beseda.webproject.dao.entitybuilder.EntityBuilderFactory;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
-import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.ConnectionWrap;
-import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.TestWrapperConnector;
-import by.epam.javatraining.beseda.webproject.dao.util.wrapperconnector.WrapperConnector;
 import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 
@@ -51,17 +46,9 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	protected ConnectionWrap connector;
-	protected EntityBuilder<E> builder;
 	protected final ReentrantLock lock = new ReentrantLock();
 
 	protected AbstractDAO() {
-		this.connector = new WrapperConnector();
-		this.jdbcTemplate = null;
-	}
-
-	protected AbstractDAO(ConnectionPool pool) {
-		this.connector = new TestWrapperConnector(pool);
 		this.jdbcTemplate = null;
 	}
 
@@ -173,7 +160,7 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	protected abstract String updateStatement();
 
 
-	public void close() {
-		connector.closeConnector();
-	}
+//	public void close() {
+//		connector.closeConnector();
+//	}
 }

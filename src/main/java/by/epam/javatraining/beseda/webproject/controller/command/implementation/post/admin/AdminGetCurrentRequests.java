@@ -32,7 +32,6 @@ public class AdminGetCurrentRequests implements ActionCommand {
 
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 	private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-	private ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 	private EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
 
 	@Override
@@ -41,7 +40,6 @@ public class AdminGetCurrentRequests implements ActionCommand {
 		HttpSession httpSession = content.getSession();
 		RequestService requestService = serviceEntityFactory.getRequestService();
 		CustomerService customerService = serviceEntityFactory.getCustomerService();
-		RequestCustomerService requestCustomerService = serviceDependenceFactory.getRequestCustomerService();
 		RouteBuilder routeBuilder = entityBuilderFactory.getRouteBuilder();
 		try {
 			List<Request> requests = requestService.getCurrentRequests();
@@ -53,7 +51,7 @@ public class AdminGetCurrentRequests implements ActionCommand {
 					request.setRoute(route);
 				}
 
-				int customerId = requestCustomerService.getEntity02Id(requests.get(i));
+				int customerId = requestService.getCustomerId(requests.get(i).getId());
 				Customer customer = customerService.getEntityById(customerId);
 				requestCustomerMap.put(requests.get(i), customer);
 			}

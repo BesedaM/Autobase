@@ -1,13 +1,12 @@
 package by.epam.javatraining.beseda.webproject.service.entitybuilder;
 
+import java.util.List;
+
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
+import by.epam.javatraining.beseda.webproject.entity.exception.TaskException;
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.entity.exception.TaskException;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.CarRouteService;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.TaskAddressService;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.TaskRouteService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.AddressService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CarService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.RouteService;
@@ -22,18 +21,11 @@ public class RouteBuilder extends EntityBuilder<Route> {
     private static TaskService taskService;
     private static AddressService addressService;
 
-    private static CarRouteService carRouteService;
-    private static TaskRouteService taskRouteService;
-    private static TaskAddressService taskAddressService;
-
     RouteBuilder() {
         carService = serviceEntityFactory.getCarService();
         routeService = serviceEntityFactory.getRouteService();
         taskService = serviceEntityFactory.getTaskService();
         addressService =  serviceEntityFactory.getAddressService();
-        carRouteService = serviceDependenceFactory.getCarRouteService();
-        taskRouteService = serviceDependenceFactory.getTaskRouteService();
-        taskAddressService = serviceDependenceFactory.getTaskAddressService();
     }
 
     public Route getEntity(int routeId) throws ServiceLayerException {
@@ -41,14 +33,14 @@ public class RouteBuilder extends EntityBuilder<Route> {
         if (routeId > 0) {
             route = routeService.getEntityById(routeId);
             if (route != null) {
-                int[] taskIds = taskRouteService.getEntitiesIdByDependenceId(route);
+                List<Integer> tasksId = routeService.getTasksId(route.getId());
 
-                for (int i = 0; i < taskIds.length; i++) {
-                    Task task = taskService.getEntityById(taskIds[i]);
+                for (int i = 0; i < tasksId.size(); i++) {
+                    Task task = taskService.getEntityById(tasksId.get(i));
 
                     if (task != null) {
                         route.addTask(task);
-                        int addressId = taskAddressService.getEntity02Id(task);
+                        int addressId = taskService.getAddressId(task.getId());
                         Address address = addressService.getEntityById(addressId);
 
                         try {
@@ -66,9 +58,9 @@ public class RouteBuilder extends EntityBuilder<Route> {
     }
 
     public void addCarList(Route route) throws ServiceLayerException {
-        int[] carIds = carRouteService.getEntities01Id(route);
-        for (int i = 0; i < carIds.length; i++) {
-            Car car = carService.getEntityById(carIds[i]);
+        List<Integer> carsId = routeService.getCarsId(route.getId());
+        for (int i = 0; i < carsId.size(); i++) {
+            Car car = carService.getEntityById(carsId.get(i));
             route.addCar(car);
         }
     }

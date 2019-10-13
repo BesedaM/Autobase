@@ -1,13 +1,20 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import by.epam.javatraining.beseda.webproject.dao.entitydao.AddressDAO;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.AddressInterface;
 import by.epam.javatraining.beseda.webproject.entity.DefaultValue;
 import by.epam.javatraining.beseda.webproject.entity.route.Address;
 
+@Service
 public class AddressService extends AbstractEntityService<Address> {
 
-	AddressService() {
+	public AddressService() {
 		super();
-		entityDAO = mySQLDAOEntityFactory.getAddressDAO();
 	}
 
 	/**
@@ -34,6 +41,15 @@ public class AddressService extends AbstractEntityService<Address> {
 			addr = new Address(country, district, city, street, house, building);
 		}
 		return addr;
+	}
+
+	@Autowired
+	public void setDAO(AddressDAO addressDAO) {
+		this.entityDAO = addressDAO;
+	}
+
+	public List<Integer> getTasksId(int addressId) {
+		return ((AddressInterface) entityDAO).getTasksId(addressId);
 	}
 
 }

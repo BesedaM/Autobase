@@ -21,10 +21,9 @@ import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.service.EnumService;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.CarDriverService;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.ServiceDependenceFactory;
 import by.epam.javatraining.beseda.webproject.service.entitybuilder.EntityBuilderFactory;
 import by.epam.javatraining.beseda.webproject.service.entitybuilder.RouteBuilder;
+import by.epam.javatraining.beseda.webproject.service.entityservice.CarService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.DriverService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.RequestService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
@@ -36,13 +35,11 @@ public class CustomerProcessor {
 
 	private static EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
 	private static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-	private static ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 	private static Map<String, ReversalHashMap<Integer, String>> enumCollection = EnumService.getEnumCollection();
 
 	private CustomerProcessor() {}
 	
 	public static void processCustomerData(HttpSession session) throws ServiceLayerException {
-
 		RequestService requestService = serviceEntityFactory.getRequestService();
 		RouteBuilder routeBuilder = entityBuilderFactory.getRouteBuilder();
 		Customer customer = (Customer) session.getAttribute(USER_DATA);
@@ -68,17 +65,16 @@ public class CustomerProcessor {
 		session.setAttribute(REQUEST_STATUS_LIST, enumCollection.get(REQUEST_STATUS));
 		session.setAttribute(DRIVER_MAP, driverMap);
 	}
-
 	
 	private static List<Driver> addDriversData(Route route) throws ServiceLayerException {
 		List<Driver> driverList = new ArrayList<>();
 		if (route != null) {
-			CarDriverService carDriverService = serviceDependenceFactory.getCarDriverService();
+			CarService carService = serviceEntityFactory.getCarService();
 			DriverService driverService = serviceEntityFactory.getDriverService();
 			Set<Car> carList = route.getCarsList();
 
 			for (Car car : carList) {
-				int driverId = carDriverService.getEntity02Id(car);
+				int driverId = carService.getDriverId(car.getId());
 				Driver driver = driverService.getEntityById(driverId);
 				driverList.add(driver);
 			}

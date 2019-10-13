@@ -1,16 +1,16 @@
 package by.epam.javatraining.beseda.webproject.config;
 
-import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_PASSWORD;
-import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_URL;
-import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_USER;
+import java.io.IOException;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.AddressDAO;
 import by.epam.javatraining.beseda.webproject.dao.entitydao.CarDAO;
@@ -30,9 +30,13 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.RouteService
 import by.epam.javatraining.beseda.webproject.service.entityservice.TaskService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.UserService;
 
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
 @Configuration
 @ComponentScan({ "by.epam.javatraining.beseda.webproject.dao", "by.epam.javatraining.beseda.webproject.service" })
-public class ProjectConfig {
+public class TestConfig {
+
+	private Logger log = Logger.getLogger(ERROR_LOGGER);
 
 	@Bean
 	public JdbcTemplate getJdbcTemplate() {
@@ -41,11 +45,15 @@ public class ProjectConfig {
 
 	@Bean
 	public DataSource getDataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setUrl(DATABASE_URL);
-		dataSource.setUsername(DATABASE_USER);
-		dataSource.setPassword(DATABASE_PASSWORD);
-		dataSource.setDriverClassName("org.postgresql.Driver");
+		EmbeddedPostgres database = null;
+		try {
+			database = EmbeddedPostgres.builder().start();
+
+		} catch (IOException e) {
+			log.error(e);
+		}
+		DataSource dataSource = database.getPostgresDatabase();
+
 		return dataSource;
 	}
 
@@ -108,31 +116,29 @@ public class ProjectConfig {
 	public DriverService getDriverService() {
 		return new DriverService();
 	}
-	
+
 	@Bean
 	public AddressService getAddressService() {
 		return new AddressService();
 	}
-	
+
 	@Bean
 	public CarService getCarService() {
 		return new CarService();
 	}
-	
+
 	@Bean
 	public TaskService getTaskService() {
 		return new TaskService();
 	}
-	
+
 	@Bean
 	public RouteService getRouteService() {
 		return new RouteService();
 	}
-	
+
 	@Bean
 	public RequestService getRequestservice() {
 		return new RequestService();
 	}
-	
-	
 }

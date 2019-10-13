@@ -11,4 +11,16 @@ public interface CarInterface extends EntityDAO<Car> {
 	List<Car> getCarsByType(String carType) throws DAOLayerException;
 
 	void updateCarState(int id, String state) throws DAOTechnicalException;
+	
+	List<Integer> getRoutesId(int carId);
+	
+	void setDriver(int driverId, int carId);
+
+	int getDriverId(int carId);
+
+	void deleteDriver(int carId);
+	
+	List<Integer> getActiveRoutesId(int carId);
+	
+	List<Integer> getActivePlannedRoutesId(int carId);
 }

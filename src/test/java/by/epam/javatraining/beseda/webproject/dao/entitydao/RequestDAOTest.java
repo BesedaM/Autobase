@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -69,14 +70,22 @@ public class RequestDAOTest {
 	}
 
 	@Test
-	public void testSelectActiveCustomerRequestsId() {
-		int[] ids = null;
+	public void testSelectActiveCustomerRequests() {
+		List<Request> requests = null;
 		try {
-			ids = requestDAO.selectActiveCustomerRequestsId(10);
+			requests = requestDAO.selectActiveCustomerRequests(10);
 		} catch (DAOTechnicalException e) {
 			log.error(e);
 		}
-		assertArrayEquals(new int[] { 7, 9, 10, 12, 13, 14, 17 }, ids);
+		int[] result = new int[7];
+		result[0] = requests.get(0).getId();
+		result[1] = requests.get(1).getId();
+		result[2] = requests.get(2).getId();
+		result[3] = requests.get(3).getId();
+		result[4] = requests.get(4).getId();
+		result[5] = requests.get(5).getId();
+		result[6] = requests.get(6).getId();
+		assertArrayEquals(new int[] { 7, 9, 10, 12, 13, 14, 17 }, result);
 	}
 
 	@Test
@@ -108,8 +117,13 @@ public class RequestDAOTest {
 	@Test
 	public void testGetCurrentRequestsId() {
 		try {
-			int[] ids = requestDAO.getCurrentRequestsId();
-			assertArrayEquals(new int[] { 6, 7, 8, 10 }, ids);
+			List<Request> requests = requestDAO.getCurrentRequests();
+			int[] result = new int[4];
+			result[0] = requests.get(0).getId();
+			result[1] = requests.get(1).getId();
+			result[2] = requests.get(2).getId();
+			result[3] = requests.get(3).getId();
+			assertArrayEquals(new int[] { 6, 7, 8, 10 }, result);
 		} catch (DAOLayerException e) {
 			log.error(e);
 		}
@@ -118,8 +132,14 @@ public class RequestDAOTest {
 	@Test
 	public void testGetFulfilledRequestsId() {
 		try {
-			int[] ids = requestDAO.getFulfilledRequestsId();
-			assertArrayEquals(new int[] { 1, 2, 3, 4, 5 }, ids);
+			List<Request> requests = requestDAO.getFulfilledRequests();
+			int[] result = new int[5];
+			result[0] = requests.get(0).getId();
+			result[1] = requests.get(1).getId();
+			result[2] = requests.get(2).getId();
+			result[3] = requests.get(3).getId();
+			result[4] = requests.get(4).getId();
+			assertArrayEquals(new int[] { 1, 2, 3, 4, 5 }, result);
 		} catch (DAOLayerException e) {
 			log.error(e);
 		}
@@ -128,8 +148,12 @@ public class RequestDAOTest {
 	@Test
 	public void testGetRejectedRequestsId() {
 		try {
-			int[] ids = requestDAO.getRejectedRequestsId();
-			assertArrayEquals(new int[] { 12, 14, 16 }, ids);
+			List<Request> requests = requestDAO.getRejectedRequests();
+			int[] result = new int[3];
+			result[0] = requests.get(0).getId();
+			result[1] = requests.get(1).getId();
+			result[2] = requests.get(2).getId();
+			assertArrayEquals(new int[] { 12, 14, 16 }, result);
 		} catch (DAOLayerException e) {
 			log.error(e);
 		}
@@ -139,8 +163,8 @@ public class RequestDAOTest {
 	public void testNoRequestsIdFound() {
 		try {
 			DatabaseCreator.truncateTable("requests");
-			int[] ids = requestDAO.getRejectedRequestsId();
-			assertArrayEquals(new int[0], ids);
+			List<Request> requests = requestDAO.getRejectedRequests();
+			assertEquals(0, requests.size());
 		} catch (DAOLayerException e) {
 			log.error(e);
 		}

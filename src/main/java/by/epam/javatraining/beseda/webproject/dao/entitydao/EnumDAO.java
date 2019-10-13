@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.dao;
+package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ENUM;
 
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.entity.EnumElement;
 import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
@@ -17,16 +18,17 @@ import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
  *
  * @author Beseda
  */
+@Repository
 public class EnumDAO {
 
-	@Autowired
-	private static JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	@Qualifier("enumMapper")
 	private static RowMapper<EnumElement> rowMapper;
 
-	private EnumDAO() {
+	public EnumDAO(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	/**
@@ -37,7 +39,7 @@ public class EnumDAO {
 	 * @param tableName name of the table from where the data will be retrieved
 	 * @return ReversableHashMap<Integer , String> object with table data
 	 */
-	public static ReversalHashMap<Integer, String> getEnumMap(String tableName) {
+	public ReversalHashMap<Integer, String> getEnumMap(String tableName) {
 		ReversalHashMap<Integer, String> map = new ReversalHashMap<>();
 		String sql = SELECT_ENUM + tableName;
 		List<EnumElement> list = jdbcTemplate.query(sql, rowMapper);

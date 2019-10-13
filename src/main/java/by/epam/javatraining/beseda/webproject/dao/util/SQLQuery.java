@@ -7,31 +7,31 @@ public class SQLQuery {
 
 	// Dependence DAO
 	// CarDriver
-	public static final String CAR_DRIVER_GET_DEPENDENCE_ID;
-	public static final String CAR_DRIVER_GET_ENTITIES_ID;
+	public static final String CAR_DRIVER_GET_DRIVER_ID;
+	public static final String CAR_DRIVER_GET_CAR_ID;
 	public static final String CAR_DRIVER_UPDATE_DEPENDENCE;
 
 	// TaskAddress
-	public static final String TASK_ADDRESS_GET_DEPENDENCE_ID;
-	public static final String TASK_ADDRESS_GET_ENTITIES;
+	public static final String TASK_ADDRESS_GET_ADDRESS_ID;
+	public static final String TASK_ADDRESS_GET_TASKS_ID;
 	public static final String TASK_ADDRESS_UPDATE_DEPENDENCE;
 
 	// RequestCustomer
-	public static final String REQUEST_CUSTOMER_GET_DEPENDENCE_ID;
-	public static final String REQUEST_CUSTOMER_GET_ENTITIES;
+	public static final String REQUEST_CUSTOMER_GET_CUSTOMER_ID;
+	public static final String REQUEST_CUSTOMER_GET_REQUESTS_ID;
 	public static final String REQUEST_CUSTOMER_UPDATE_DEPENDENCE;
 
 	// TaskRoute
-	public static final String TASK_ROUTE_GET_DEPENDENCE_ID;
-	public static final String TASK_ROUTE_GET_ENTITIES;
+	public static final String TASK_ROUTE_GET_ROUTE_ID;
+	public static final String TASK_ROUTE_GET_TASKS_ID;
 	public static final String TASK_ROUTE_UPDATE_DEPENDENCE;
 
 	// CarRoute
-	public static final String CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID;
-	public static final String CAR_ROUTE_GET_DEPENDENCE_CAR_ID;
-	public static final String CAR_ROUTE_GET_DEPENDENCE_ACTIVE_ROUTE_ID;
-	public static final String CAR_ROUTE_GET_DEPENDENCE_PLANNED_ROUTE_ID;
-	public static final String CAR_ROUTE_GET_DEPENDENCE_ACTIVE_PLANNED_ROUTE_ID;
+	public static final String CAR_ROUTE_GET_ROUTES_ID;
+	public static final String CAR_ROUTE_GET_CAR_ID;
+	public static final String CAR_ROUTE_GET_ACTIVE_ROUTE_ID;
+	public static final String CAR_ROUTE_GET_PLANNED_ROUTE_ID;
+	public static final String CAR_ROUTE_GET_ACTIVE_PLANNED_ROUTE_ID;
 	public static final String CAR_ROUTE_UPDATE_DEPENDENCE;
 	public static final String CAR_ROUTE_DELETE_DEPENDENCE;
 
@@ -131,41 +131,44 @@ public class SQLQuery {
 		SELECT_ENUM = "SELECT * FROM trucking_company.";
 
 		// CarDriver DependenceDAO
-		CAR_DRIVER_GET_DEPENDENCE_ID = "SELECT driver_id FROM trucking_company.cars WHERE id=?";
-		CAR_DRIVER_GET_ENTITIES_ID = "SELECT id FROM trucking_company.cars WHERE driver_id=?";
+		CAR_DRIVER_GET_DRIVER_ID = "SELECT driver_id FROM trucking_company.cars WHERE id=?";
+		CAR_DRIVER_GET_CAR_ID = "SELECT id FROM trucking_company.cars WHERE driver_id=?";
 		CAR_DRIVER_UPDATE_DEPENDENCE = "UPDATE trucking_company.cars SET driver_id=? WHERE id=?";
 
 		// TaskAddress DependenceDAO
-		TASK_ADDRESS_GET_DEPENDENCE_ID = "SELECT address_id FROM trucking_company.tasks WHERE id=?";
-		TASK_ADDRESS_GET_ENTITIES = "SELECT id FROM trucking_company.tasks WHERE address_id=?";
+		TASK_ADDRESS_GET_ADDRESS_ID = "SELECT address_id FROM trucking_company.tasks WHERE id=?";
+		TASK_ADDRESS_GET_TASKS_ID = "SELECT id FROM trucking_company.tasks WHERE address_id=?";
 		TASK_ADDRESS_UPDATE_DEPENDENCE = "UPDATE trucking_company.tasks SET address_id=? WHERE id=?";
 
 		// RequestCustomer DependenceDAO
-		REQUEST_CUSTOMER_GET_DEPENDENCE_ID = "SELECT customer_id FROM trucking_company.requests WHERE id=?";
-		REQUEST_CUSTOMER_GET_ENTITIES = "SELECT id FROM trucking_company.requests WHERE customer_id=?";
-		REQUEST_CUSTOMER_UPDATE_DEPENDENCE = "UPDATE trucking_company.requests SET customer_id=? WHERE id=?";
+		REQUEST_CUSTOMER_GET_CUSTOMER_ID 
+		= "SELECT customer_id FROM trucking_company.requests WHERE id=?";
+		REQUEST_CUSTOMER_GET_REQUESTS_ID 
+		= "SELECT id FROM trucking_company.requests WHERE customer_id=?";
+		REQUEST_CUSTOMER_UPDATE_DEPENDENCE 
+		= "UPDATE trucking_company.requests SET customer_id=? WHERE id=?";
 
 		// TaskRoute DependenceDAO
-		TASK_ROUTE_GET_DEPENDENCE_ID = "SELECT route_id FROM trucking_company.tasks WHERE id=?";
-		TASK_ROUTE_GET_ENTITIES = "SELECT id FROM trucking_company.tasks WHERE route_id=?";
+		TASK_ROUTE_GET_ROUTE_ID = "SELECT route_id FROM trucking_company.tasks WHERE id=?";
+		TASK_ROUTE_GET_TASKS_ID = "SELECT id FROM trucking_company.tasks WHERE route_id=?";
 		TASK_ROUTE_UPDATE_DEPENDENCE = "UPDATE trucking_company.tasks SET route_id=? WHERE id=?";
 
 		// CarRoute DependenceDAO
-		CAR_ROUTE_GET_DEPENDENCE_ROUTE_ID = "SELECT route_id FROM trucking_company.cars_in_routes WHERE car_id=?";
-		CAR_ROUTE_GET_DEPENDENCE_ACTIVE_ROUTE_ID = "SELECT route_id FROM trucking_company.cars_in_routes \n"
+		CAR_ROUTE_GET_ROUTES_ID = "SELECT route_id FROM trucking_company.cars_in_routes WHERE car_id=?";
+		CAR_ROUTE_GET_ACTIVE_ROUTE_ID = "SELECT route_id FROM trucking_company.cars_in_routes \n"
 				+ "LEFT JOIN trucking_company.routes ON cars_in_routes.route_id=routes.id\n"
 				+ "LEFT JOIN trucking_company.route_status ON routes.status_id=route_status.id\n"
 				+ "WHERE car_id=? AND route_status.status='на выполнении';";
-		CAR_ROUTE_GET_DEPENDENCE_PLANNED_ROUTE_ID = "SELECT route_id FROM trucking_company.cars_in_routes \n"
+		CAR_ROUTE_GET_PLANNED_ROUTE_ID = "SELECT route_id FROM trucking_company.cars_in_routes \n"
 				+ "LEFT JOIN trucking_company.routes ON cars_in_routes.route_id=routes.id\n"
 				+ "LEFT JOIN trucking_company.route_status ON routes.status_id=route_status.id\n"
 				+ "WHERE car_id=? AND route_status.status='запланирован';";
-		CAR_ROUTE_GET_DEPENDENCE_ACTIVE_PLANNED_ROUTE_ID = "SELECT route_id FROM trucking_company.cars_in_routes \n"
+		CAR_ROUTE_GET_ACTIVE_PLANNED_ROUTE_ID = "SELECT route_id FROM trucking_company.cars_in_routes \n"
 				+ "LEFT JOIN trucking_company.routes ON cars_in_routes.route_id=routes.id\n"
 				+ "LEFT JOIN trucking_company.route_status ON routes.status_id=route_status.id\n"
 				+ "WHERE car_id=? AND route_status.status IN ('запланирован','на выполнении');";
 
-		CAR_ROUTE_GET_DEPENDENCE_CAR_ID = "SELECT car_id FROM trucking_company.cars_in_routes WHERE route_id=?";
+		CAR_ROUTE_GET_CAR_ID = "SELECT car_id FROM trucking_company.cars_in_routes WHERE route_id=?";
 		CAR_ROUTE_UPDATE_DEPENDENCE = "INSERT INTO trucking_company.cars_in_routes (route_id, car_id) VALUES (?,?)";
 		CAR_ROUTE_DELETE_DEPENDENCE = "DELETE FROM trucking_company.cars_in_routes WHERE car_id=? AND route_id=?";
 

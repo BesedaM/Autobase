@@ -6,6 +6,7 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_AL
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_DRIVERS_BY_ID_LIST;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_DRIVER_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_DRIVER;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_GET_CAR_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.NAME;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.PHONE;
@@ -13,29 +14,24 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.DriverInterface;
-import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.entity.user.Driver;
 
 @Repository
 public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 
-	{
-		builder = entityBuilderFactory.getDriverBuilder();
-	}
-
 	DriverDAO() {
 		super();
 	}
 
-	DriverDAO(ConnectionPool pool) {
-		super(pool);
+	public DriverDAO(JdbcTemplate jdbcTemplate) {
+		super(jdbcTemplate);
 	}
 
 	@Autowired
@@ -46,11 +42,16 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 	}
 
 	@Override
+	public int getCarId(int driverId) {
+		return jdbcTemplate.queryForObject(CAR_DRIVER_GET_CAR_ID, new Object[] { driverId }, Integer.class);
+	}
+
+	@Override
 	public int add(Driver entity) throws DAOLayerException {
-		jdbcTemplate.update(addStatement(), createEntityParamArray(entity),entity.getId());
+		jdbcTemplate.update(addStatement(), createEntityParamArray(entity), entity.getId());
 		return entity.getId();
 	}
-	
+
 	@Override
 	protected String getAllStatement() {
 		return SELECT_ALL_DRIVERS;
@@ -81,7 +82,6 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 		return UPDATE_DRIVER;
 	}
 
-
 	@Override
 	protected MapSqlParameterSource createMapSqlParameterSource(Driver entity) {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
@@ -100,5 +100,5 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 		array[2] = entity.getRole();
 		return array;
 	}
-	
+
 }

@@ -1,22 +1,26 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAO;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.Request;
-import by.epam.javatraining.beseda.webproject.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
+import static by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader.REQUEST_STATUS_MAP;
 
 import java.util.Collections;
 import java.util.List;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader.REQUEST_STATUS_MAP;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAO;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
+import by.epam.javatraining.beseda.webproject.entity.Request;
+import by.epam.javatraining.beseda.webproject.entity.user.Customer;
+import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
+
+@Service
 public class RequestService extends AbstractEntityService<Request> {
 
-	RequestService() {
+	public RequestService() {
 		super();
-		entityDAO = mySQLDAOEntityFactory.getRequestDAO();
 	}
 
 	/**
@@ -46,12 +50,17 @@ public class RequestService extends AbstractEntityService<Request> {
 		List<Request> list = null;
 		if (customerId > 0) {
 			try {
-				list= ((RequestDAO) entityDAO).selectActiveCustomerRequests(customerId);
+				list = ((RequestDAO) entityDAO).selectActiveCustomerRequests(customerId);
 			} catch (DAOTechnicalException e) {
 				throw new ServiceLayerException(e + " Impossible to get info on active customer requests");
 			}
 		}
 		return list;
+	}
+
+	@Autowired
+	public void setDAO(RequestDAO requestDAO) {
+		this.entityDAO = requestDAO;
 	}
 
 	/**
@@ -119,5 +128,17 @@ public class RequestService extends AbstractEntityService<Request> {
 		}
 		return list;
 	}
-	
+
+	public void setCustomer(int customerId, int requestId) {
+		((RequestInterface) entityDAO).setCustomer(customerId, requestId);
+	}
+
+	public int getCustomerId(int requestId) {
+		return ((RequestInterface) entityDAO).getCustomerId(requestId);
+	}
+
+	public void deleteCustomer(int customerId, int requestId) {
+		((RequestInterface) entityDAO).deleteCustomer(customerId, requestId);
+	}
+
 }

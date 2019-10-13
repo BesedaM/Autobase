@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAO;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
 import by.epam.javatraining.beseda.webproject.logic.RegisterLogic;
@@ -24,13 +22,11 @@ public class UserService extends AbstractEntityService<User> {
 
 	@Autowired
 	private UserInterface entityDAO;
-	
+
 	public UserService() {
 		super();
 	}
 
-	
-	
 //    @Override
 //    public final List<User> getAll() throws ServiceLayerException {
 //        List<User> list = null;
@@ -128,6 +124,11 @@ public class UserService extends AbstractEntityService<User> {
 			}
 		}
 		return user;
+	}
+
+	@Autowired
+	public void setDAO(UserDAO userDAO) {
+		this.entityDAO = userDAO;
 	}
 
 	/**

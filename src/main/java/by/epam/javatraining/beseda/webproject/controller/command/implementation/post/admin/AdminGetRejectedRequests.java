@@ -4,8 +4,6 @@ import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.RequestCustomerService;
-import by.epam.javatraining.beseda.webproject.service.dependenceservice.ServiceDependenceFactory;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CustomerService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.RequestService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
@@ -26,7 +24,6 @@ public class AdminGetRejectedRequests implements ActionCommand {
 
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 	private ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-	private ServiceDependenceFactory serviceDependenceFactory = ServiceDependenceFactory.getFactory();
 
 	@Override
 	public String execute(SessionRequestContent content) {
@@ -34,13 +31,12 @@ public class AdminGetRejectedRequests implements ActionCommand {
 		HttpSession httpSession = content.getSession();
 		RequestService requestService = serviceEntityFactory.getRequestService();
 		CustomerService customerService = serviceEntityFactory.getCustomerService();
-		RequestCustomerService requestCustomerService = serviceDependenceFactory.getRequestCustomerService();
 		
 		try {
 			List<Request> requests = requestService.getRejectedRequests();
 			Collections.sort(requests);
 			for (int i = 0; i < requests.size(); i++) {
-				int customerId = requestCustomerService.getEntity02Id(requests.get(i));
+				int customerId = requestService.getCustomerId(requests.get(i).getId());
 				Customer customer = customerService.getEntityById(customerId);
 				requestCustomerMap.put(requests.get(i), customer);
 			}

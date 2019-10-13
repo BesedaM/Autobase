@@ -1,6 +1,9 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import by.epam.javatraining.beseda.webproject.dao.entitydao.DAOEntityFactory;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
@@ -10,8 +13,6 @@ import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerExce
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
-import java.util.List;
-
 /**
  * Abstract class containing main methods for accessing the data
  * 
@@ -19,9 +20,9 @@ import java.util.List;
  *
  * @param <E> type parameter of EntityBase superclass
  */
+@Service
 public abstract class AbstractEntityService<E extends EntityBase> implements EntityService<E> {
 
-    protected static DAOEntityFactory mySQLDAOEntityFactory = DAOEntityFactory.getFactory();
     protected EntityDAO<E> entityDAO;
 
     @Override

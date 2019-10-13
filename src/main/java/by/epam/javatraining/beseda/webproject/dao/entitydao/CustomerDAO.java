@@ -2,6 +2,7 @@ package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_CUSTOMER;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_CUSTOMER_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.REQUEST_CUSTOMER_GET_REQUESTS_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_CUSTOMERS;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CUSTOMERS_BY_ID_LIST;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CUSTOMER_BY_ID;
@@ -14,37 +15,31 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.PHONE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.SURNAME;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
 import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 
 @Repository
 public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterface {
 
-	{
-		builder = entityBuilderFactory.getCustomerBuilder();
-	}
-
 	CustomerDAO() {
 		super();
 	}
 
-	CustomerDAO(ConnectionPool pool) {
-		super(pool);
+	public CustomerDAO(JdbcTemplate jdbcTemplate) {
+		super(jdbcTemplate);
 	}
-
+	
 	@Override
 	@Autowired
 	@Qualifier("customerMapper")
@@ -52,6 +47,10 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
 		this.rowMapper = rowMapper;
 	}
 
+	public List<Integer> getRequestsId(int customerId){
+		return jdbcTemplate.queryForList(REQUEST_CUSTOMER_GET_REQUESTS_ID, new Object[] {customerId}, Integer.class);
+	}
+	
 	@Override
 	public int add(Customer entity) throws DAOLayerException {
 		jdbcTemplate.update(addStatement(), createEntityParamArray(entity), entity.getId());
