@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAO;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
 import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
@@ -46,14 +44,10 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return array of requests id
 	 * @throws ServiceLayerException
 	 */
-	public List<Request> selectActiveCustomerRequests(int customerId) throws ServiceLayerException {
+	public List<Request> selectActiveCustomerRequests(int customerId){
 		List<Request> list = null;
 		if (customerId > 0) {
-			try {
-				list = ((RequestDAO) entityDAO).selectActiveCustomerRequests(customerId);
-			} catch (DAOTechnicalException e) {
-				throw new ServiceLayerException(e + " Impossible to get info on active customer requests");
-			}
+			list = ((RequestDAO) entityDAO).selectActiveCustomerRequests(customerId);
 		}
 		return list;
 	}
@@ -70,14 +64,10 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return list of new requests
 	 * @throws ServiceLayerException
 	 */
-	public List<Request> getNewRequests() throws ServiceLayerException {
+	public List<Request> getNewRequests() {
 		List<Request> list = null;
-		try {
-			list = ((RequestDAO) entityDAO).getNewRequests();
-			Collections.sort(list);
-		} catch (DAOLayerException e) {
-			throw new ServiceLayerException(e);
-		}
+		list = ((RequestDAO) entityDAO).getNewRequests();
+		Collections.sort(list);
 		return list;
 	}
 
@@ -87,13 +77,9 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return array of current requests id
 	 * @throws ServiceLayerException
 	 */
-	public List<Request> getCurrentRequests() throws ServiceLayerException {
+	public List<Request> getCurrentRequests() {
 		List<Request> list;
-		try {
-			list = ((RequestDAO) entityDAO).getCurrentRequests();
-		} catch (DAOLayerException e) {
-			throw new ServiceLayerException(e);
-		}
+		list = ((RequestDAO) entityDAO).getCurrentRequests();
 		return list;
 	}
 
@@ -103,13 +89,9 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return array of fulfilled requests id
 	 * @throws ServiceLayerException
 	 */
-	public List<Request> getFulfilledRequests() throws ServiceLayerException {
+	public List<Request> getFulfilledRequests(){
 		List<Request> list;
-		try {
-			list = ((RequestDAO) entityDAO).getFulfilledRequests();
-		} catch (DAOLayerException e) {
-			throw new ServiceLayerException(e);
-		}
+		list = ((RequestDAO) entityDAO).getFulfilledRequests();
 		return list;
 	}
 
@@ -119,13 +101,9 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * @return array of rejected requests id
 	 * @throws ServiceLayerException
 	 */
-	public List<Request> getRejectedRequests() throws ServiceLayerException {
+	public List<Request> getRejectedRequests() {
 		List<Request> list;
-		try {
-			list = ((RequestDAO) entityDAO).getRejectedRequests();
-		} catch (DAOLayerException e) {
-			throw new ServiceLayerException(e);
-		}
+		list = ((RequestDAO) entityDAO).getRejectedRequests();
 		return list;
 	}
 

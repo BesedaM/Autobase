@@ -1,9 +1,8 @@
 package by.epam.javatraining.beseda.webproject.entity.user;
 
-import by.epam.javatraining.beseda.webproject.entity.car.Car;
-import by.epam.javatraining.beseda.webproject.entity.exception.DriverException;
-
 import java.util.Objects;
+
+import by.epam.javatraining.beseda.webproject.entity.car.Car;
 
 public class Driver extends Person {
 	protected Car car;
@@ -19,12 +18,8 @@ public class Driver extends Person {
 		super(login, password, name, surname, phone);
 	}
 
-	public void setCar(Car car) throws DriverException {
-		if (car != null) {
-			this.car = car;
-		} else {
-			throw new DriverException();
-		}
+	public void setCar(Car car) {
+		this.car = car;
 	}
 
 	public void removeCar() {

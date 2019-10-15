@@ -1,10 +1,9 @@
 package by.epam.javatraining.beseda.webproject.entity.route;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.DefaultValue;
-import by.epam.javatraining.beseda.webproject.entity.exception.AddressException;
-
 import java.util.Objects;
+
+import by.epam.javatraining.beseda.webproject.entity.DefaultValue;
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 
 public class Address extends EntityBase {
 
@@ -51,52 +50,28 @@ public class Address extends EntityBase {
 		}
 	}
 
-	public void setCountry(String country) throws AddressException {
-		if (country != null) {
-			this.country = country;
-		} else {
-			throw new AddressException();
-		}
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
-	public void setDistrict(String district) throws AddressException {
-		if (district != null) {
-			this.district = district;
-		} else {
-			throw new AddressException();
-		}
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
-	public void setCity(String city) throws AddressException {
-		if (city != null) {
-			this.city = city;
-		} else {
-			throw new AddressException();
-		}
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	public void setStreet(String street) throws AddressException {
-		if (street != null) {
-			this.street = street;
-		} else {
-			throw new AddressException();
-		}
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
-	public void setHouse(int house) throws AddressException {
-		if (house >= 0) {
-			this.house = house;
-		} else {
-			throw new AddressException();
-		}
+	public void setHouse(int house) {
+		this.house = house;
 	}
 
-	public void setBuilding(String building) throws AddressException {
-		if (building != null) {
-			this.building = building;
-		} else {
-			throw new AddressException();
-		}
+	public void setBuilding(String building) {
+		this.building = building;
 	}
 
 	public String getCountry() {

@@ -99,28 +99,28 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
 	}
 
 	@Override
-	public List<Request> selectActiveCustomerRequests(int customerId) throws DAOTechnicalException {
+	public List<Request> selectActiveCustomerRequests(int customerId){
 		String sql = SELECT_ACTIVE_CUSTOMER_REQUESTS.replace(QUESTION_MARK, customerId + EMPTY_CHARACTER);
 		return jdbcTemplate.query(sql, rowMapper);
 	}
 
 	@Override
-	public List<Request> getNewRequests() throws DAOLayerException {
+	public List<Request> getNewRequests(){
 		return jdbcTemplate.query(SELECT_NEW_REQUESTS, rowMapper);
 	}
 
 	@Override
-	public List<Request> getCurrentRequests() throws DAOLayerException {
+	public List<Request> getCurrentRequests(){
 		return jdbcTemplate.query(SELECT_CURRENT_REQUESTS, rowMapper);
 	}
 
 	@Override
-	public List<Request> getFulfilledRequests() throws DAOLayerException {
+	public List<Request> getFulfilledRequests() {
 		return jdbcTemplate.query(SELECT_FULFILLED_REQUESTS, rowMapper);
 	}
 
 	@Override
-	public List<Request> getRejectedRequests() throws DAOLayerException {
+	public List<Request> getRejectedRequests(){
 		return jdbcTemplate.query(SELECT_REJECTED_REQUESTS, rowMapper);
 	}
 

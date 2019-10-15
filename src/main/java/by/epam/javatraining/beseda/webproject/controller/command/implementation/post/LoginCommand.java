@@ -1,9 +1,6 @@
 package by.epam.javatraining.beseda.webproject.controller.command.implementation.post;
 
 import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.parts.CarsDataProcessor;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.parts.CustomerProcessor;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.parts.DriverProcessor;
 import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CustomerService;
@@ -11,6 +8,9 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.DriverServic
 import by.epam.javatraining.beseda.webproject.service.entityservice.UserService;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
+import by.epam.javatraining.beseda.webproject.service.processors.CarsDataProcessor;
+import by.epam.javatraining.beseda.webproject.service.processors.CustomerProcessor;
+import by.epam.javatraining.beseda.webproject.service.processors.DriverProcessor;
 import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
 import org.apache.log4j.Logger;
 

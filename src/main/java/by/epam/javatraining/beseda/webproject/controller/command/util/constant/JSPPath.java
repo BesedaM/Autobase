@@ -30,29 +30,29 @@ public class JSPPath {
 
 
     static {
-        ERROR_PAGE = "/view/error_page.jsp";
-        LOGIN_PAGE = "/view/login.jsp";
-        ADMIN_MAIN_PAGE = "/view/admin/admin_main.jsp";
-        CUSTOMER_MAIN_PAGE = "/view/customer/customer_main.jsp";
+        ERROR_PAGE = "/error_page.jsp";
+        LOGIN_PAGE = "/login.jsp";
+        ADMIN_MAIN_PAGE = "/admin/admin_main.jsp";
+        CUSTOMER_MAIN_PAGE = "/customer/customer_main.jsp";
         CUSTOMER_PERSONAL_DATA_PAGE = "/view/customer/personal_data.jsp";
 
-        DRIVER_MAIN_PAGE = "/view/driver/driver_main.jsp";
+        DRIVER_MAIN_PAGE = "/driver/driver_main.jsp";
 
-        CUSTOMER_REGISTER_PAGE = "/view/register/customer.jsp";
+        CUSTOMER_REGISTER_PAGE = "/register/customer.jsp";
 
-        DRIVER_REGISTER_PAGE = "/view/register/driver.jsp";
+        DRIVER_REGISTER_PAGE = "/register/driver.jsp";
 
-        NEW_REQUESTS_PAGE = "/view/admin/requests/new_requests.jsp";
-        CURRENT_REQUESTS_PAGE = "/view/admin/requests/current_requests.jsp";
-        FULFILLED_REQUESTS_PAGE = "/view/admin/requests/fulfilled_requests.jsp";
-        REJECTED_REQUESTS_PAGE = "/view/admin/requests/rejected_requests.jsp";
+        NEW_REQUESTS_PAGE = "/admin/requests/new_requests.jsp";
+        CURRENT_REQUESTS_PAGE = "/admin/requests/current_requests.jsp";
+        FULFILLED_REQUESTS_PAGE = "/admin/requests/fulfilled_requests.jsp";
+        REJECTED_REQUESTS_PAGE = "/admin/requests/rejected_requests.jsp";
 
-        CAR_LIST_PAGE = "/view/admin/car_list.jsp";
-        CLIENT_LIST_PAGE = "/view/admin/client_list.jsp";
-        DRIVER_LIST_PAGE = "/view/admin/driver_list.jsp";
+        CAR_LIST_PAGE = "/admin/car_list.jsp";
+        CLIENT_LIST_PAGE = "/admin/client_list.jsp";
+        DRIVER_LIST_PAGE = "/admin/driver_list.jsp";
 
-        ADD_NEW_ROUTE_PAGE = "/view/admin/requests/add_route.jsp";
-        CHANGE_ROUTE_PAGE = "/view/admin/requests/change_route.jsp";
+        ADD_NEW_ROUTE_PAGE = "/admin/requests/add_route.jsp";
+        CHANGE_ROUTE_PAGE = "/admin/requests/change_route.jsp";
     }
 
 }

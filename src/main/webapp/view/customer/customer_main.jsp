@@ -60,8 +60,7 @@
 <body>
 <%@include file="../header/registered_user.jsp" %>
 
-<form class="right_side" name="PersonalData" method="get" action="${urlPrefix}/controller">
-    <input type="hidden" name="command" value="personal_customer_data_page"/>
+<form class="right_side" name="PersonalData" method="get" action="${urlPrefix}/customer/customer_personal_data">
     <input type="submit" value="${personal_data_redirect}"/>
 </form>
 
@@ -83,8 +82,7 @@
             <td>${request.status}</td>
             <td>
                 <c:if test="${request.status=='отклонена'}">
-                    <form class="right_side" name="DeleteRequest" method="post" action="${urlPrefix}/controller">
-                        <input type="hidden" name="command" value="delete_request"/>
+                    <form class="right_side" name="DeleteRequest" method="post" action="${urlPrefix}/customer/delete_request">
                         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
                         <input type="hidden" name="id" value="${request.id}"/>
                         <input type="submit" value="${delete}"/>
@@ -127,8 +125,7 @@
 <br/>
 <h1>${leave_request}</h1>
 <c:if test="${sessionScope.new_request==null}">
-    <form name="AddNewRequest" method="post" action="${urlPrefix}/controller">
-        <input type="hidden" name="command" value="add_request"/>
+    <form name="AddNewRequest" method="post" action="${urlPrefix}/customer/add_request">
         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
         <p>${new_request_info}</p>
         <textarea id="new_request" name="new_request_text" cols="100" rows="10" maxlength="500" required></textarea>
@@ -147,8 +144,7 @@
     <p class="information" id="msg"></p>
     <br/>
 
-    <form name="AddAnotherRequest" method="get" action="${urlPrefix}/controller">
-        <input type="hidden" name="command" value="update_customer_request_list"/>
+    <form name="AddAnotherRequest" method="get" action="${urlPrefix}/customer/add_another_request">
         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
         <input type="submit" value="${add_another_request}"/>
     </form>

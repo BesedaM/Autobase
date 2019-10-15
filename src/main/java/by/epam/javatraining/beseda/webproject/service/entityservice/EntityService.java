@@ -1,9 +1,8 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
-
 import java.util.List;
+
+import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 
 /**
  * Interface, containing main methods for service classes.
@@ -18,7 +17,7 @@ public interface EntityService<E> {
      * @return all the entities of type
      * @throws ServiceLayerException
      */
-    List<E> getAll() throws ServiceLayerException;
+    List<E> getAll();
 
     /**
      * Returns entity with specified id.
@@ -27,7 +26,7 @@ public interface EntityService<E> {
      * @return entity by id
      * @throws ServiceLayerException
      */
-    E getEntityById(int id) throws ServiceLayerException;
+    E getEntityById(int id);
 
 
     /**
@@ -37,7 +36,7 @@ public interface EntityService<E> {
      * @return List of entities
      * @throws ServiceLayerException
      */
-    List<E> getEntitiesByIdList(int[] idArr) throws ServiceLayerException;
+    List<E> getEntitiesByIdList(int[] idArr);
 
     /**
      * Adds entity.
@@ -60,13 +59,13 @@ public interface EntityService<E> {
      *
      * @param id entities id
      */
-    void delete(int id) throws ServiceLogicException;
+    void delete(int id);
 
     /**
      * Deletes entity.
      *
      * @param entity entity to delete
      */
-    void delete(E entity) throws ServiceLogicException;
+    void delete(E entity);
 
 }

@@ -3,59 +3,42 @@ package by.epam.javatraining.beseda.webproject.dao.entitydao;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.TEST_LOGGER;
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
-import org.testng.annotations.AfterClass;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
-import by.epam.javatraining.beseda.webproject.connectionpool.TestPool;
+import by.epam.javatraining.beseda.webproject.config.TestConfig;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
 import by.epam.javatraining.beseda.webproject.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.entity.car.Truck;
 import by.epam.javatraining.beseda.webproject.entity.exception.CarException;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
-import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseCreator;
+import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseConfigure;
 
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes= {TestConfig.class})
 public class CarDAOTest {
 
 	static Logger log = Logger.getLogger(TEST_LOGGER);
-	static ConnectionPool pool;
+
+	@Autowired
 	static CarInterface carDAO;
-	static TestDAOEntityFactory entityFactory;
-
-	@BeforeClass
-	public static void init() {
-		pool = TestPool.createConnectionPool(DatabaseCreator.getDataSource());
-		entityFactory = TestDAOEntityFactory.getFactory(pool);
-		carDAO = entityFactory.getCarDAO();
-	}
-
-	@AfterClass
-	public static void destroy() throws IOException {
-		try {
-			pool.closePool();
-		} catch (SQLException e) {
-			log.error(e);
-		}
-	}
 
 	@BeforeMethod
 	public void fillData() {
-		DatabaseCreator.fillDatabase();
-		DatabaseEnumLoader.loadWithConnectionPool(pool);
+		DatabaseConfigure.fillDatabase();
 	}
 
 	@AfterMethod
 	public void cleanData() {
-		DatabaseCreator.cleanDatabase();
+		DatabaseConfigure.cleanDatabase();
 	}
 
 	

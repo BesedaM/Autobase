@@ -1,8 +1,8 @@
 package by.epam.javatraining.beseda.webproject.config;
 
-import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_PASSWORD;
-import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_URL;
-import static by.epam.javatraining.beseda.webproject.connectionpool.DatabaseProperties.DATABASE_USER;
+import static by.epam.javatraining.beseda.webproject.util.DatabaseProperties.DATABASE_PASSWORD;
+import static by.epam.javatraining.beseda.webproject.util.DatabaseProperties.DATABASE_URL;
+import static by.epam.javatraining.beseda.webproject.util.DatabaseProperties.DATABASE_USER;
 
 import javax.sql.DataSource;
 
@@ -21,6 +21,8 @@ import by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAO;
 import by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAO;
 import by.epam.javatraining.beseda.webproject.dao.entitydao.TaskDAO;
 import by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAO;
+import by.epam.javatraining.beseda.webproject.service.EnumService;
+import by.epam.javatraining.beseda.webproject.service.entitybuilder.RouteBuilder;
 import by.epam.javatraining.beseda.webproject.service.entityservice.AddressService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CarService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CustomerService;
@@ -29,6 +31,9 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.RequestServi
 import by.epam.javatraining.beseda.webproject.service.entityservice.RouteService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.TaskService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.UserService;
+import by.epam.javatraining.beseda.webproject.service.processors.CarsDataProcessor;
+import by.epam.javatraining.beseda.webproject.service.processors.CustomerProcessor;
+import by.epam.javatraining.beseda.webproject.service.processors.DriverProcessor;
 
 @Configuration
 @ComponentScan({ "by.epam.javatraining.beseda.webproject.dao", "by.epam.javatraining.beseda.webproject.service" })
@@ -134,5 +139,28 @@ public class ProjectConfig {
 		return new RequestService();
 	}
 	
+	@Bean
+	public EnumService getEnumService() {
+		return new EnumService();
+	}
 	
+	@Bean
+	public RouteBuilder getRouteBuilder() {
+		return new RouteBuilder();
+	}
+	
+	@Bean
+	public CarsDataProcessor getCarsDataProcessor() {
+		return new CarsDataProcessor();
+	}
+	
+	@Bean
+	public CustomerProcessor getCustomerProcessor() {
+		return new CustomerProcessor();
+	}
+	
+	@Bean
+	public DriverProcessor getDriverProcesor() {
+		return new DriverProcessor();
+	}
 }

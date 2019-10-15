@@ -10,16 +10,12 @@ import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.CarDAO;
 import by.epam.javatraining.beseda.webproject.dao.exception.CarTypeNotPresentException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
 import by.epam.javatraining.beseda.webproject.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.car.Truck;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
 @Service
 public class CarService extends AbstractEntityService<Car> {
@@ -63,7 +59,7 @@ public class CarService extends AbstractEntityService<Car> {
 				car.setModel(model);
 				car.setStatus(status);
 				car.setState(state);
-			} catch (CarTypeNotPresentException | EntityLogicException e) {
+			} catch (CarTypeNotPresentException e) {
 				throw new ServiceLogicException(e);
 			}
 		}
@@ -82,25 +78,17 @@ public class CarService extends AbstractEntityService<Car> {
 	 * @return list of entities
 	 * @throws ServiceLayerException
 	 */
-	public final List<Car> getCarsByType(String carType) throws ServiceLayerException {
+	public final List<Car> getCarsByType(String carType) {
 		List<Car> carList = null;
 		if (carType != null) {
-			try {
-				carList = ((CarInterface) entityDAO).getCarsByType(carType);
-			} catch (DAOLayerException e) {
-				throw new ServiceLayerException(e);
-			}
+			carList = ((CarInterface) entityDAO).getCarsByType(carType);
 		}
 		return carList;
 	}
 
-	public final void updateCarState(int carId, String state) throws ServiceTechnicalException {
+	public final void updateCarState(int carId, String state){
 		if (carId > 0 && state != null) {
-			try {
-				((CarInterface) entityDAO).updateCarState(carId, state);
-			} catch (DAOTechnicalException e) {
-				throw new ServiceTechnicalException(e);
-			}
+			((CarInterface) entityDAO).updateCarState(carId, state);
 		}
 	}
 

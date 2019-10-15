@@ -16,33 +16,26 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 
 public class CustomerMapper implements RowMapper<Customer> {
 
-//	private Logger log = Logger.getLogger(ERROR_LOGGER);
 
 	@Override
 	public Customer mapRow(ResultSet result, int rowNum) throws SQLException {
 		Customer customer = null;
 		if (result != null) {
 			customer = new Customer();
-			try {
-				customer.setRole(USER_CUSTOMER);
-				customer.setId(result.getInt(ID));
-				customer.setLogin(result.getString(LOGIN));
-				customer.setPassword(result.getBytes(PASSWORD));
-				customer.setName(result.getString(NAME));
-				customer.setSurname(result.getString(SURNAME));
-				customer.setPhone(result.getString(PHONE));
-				customer.setCustomerType(result.getString(CUSTOMER_TYPE));
-				customer.setCompanyName(result.getString(COMPANY_NAME));
-				customer.setEmail(result.getString(EMAIL));
-			} catch (EntityLogicException e) {
-//				log.error(e);
-			}
-
+			customer.setRole(USER_CUSTOMER);
+			customer.setId(result.getInt(ID));
+			customer.setLogin(result.getString(LOGIN));
+			customer.setPassword(result.getBytes(PASSWORD));
+			customer.setName(result.getString(NAME));
+			customer.setSurname(result.getString(SURNAME));
+			customer.setPhone(result.getString(PHONE));
+			customer.setCustomerType(result.getString(CUSTOMER_TYPE));
+			customer.setCompanyName(result.getString(COMPANY_NAME));
+			customer.setEmail(result.getString(EMAIL));
 		}
 		return customer;
 	}

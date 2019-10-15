@@ -76,14 +76,13 @@
 							<td></td>
 							<td colspan="3">
 								<form name="RouteStatusCarStateChanger" method="post"
-									action="${urlPrefix}/controller" class="right_side">
-									<input type="hidden" name="command"
-										value="change_route_status_car_state" /> <input type="hidden"
-										name="car_id" value="${car.id}" /> <input type="hidden"
-										name="current_page" value="${pageContext.request.requestURI}" />
-									<input type="hidden" name="route_id" value="${active_route.id}" />
-									<label>${route_status}${colon} <select
-										name="route_status_changer" required>
+									action="${urlPrefix}/driver/driver_main/update_car_route"
+									class="right_side">
+									<input type="hidden" name="car_id" value="${car.id}" /> <input
+										type="hidden" name="current_page"
+										value="${pageContext.request.requestURI}" /> <input
+										type="hidden" name="route_id" value="${active_route.id}" /> <label>${route_status}${colon}
+										<select name="route_status_changer" required>
 											<c:forEach var="item" items="${route_status_list}">
 												<c:if
 													test="${item.value!='новый'&&item.value!='запланирован'}">
@@ -92,23 +91,21 @@
 												</c:if>
 											</c:forEach>
 									</select>
-									</label> <br />
-									<br /> <label>${car_state}${colon} <select
+									</label> <br /> <br /> <label>${car_state}${colon} <select
 										name="car_state_changer">
 											<c:forEach var="item" items="${car_state_list}">
 												<option value="${item.value}">${item.value}</option>
 											</c:forEach>
 									</select>
-									</label> <br />
-									<br /> <input type="submit" value="${submit}" />
+									</label> <br /> <br /> <input type="submit" value="${submit}" />
 								</form>
 							</td>
 						</tr>
 					</c:if>
 					<tr>
-					<c:if test="${active_route==null}">
-						<p class="information">${no_current_route_message}</p>
-					</c:if>
+						<c:if test="${active_route==null}">
+							<p class="information">${no_current_route_message}</p>
+						</c:if>
 
 					</tr>
 
@@ -131,11 +128,9 @@
 								<td></td>
 								<td colspan="3"><c:if test="${active_route==null}">
 										<form name="RouteStatusChanger" method="post"
-											action="${urlPrefix}/controller" onchange="submit()"
-											class="right_side">
-											<input type="hidden" name="command"
-												value="change_route_status" /> <input type="hidden"
-												name="current_page"
+											action="${urlPrefix}/driver/driver_main/update_route"
+											onchange="submit()" class="right_side">
+											<input type="hidden" name="current_page"
 												value="${pageContext.request.requestURI}" /> <input
 												type="hidden" name="route_id" value="${route.id}" /> <label>${route_status}${colon}
 												<select name="route_status_changer" required>
@@ -156,14 +151,14 @@
 				</table>
 
 			</td>
-			<td class="personal_data">${driver.surname} ${driver.name}<br />
-				${phone}${colon} ${driver.phone}<br />
-			<br /> ${car.model}<br /> ${number}${colon} ${car.number}
+			<td class="personal_data">${driver.surname}${driver.name}<br />
+				${phone}${colon} ${driver.phone}<br /> <br /> ${car.model}<br />
+				${number}${colon} ${car.number}
 			</td>
 		</tr>
 	</table>
 
-<%@include file="../footer/footer.jsp" %>
+	<%@include file="../footer/footer.jsp"%>
 
 </body>
 </html>

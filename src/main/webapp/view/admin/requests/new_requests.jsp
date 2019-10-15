@@ -82,8 +82,7 @@
                         <tr>
                             <td colspan="3">
                                 <form class="right_side" name="ProcessRequest" method="post"
-                                      action="${urlPrefix}/controller">
-                                    <input type="hidden" name="command" value="change_request_status"/>
+                                      action="${urlPrefix}/admin/new_requests/process_request">
                                     <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
                                     <input type="hidden" name="id" value="${request.id}"/>
                                     <button type="submit" name="status" value="принята">${adopt}</button>
@@ -96,8 +95,7 @@
                         <tr>
                             <td colspan="3">
                                 <form class="right_side" name="CreateRoute" method="post"
-                                      action="${urlPrefix}/controller">
-                                    <input type="hidden" name="command" value="create_route_redirect"/>
+                                      action="${urlPrefix}/admin/create_route">
                                     <input type="hidden" name="customer_id" value="${customer.id}"/>
                                     <input type="hidden" name="request_text" value="${request.comment}"/>
                                     <input type="hidden" name="id" value="${request.id}"/>
@@ -110,8 +108,7 @@
             </table>
 
             <br/>
-            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/controller">
-                <input type="hidden" name="command" value="admin_main_redirect"/>
+            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/admin/main">
                 <input type="submit" value="${admin_main_redirect}"/>
             </form>
         </td>

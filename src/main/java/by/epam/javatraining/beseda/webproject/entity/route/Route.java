@@ -1,11 +1,16 @@
 package by.epam.javatraining.beseda.webproject.entity.route;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.car.Car;
-import by.epam.javatraining.beseda.webproject.entity.exception.RouteException;
 import static by.epam.javatraining.beseda.webproject.entity.DefaultValue.ROUTE_DEFAULT_STATUS;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Objects;
+import java.util.Set;
+
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
+import by.epam.javatraining.beseda.webproject.entity.car.Car;
 
 public class Route extends EntityBase {
 
@@ -35,20 +40,12 @@ public class Route extends EntityBase {
 		this.status = status;
 	}
 
-	public void setName(String name) throws RouteException {
-		if (name != null) {
-			this.name = name;
-		} else {
-			throw new RouteException();
-		}
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setStatus(String status) throws RouteException {
-		if (status != null) {
-			this.status = status;
-		} else {
-			throw new RouteException();
-		}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public void addTask(Task task) {

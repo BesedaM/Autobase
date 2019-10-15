@@ -98,17 +98,17 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
 //	}
 
 	@Override
-	public User getUserByLoginAndPassword(String login, byte[] password) throws DAOLayerException {
+	public User getUserByLoginAndPassword(String login, byte[] password) {
 		return jdbcTemplate.queryForObject(SELECT_USER_BY_LOGIN_AND_PASSWORD, rowMapper, login, password);
 	}
 
 	@Override
-	public User getUserByLogin(String login) throws DAOLayerException {
+	public User getUserByLogin(String login){
 		return jdbcTemplate.queryForObject(SELECT_USER_BY_LOGIN, rowMapper, login);
 	}
 
 	@Override
-	public void updatePassword(int id, byte[] password) throws DAOTechnicalException {
+	public void updatePassword(int id, byte[] password) {
 		jdbcTemplate.update(UPDATE_USER_PASSWORD, password, id);
 	}
 

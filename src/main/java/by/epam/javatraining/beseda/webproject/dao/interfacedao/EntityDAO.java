@@ -2,8 +2,6 @@ package by.epam.javatraining.beseda.webproject.dao.interfacedao;
 
 import java.util.List;
 
-import org.springframework.jdbc.core.RowMapper;
-
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 
@@ -20,7 +18,7 @@ public interface EntityDAO<E> {
 	 * @return list of E type objects
 	 * @throws DAOLayerException
 	 */
-	List<E> getAll() throws DAOLayerException;
+	List<E> getAll();
 
 	/**
 	 * Method for finding the specified entity by id.
@@ -29,7 +27,7 @@ public interface EntityDAO<E> {
 	 * @return the specified object or null if no object was found
 	 * @throws DAOTechnicalException
 	 */
-	E getEntityById(int id) throws DAOLayerException;
+	E getEntityById(int id);
 
 	/**
 	 * Returns entities list, consisting of entities with id values from idArr.
@@ -38,21 +36,21 @@ public interface EntityDAO<E> {
 	 * @return entities list
 	 * @throws DAOLayerException
 	 */
-	List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException;
+	List<E> getEntitiesByIdList(int[] idArr);
 
 	/**
 	 * Deletes object specified by id from database.
 	 *
 	 * @param id entity id
 	 */
-	void delete(int id) throws DAOTechnicalException;
+	void delete(int id);
 
 	/**
 	 * Deletes specified object from database
 	 *
 	 * @param entity the object to delete
 	 */
-	void delete(E entity) throws DAOTechnicalException;
+	void delete(E entity);
 
 	/**
 	 * Method for adding object to database.

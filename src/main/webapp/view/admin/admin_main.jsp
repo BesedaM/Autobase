@@ -38,7 +38,7 @@
 <body>
 <%@include file="../header/registered_user.jsp" %>
 
-<form name="AdminMenu" method="post" action="${urlPrefix}/controller">
+<form name="AdminMenu" method="post">
     <table class="menu">
         <tr>
             <td class="header" colspan="2">
@@ -47,13 +47,13 @@
         </tr>
         <tr>
             <td>
-                <button type="submit" name="command" value="new_requests_redirect">${new_requests}</button>
+                <button type="submit" formaction="/admin/new_requests">${new_requests}</button>
             </td>
             <td></td>
         </tr>
         <tr>
             <td>
-                <button type="submit" name="command" value="current_requests_get">${current_requests}</button>
+                <button type="submit" formaction="/admin/current_requests">${current_requests}</button>
             </td>
             <td>
                 <button type="submit" name="command" value="car_list_redirect">${car_list}</button>
@@ -61,8 +61,7 @@
         </tr>
         <tr>
             <td>
-                <button type="submit" name="command"
-                        value="fulfilled_requests_redirect">${fulfilled_requests}</button>
+                <button type="submit" formaction="/admin/fulfilled_requests">${fulfilled_requests}</button>
             </td>
             <td>
                 <button type="submit" name="command" value="driver_list_redirect">${driver_list}</button>
@@ -70,8 +69,7 @@
         </tr>
         <tr>
             <td>
-                <button type="submit" name="command"
-                        value="rejected_requests_redirect">${rejected_requests}</button>
+                <button type="submit" formaction="/admin/rejected_requests">${rejected_requests}</button>
             </td>
             <td>
                 <button type="submit" name="command" value="client_list_redirect">${client_list}</button>

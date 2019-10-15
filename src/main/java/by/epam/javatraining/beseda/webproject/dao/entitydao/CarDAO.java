@@ -4,6 +4,7 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVE
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_UPDATE_DEPENDENCE;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ACTIVE_PLANNED_ROUTE_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ACTIVE_ROUTE_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ROUTES_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_CAR_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_CARS;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CARS_BY_ID_LIST;
@@ -12,8 +13,8 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CA
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_BUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_CAR_STATE;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_TRUCK;
-import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ROUTES_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.QUESTION_MARK;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.ZERO_VALUE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CAR_NUMBER;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CAR_STATE_ID_CARS;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CAR_STATUS_ID_CARS;
@@ -23,7 +24,6 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.TRUCK_CAPACITY_ID_CARS;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.BUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.TRUCK;
-import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.ZERO_VALUE;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.util.List;
@@ -96,6 +96,14 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 	}
 
 	@Override
+	public int add(Car car) throws DAOLayerException {
+		if(!(car instanceof Bus||car instanceof Truck)) {
+			throw new DAOLayerException(new CarTypeNotPresentException());
+		}
+		return super.add(car);
+	}
+	
+	@Override
 	public void update(Car entity) throws DAOLayerException {
 		String sql = null;
 		if (entity instanceof Bus) {
@@ -109,7 +117,7 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 	}
 
 	@Override
-	public List<Car> getCarsByType(String carType) throws DAOLayerException {
+	public List<Car> getCarsByType(String carType){
 		String sql = SELECT_CARS_BY_TYPE.replace(QUESTION_MARK, carType);
 		return jdbcTemplate.query(sql, rowMapper);
 	}
@@ -155,7 +163,7 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 	}
 
 	@Override
-	public void updateCarState(int id, String state) throws DAOTechnicalException {
+	public void updateCarState(int id, String state){
 		if (id > 0 && state != null) {
 			int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(state);
 			jdbcTemplate.update(UPDATE_CAR_STATE, carStateIndex, id);

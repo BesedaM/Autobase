@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAO;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
@@ -48,13 +47,9 @@ public class RouteService extends AbstractEntityService<Route> {
 	 * @param status new status value
 	 * @throws ServiceTechnicalException
 	 */
-	public void updateRouteStatus(int id, String status) throws ServiceTechnicalException {
+	public void updateRouteStatus(int id, String status){
 		if (id > 0 && status != null) {
-			try {
-				((RouteDAO) entityDAO).updateRouteStatus(id, status);
-			} catch (DAOTechnicalException e) {
-				throw new ServiceTechnicalException(e);
-			}
+			((RouteDAO) entityDAO).updateRouteStatus(id, status);
 		}
 	}
 

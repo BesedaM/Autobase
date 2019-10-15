@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.controller.command.implementation.parts;
+package by.epam.javatraining.beseda.webproject.service.processors;
 
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CAR;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CAR_BUS;
@@ -16,32 +16,40 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import by.epam.javatraining.beseda.webproject.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.car.Truck;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.service.EnumService;
-import by.epam.javatraining.beseda.webproject.service.entitybuilder.EntityBuilderFactory;
 import by.epam.javatraining.beseda.webproject.service.entitybuilder.RouteBuilder;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CarService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.DriverService;
-import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 
+@Component
 public class DriverProcessor {
 
-	private static EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
-	private static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-	private static Map<String, ReversalHashMap<Integer, String>> enumCollection = EnumService.getEnumCollection();
-	private static CarService carService = serviceEntityFactory.getCarService();
+	@Autowired
+	private Map<String, ReversalHashMap<Integer, String>> enumCollection;
+	
+	@Autowired
+	private static DriverService driverService;
+	
+	@Autowired
+	private static CarService carService;
 
-	private DriverProcessor() {
+	@Autowired
+	private static RouteBuilder routeBuilder;
+	
+	public DriverProcessor() {
 	}
 
-	public static void processDriverData(HttpSession session) throws ServiceLayerException {
-		DriverService driverService = serviceEntityFactory.getDriverService();
+	public void processDriverData(HttpSession session) throws ServiceLayerException {
 		Driver driver = (Driver) session.getAttribute(USER_DATA);
 
 		int carId = driverService.getCarId(driver.getId());
@@ -55,7 +63,7 @@ public class DriverProcessor {
 		session.setAttribute(CAR_STATE, enumCollection.get(CAR_STATE));
 	}
 
-	private static void setCarData(Car car, HttpSession session) throws ServiceLayerException {
+	private void setCarData(Car car, HttpSession session) throws ServiceLayerException {
 		if (car != null) {
 			session.setAttribute(CAR, car);
 			if (car instanceof Bus) {
@@ -68,10 +76,9 @@ public class DriverProcessor {
 		}
 	}
 
-	private static List<Route> getActivePlannedRoutes(Car car) throws ServiceLayerException {
-		RouteBuilder routeBuilder = entityBuilderFactory.getRouteBuilder();
+	private List<Route> getActivePlannedRoutes(Car car) throws ServiceLayerException {
+		
 		List<Integer> routesId = carService.getActivePlannedRoutesId(car.getId());
-
 		List<Route> routes = new ArrayList<>();
 		for (int i = 0; i < routesId.size(); i++) {
 			Route route = routeBuilder.getEntity(routesId.get(i));

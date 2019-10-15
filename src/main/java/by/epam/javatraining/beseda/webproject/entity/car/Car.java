@@ -1,9 +1,8 @@
 package by.epam.javatraining.beseda.webproject.entity.car;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.exception.CarException;
-
 import java.util.Objects;
+
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 
 public class Car extends EntityBase {
 
@@ -27,36 +26,20 @@ public class Car extends EntityBase {
 		this.model = model;
 	}
 
-	public void setNumber(String number) throws CarException {
-		if (number != null) {
+	public void setNumber(String number){
 			this.number = number;
-		} else {
-			throw new CarException();
-		}
 	}
 
-	public void setModel(String model) throws CarException {
-		if (model != null) {
+	public void setModel(String model){
 			this.model = model;
-		} else {
-			throw new CarException();
-		}
 	}
 
-	public void setStatus(String status) throws CarException {
-		if (status != null) {
+	public void setStatus(String status){
 			this.status = status;
-		} else {
-			throw new CarException();
-		}
 	}
 
-	public void setState(String state) throws CarException {
-		if (state != null) {
+	public void setState(String state){
 			this.state = state;
-		} else {
-			throw new CarException();
-		}
 	}
 
 	public String getNumber() {

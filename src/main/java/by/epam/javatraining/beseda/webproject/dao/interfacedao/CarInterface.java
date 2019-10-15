@@ -1,16 +1,14 @@
 package by.epam.javatraining.beseda.webproject.dao.interfacedao;
 
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.car.Car;
-
 import java.util.List;
+
+import by.epam.javatraining.beseda.webproject.entity.car.Car;
 
 public interface CarInterface extends EntityDAO<Car> {
 
-	List<Car> getCarsByType(String carType) throws DAOLayerException;
+	List<Car> getCarsByType(String carType);
 
-	void updateCarState(int id, String state) throws DAOTechnicalException;
+	void updateCarState(int id, String state);
 	
 	List<Integer> getRoutesId(int carId);
 	

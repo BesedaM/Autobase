@@ -4,7 +4,6 @@
 
 <!-- 	<test name="integration"> -->
 <!-- 		<classes> -->
-<!-- 			<class name="by.epam.javatraining.beseda.webproject.AllTests" /> -->
 <!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.CarDAOTest" /> -->
 <!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.TaskDAOTest" /> -->
 <!-- 			<class name="by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAOTest" /> -->

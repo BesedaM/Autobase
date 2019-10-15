@@ -1,9 +1,8 @@
 package by.epam.javatraining.beseda.webproject.entity.user;
 
-import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.exception.UserException;
-
 import java.util.Objects;
+
+import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 
 public class User extends EntityBase {
 
@@ -33,28 +32,16 @@ public class User extends EntityBase {
 		this.role = other.role;
 	}
 
-	public void setLogin(String login) throws UserException {
-		if (login != null) {
-			this.login = login;
-		} else {
-			throw new UserException();
-		}
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
-	public void setPassword(byte[] password) throws UserException {
-		if (password != null) {
-			this.password = password;
-		} else {
-			throw new UserException();
-		}
+	public void setPassword(byte[] password) {
+		this.password = password;
 	}
 
-	public void setRole(String role) throws UserException {
-		if (role != null) {
-			this.role = role;
-		} else {
-			throw new UserException();
-		}
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public String getLogin() {

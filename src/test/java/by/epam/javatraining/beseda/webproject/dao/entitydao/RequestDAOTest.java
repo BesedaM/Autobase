@@ -5,68 +5,49 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.AfterClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
-import by.epam.javatraining.beseda.webproject.connectionpool.TestPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
 import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 import by.epam.javatraining.beseda.webproject.entity.exception.RequestException;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseCreator;
+import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseConfigure;
 
 public class RequestDAOTest {
 
-	static Logger log = Logger.getLogger(TEST_LOGGER);
-	static ConnectionPool pool;
+	@Autowired
 	static RouteInterface routeDAO;
+	
+	@Autowired
 	static RequestInterface requestDAO;
+	
+	@Autowired
 	static CustomerInterface customerDAO;
-	static TestDAOEntityFactory entityFactory;
+	
+	
+	static Logger log = Logger.getLogger(TEST_LOGGER);
 
-	@BeforeClass
-	public static void init() {
-		pool = TestPool.createConnectionPool(DatabaseCreator.getDataSource());
-		entityFactory = TestDAOEntityFactory.getFactory(pool);
-		routeDAO = entityFactory.getRouteDAO();
-		requestDAO = entityFactory.getRequestDAO();
-		customerDAO = entityFactory.getCustomerDAO();
-	}
 
-	@AfterClass
-	public static void destroy() throws IOException {
-		try {
-			pool.closePool();
-		} catch (SQLException e) {
-			log.error(e);
-		}
-	}
 
 	@BeforeMethod
 	public void fillData() {
-		DatabaseCreator.fillDatabase();
-		DatabaseEnumLoader.loadWithConnectionPool(pool);
+		DatabaseConfigure.fillDatabase();
 	}
 
 	@AfterMethod
 	public void cleanData() {
-		DatabaseCreator.cleanDatabase();
+		DatabaseConfigure.cleanDatabase();
 	}
 
 	@Test
@@ -162,7 +143,7 @@ public class RequestDAOTest {
 	@Test
 	public void testNoRequestsIdFound() {
 		try {
-			DatabaseCreator.truncateTable("requests");
+			DatabaseConfigure.truncateTable("requests");
 			List<Request> requests = requestDAO.getRejectedRequests();
 			assertEquals(0, requests.size());
 		} catch (DAOLayerException e) {
@@ -173,7 +154,7 @@ public class RequestDAOTest {
 	@Test
 	public void testNoNewRequests() {
 		try {
-			DatabaseCreator.truncateTable("requests");
+			DatabaseConfigure.truncateTable("requests");
 			List<Request> list = requestDAO.getNewRequests();
 			assertEquals(0, list.size());
 		} catch (DAOLayerException e) {

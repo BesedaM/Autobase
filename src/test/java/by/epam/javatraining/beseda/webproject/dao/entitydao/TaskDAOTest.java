@@ -5,60 +5,38 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.AfterClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
-import by.epam.javatraining.beseda.webproject.connectionpool.TestPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.TaskInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
 import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 import by.epam.javatraining.beseda.webproject.entity.exception.TaskException;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseCreator;
+import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseConfigure;
 
 public class TaskDAOTest {
 
 	static Logger log = Logger.getLogger(TEST_LOGGER);
-	static ConnectionPool pool;
+
+	@Autowired
 	static TaskInterface taskDAO;
-	static TestDAOEntityFactory entityFactory;
 
-	@BeforeClass
-	public static void init() {
-		pool = TestPool.createConnectionPool(DatabaseCreator.getDataSource());
-		entityFactory = TestDAOEntityFactory.getFactory(pool);
-		taskDAO = entityFactory.getTaskDAO();
-	}
-
-	@AfterClass
-	public static void destroy() throws IOException {
-		try {
-			pool.closePool();
-		} catch (SQLException e) {
-			log.error(e);
-		}
-	}
 
 	@BeforeMethod
 	public void fillData() {
-		DatabaseCreator.fillDatabase();
-		DatabaseEnumLoader.loadWithConnectionPool(pool);
+		DatabaseConfigure.fillDatabase();
 	}
 
 	@AfterMethod
 	public void cleanData() {
-		DatabaseCreator.cleanDatabase();
+		DatabaseConfigure.cleanDatabase();
 	}
 
 	@Test

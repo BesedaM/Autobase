@@ -21,11 +21,10 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.CONTEXT_TO_REPLACE;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.EMPTY_STRING;
 
-
 public class CustomerDataChanger implements ActionCommand {
 
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
-	private CustomerService customerService = ServiceEntityFactory.getFactory().getCustomerService();
+	private CustomerService customerService;
 
 	@Override
 	public String execute(SessionRequestContent content) {
@@ -41,34 +40,25 @@ public class CustomerDataChanger implements ActionCommand {
 			String surname = Decoder.decode(data.get(SURNAME)[0]);
 			String phone = data.get(PHONE)[0];
 			String email = data.get(EMAIL)[0];
-			boolean dataChanged = false;
+			boolean dataChanged = true;
 
-			if (parameterNonNull(companyName)) {
+			if (parameterNonNull(companyName) && parameterNonNull(name) && parameterNonNull(surname)
+					&& parameterNonNull(phone) && parameterNonNull(email)) {
 				customer.setCompanyName(companyName);
-				dataChanged = true;
-			}
-			if (parameterNonNull(name)) {
 				customer.setName(name);
-				dataChanged = true;
-			}
-			if (parameterNonNull(surname)) {
 				customer.setSurname(surname);
-				dataChanged = true;
-			}
-			if (parameterNonNull(phone)) {
 				customer.setPhone(phone);
-				dataChanged = true;
-			}
-			if (parameterNonNull(email)) {
 				customer.setEmail(email);
-				dataChanged = true;
+				
+			}else {
+				dataChanged = false;
 			}
 			customerService.update(customer);
 
 			if (dataChanged) {
 				attributes.put(DATA_CHANGED, STATUS_TRUE);
 			}
-		} catch (ServiceLayerException | EntityLogicException e) {
+		} catch (ServiceLayerException e) {
 			log.error(e);
 		}
 

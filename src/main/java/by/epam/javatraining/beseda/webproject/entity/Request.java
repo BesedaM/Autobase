@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
-import by.epam.javatraining.beseda.webproject.entity.exception.RequestException;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 import static by.epam.javatraining.beseda.webproject.entity.DefaultValue.REQUEST_DEFAULT_STATUS;
@@ -44,44 +43,24 @@ public class Request extends EntityBase {
 		this.route = route;
 	}
 
-	public void setRoute(Route route) throws RequestException {
-		if (route != null) {
+	public void setRoute(Route route) {
 			this.route = route;
-		} else {
-			throw new RequestException();
-		}
 	}
 
-	public void setStatus(String status) throws RequestException {
-		if (status != null) {
+	public void setStatus(String status) {
 			this.status = status;
-		} else {
-			throw new RequestException();
-		}
 	}
 
-	public void setCreationTime(GregorianCalendar creationTime) throws RequestException {
-		if (creationTime != null) {
+	public void setCreationTime(GregorianCalendar creationTime) {
 			this.creationTime = creationTime;
-		} else {
-			throw new RequestException();
-		}
 	}
 
-	public void setComment(String comment) throws RequestException {
-		if (comment != null) {
+	public void setComment(String comment) {
 			this.comment = comment;
-		} else {
-			throw new RequestException();
-		}
 	}
 
-	public void setCustomer(Customer customer) throws RequestException {
-		if (customer != null) {
+	public void setCustomer(Customer customer) {
 			this.customer = customer;
-		} else {
-			throw new RequestException();
-		}
 	}
 
 	public void removeRoute() {

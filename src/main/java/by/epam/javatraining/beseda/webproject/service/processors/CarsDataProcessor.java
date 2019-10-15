@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.controller.command.implementation.parts;
+package by.epam.javatraining.beseda.webproject.service.processors;
 
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CAR_BUSY_DATES;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
@@ -15,29 +15,36 @@ import java.util.TreeSet;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
-import by.epam.javatraining.beseda.webproject.service.entitybuilder.EntityBuilderFactory;
 import by.epam.javatraining.beseda.webproject.service.entitybuilder.RouteBuilder;
-import by.epam.javatraining.beseda.webproject.service.entityservice.CarService;
-import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 
+@Component
 public class CarsDataProcessor {
 
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
-	private static ServiceEntityFactory serviceEntityFactory = ServiceEntityFactory.getFactory();
-	private static CarService carService = serviceEntityFactory.getCarService();
 
-	private CarsDataProcessor() {}
-	
-	public static void processCarsData(HttpSession session) {
+	@Autowired
+	private static CarInterface carDAO;
+
+	@Autowired
+	private static RouteBuilder routeBuilder;
+
+	public CarsDataProcessor() {
+	}
+
+	public void processCarsData(HttpSession session) {
 		Map<Car, SortedSet<Date>> carSetMap = new TreeMap<>();
 
 		try {
-			List<Car> carList = carService.getAll();
+			List<Car> carList = carDAO.getAll();
 			for (int i = 0; i < carList.size(); i++) {
 				SortedSet<Date> dates = getCarBusyDates(carList.get(i));
 				carSetMap.put(carList.get(i), dates);
@@ -48,11 +55,10 @@ public class CarsDataProcessor {
 		}
 	}
 
-	private static SortedSet<Date> getCarBusyDates(Car car) throws ServiceLayerException {
-		RouteBuilder routeBuilder = EntityBuilderFactory.getFactory().getRouteBuilder();
+	private SortedSet<Date> getCarBusyDates(Car car) throws ServiceLayerException {
 		SortedSet<Date> dates = new TreeSet<>();
 
-		List<Integer> routesId = carService.getActivePlannedRoutesId(car.getId());
+		List<Integer> routesId = carDAO.getActivePlannedRoutesId(car.getId());
 
 		for (int i = 0; i < routesId.size(); i++) {
 			Route route = routeBuilder.getEntity(routesId.get(i));

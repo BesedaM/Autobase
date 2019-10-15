@@ -1,22 +1,20 @@
 package by.epam.javatraining.beseda.webproject.dao.interfacedao;
 
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
-import by.epam.javatraining.beseda.webproject.entity.Request;
-
 import java.util.List;
+
+import by.epam.javatraining.beseda.webproject.entity.Request;
 
 public interface RequestInterface extends EntityDAO<Request> {
 
-	List<Request> selectActiveCustomerRequests(int customerId) throws DAOTechnicalException;
+	List<Request> selectActiveCustomerRequests(int customerId);
 
-	List<Request> getNewRequests() throws DAOLayerException;
+	List<Request> getNewRequests();
 
-	List<Request> getCurrentRequests() throws DAOLayerException;
+	List<Request> getCurrentRequests();
 
-	List<Request> getFulfilledRequests() throws DAOLayerException;
+	List<Request> getFulfilledRequests();
 
-	List<Request> getRejectedRequests() throws DAOLayerException;
+	List<Request> getRejectedRequests();
 	
 	void setCustomer(int customerId, int requestId);
 

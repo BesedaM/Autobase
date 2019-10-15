@@ -12,16 +12,12 @@ import java.util.GregorianCalendar;
 import org.springframework.jdbc.core.RowMapper;
 
 import by.epam.javatraining.beseda.webproject.entity.Request;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 
 public class RequestMapper implements RowMapper<Request> {
-
-//	private Logger log = Logger.getLogger(ERROR_LOGGER);
 
 	@Override
 	public Request mapRow(ResultSet result, int rowNum) throws SQLException {
 		Request request = null;
-		try {
 			if (result != null) {
 				request = new Request();
 				request.setId(result.getInt(ID));
@@ -36,9 +32,6 @@ public class RequestMapper implements RowMapper<Request> {
 
 				request.setCreationTime(time);
 			}
-		} catch (EntityLogicException e) {
-//			log.error(e);
-		}
 		return request;
 	}
 

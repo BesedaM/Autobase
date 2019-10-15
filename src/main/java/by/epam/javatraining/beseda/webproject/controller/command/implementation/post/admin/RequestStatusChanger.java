@@ -56,7 +56,7 @@ public class RequestStatusChanger implements ActionCommand {
 					}
 				}
 			}
-		} catch (ServiceLayerException | RequestException e) {
+		} catch (ServiceLayerException e) {
 			log.error(e);
 		}
 		return requestParam.get(CURRENT_PAGE)[0].replace(CONTEXT_TO_REPLACE, EMPTY_STRING);

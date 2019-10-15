@@ -5,13 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
 /**
  * Abstract class containing main methods for accessing the data
@@ -26,37 +23,25 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
     protected EntityDAO<E> entityDAO;
 
     @Override
-    public List<E> getAll() throws ServiceLayerException {
+    public List<E> getAll(){
         List<E> list = null;
-        try {
-            list = entityDAO.getAll();
-        } catch (DAOLayerException e) {
-            throw new ServiceLayerException(e);
-        }
+        list = entityDAO.getAll();
         return list;
     }
 
     @Override
-    public E getEntityById(int id) throws ServiceLayerException {
+    public E getEntityById(int id){
         E entity = null;
         if (id > 0) {
-            try {
-                entity = entityDAO.getEntityById(id);
-            } catch (DAOLayerException e) {
-                throw new ServiceTechnicalException(e);
-            }
+            entity = entityDAO.getEntityById(id);
         }
         return entity;
     }
 
     @Override
-    public List<E> getEntitiesByIdList(int[] idArr) throws ServiceLayerException {
+    public List<E> getEntitiesByIdList(int[] idArr){
         List<E> list = null;
-        try {
-            list = entityDAO.getEntitiesByIdList(idArr);
-        } catch (DAOLayerException e) {
-            throw new ServiceLayerException(e);
-        }
+        list = entityDAO.getEntitiesByIdList(idArr);
         return list;
     }
 
@@ -72,7 +57,7 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
             try {
                 int id = entityDAO.add(entity);
                 entity.setId(id);
-            } catch (DAOLayerException | EntityIdException e) {
+            } catch (DAOLayerException e) {
                 throw new ServiceLogicException(e);
             }
         }
@@ -90,24 +75,16 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
     }
 
     @Override
-    public void delete(int id) throws ServiceLogicException {
+    public void delete(int id){
         if (id > 0) {
-            try {
-                entityDAO.delete(id);
-            } catch (DAOTechnicalException e) {
-                throw new ServiceLogicException(e);
-            }
+            entityDAO.delete(id);
         }
     }
 
     @Override
-    public final void delete(E entity) throws ServiceLogicException {
+    public final void delete(E entity){
         if (entity != null) {
-            try {
-                entityDAO.delete(entity.getId());
-            } catch (DAOTechnicalException e) {
-                throw new ServiceLogicException(e);
-            }
+            entityDAO.delete(entity.getId());
         }
     }
 }

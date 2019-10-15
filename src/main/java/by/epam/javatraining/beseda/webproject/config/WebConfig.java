@@ -48,6 +48,14 @@ public class WebConfig implements WebMvcConfigurer {
         return resolver;
     }
 	
+//    @Bean(name="propertiesConfig")
+//    public InternalResourceViewResolver getInternalResourceViewResolverProperty(){
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/");
+//        resolver.setSuffix(".properties");
+//        return resolver;
+//    }
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
@@ -56,5 +64,8 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("/js/");
+        
+//        registry.addResourceHandler("/**")
+//        .addResourceLocations("classpath:/");
     }
 }

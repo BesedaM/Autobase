@@ -53,8 +53,7 @@
 <body>
 <%@include file="../header/registered_user.jsp" %>
 
-<form name="CustomerPasswordChanger" action="${urlPrefix}/controller" method="POST">
-    <input type="hidden" name="command" value="change_customer_password"/>
+<form name="CustomerPasswordChanger" action="${urlPrefix}/customer/change_password" method="POST">
     <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
     <fieldset>
         <legend>${change_password}</legend>
@@ -113,8 +112,7 @@
 </form>
 
 
-<form name="CustomerData" action="${urlPrefix}/controller" method="POST">
-    <input type="hidden" name="command" value="change_customer_data"/>
+<form name="CustomerData" action="${urlPrefix}/customer/change_data" method="POST">
     <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
 
     <c:if test="${user.customerType=='юр.лицо'}">
@@ -186,8 +184,7 @@
     <input type="submit" value="${change_data}"/>
 </form>
 
-<form name="GoToCustomerMain" action="${urlPrefix}/controller" method="get">
-    <input type="hidden" name="command" value="customer_main_page"/>
+<form name="GoToCustomerMain" action="${urlPrefix}/customer/customer_main_redirect" method="get">
     <input type="submit" value="${back_to_customer_main}"/>
 </form>
 

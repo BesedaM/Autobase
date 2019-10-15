@@ -1,7 +1,5 @@
 package by.epam.javatraining.beseda.webproject.entity;
 
-import by.epam.javatraining.beseda.webproject.entity.exception.EnumElementException;
-
 public class EnumElement {
 
 	int number;
@@ -19,24 +17,16 @@ public class EnumElement {
 		return number;
 	}
 
-	public void setNumber(int number) throws EnumElementException {
-		if (number > 0) {
-			this.number = number;
-		} else {
-			throw new EnumElementException();
-		}
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 	public String getValue() {
 		return value;
 	}
 
-	public void setValue(String value) throws EnumElementException {
-		if (value != null) {
-			this.value = value;
-		} else {
-			throw new EnumElementException();
-		}
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	@Override

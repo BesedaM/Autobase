@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
@@ -19,13 +18,24 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ContextConfiguration;
 
-import com.opentable.db.postgres.embedded.EmbeddedPostgres;
+import by.epam.javatraining.beseda.webproject.config.TestConfig;
 
-public class DatabaseCreator {
+
+@ContextConfiguration(classes= {TestConfig.class})
+public class DatabaseConfigure {
 
 	private static Lock lock = new ReentrantLock();
-
+	
+	@Autowired
+	static JdbcTemplate JdbcTemplate;
+	
+	@Autowired
+	static DataSource dataSource;
+	
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 	private static ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 	private static String ENCODING = "UTF-8";
@@ -33,36 +43,17 @@ public class DatabaseCreator {
 	private static String TRUNCATE_TABLE_STATEMENT = "TRUNCATE trucking_company.table CASCADE";
 	private static String CREATE_DB_SCRIPT = "db_dump.sql";
 
-	private static EmbeddedPostgres pg;
-
-	public static void init() {
-		try {
-			openDatabase();
-		} catch (IOException e) {
-			log.error(e);
-		}
-	}
-
-	private static EmbeddedPostgres openDatabase() throws IOException {
-		pg = EmbeddedPostgres.builder().start();
-		return pg;
-	}
-
-	public static DataSource getDataSource() {
-		return pg.getPostgresDatabase();
-	}
 
 	public static void fillDatabase() {
 		lock.lock();
 		Connection connection = null;
 		try {
-			DataSource dataSource = pg.getPostgresDatabase();
 			connection = dataSource.getConnection();
 
 			ScriptRunner scriptRunner = new ScriptRunner(connection);
 			scriptRunner.runScript(createScript(CREATE_DB_SCRIPT));
 
-		} catch (SQLException /* | IOException */ e) {
+		} catch (SQLException e) {
 			log.error(e);
 		} finally {
 			if (connection != null) {
@@ -89,7 +80,7 @@ public class DatabaseCreator {
 
 	public static void cleanDatabase() {
 		lock.lock();
-		try (Connection connection = pg.getPostgresDatabase().getConnection()) {
+		try (Connection connection = dataSource.getConnection()) {
 			Statement st = connection.createStatement();
 			st.execute(DROP_DB_STATEMENT);
 		} catch (SQLException e) {
@@ -101,7 +92,7 @@ public class DatabaseCreator {
 
 	public static void truncateTable(String tableName) {
 		lock.lock();
-		try (Connection connection = pg.getPostgresDatabase().getConnection()) {
+		try (Connection connection = dataSource.getConnection()) {
 			Statement st = connection.createStatement();
 			String sql = TRUNCATE_TABLE_STATEMENT.replace("table", tableName);
 			st.execute(sql);
@@ -110,14 +101,6 @@ public class DatabaseCreator {
 		} finally {
 			lock.unlock();
 		}
-	}
-
-	public static void closeDatabase() throws IOException {
-		pg.close();
-	}
-
-	public Connection getConnection() throws SQLException {
-		return pg.getPostgresDatabase().getConnection();
 	}
 
 }

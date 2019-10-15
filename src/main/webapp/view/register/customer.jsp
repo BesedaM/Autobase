@@ -59,9 +59,8 @@
 
 	<%@include file="../header/non_registered_user.jsp" %>
 
-	<form name="customerRegister" action="${urlPrefix}/controller"
+	<form name="customerRegister" action="${urlPrefix}/register/customer/add"
 		method="POST">
-		<input type="hidden" name="command" value="customer_register" />
 		<fieldset>
 			<legend>${user_form}</legend>
 			<table class="registration">
@@ -153,14 +152,12 @@
 				</tr>
 			</table>
 		</fieldset>
-		<br /> <input type="submit" value="${submit}" /> <input type="reset"
-			value="${reset}" />
+		<br /> <input type="submit" value="${submit}" /> 
+		<input type="reset"	value="${reset}" />
 	</form>
 	<br />
 
-	<form name="LoginRedirect" method="get"
-		action="${urlPrefix}/controller">
-		<input type="hidden" name="command" value="login_page"> <span>&nbsp;&nbsp;&nbsp;</span>
+	<form name="LoginRedirect" method="get"	action="${urlPrefix}/login">
 		<input type="submit" value="${back_to_login}" />
 	</form>
 

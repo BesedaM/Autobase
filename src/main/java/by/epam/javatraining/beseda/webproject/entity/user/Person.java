@@ -1,10 +1,12 @@
 package by.epam.javatraining.beseda.webproject.entity.user;
 
-import by.epam.javatraining.beseda.webproject.entity.exception.UserException;
-
 import java.util.Objects;
 
 public class Person extends User {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5912238838875171403L;
 	protected String name;
 	protected String surname;
 	protected String phone;
@@ -31,28 +33,16 @@ public class Person extends User {
 		this.phone = phone;
 	}
 
-	public void setName(String name) throws UserException {
-		if (name != null) {
-			this.name = name;
-		} else {
-			throw new UserException();
-		}
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setSurname(String surname) throws UserException {
-		if (surname != null) {
-			this.surname = surname;
-		} else {
-			throw new UserException();
-		}
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
-	public void setPhone(String phone) throws UserException {
-		if (phone != null) {
-			this.phone = phone;
-		} else {
-			throw new UserException();
-		}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getName() {

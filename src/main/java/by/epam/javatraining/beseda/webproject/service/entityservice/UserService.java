@@ -7,14 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAO;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityLogicException;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
 import by.epam.javatraining.beseda.webproject.logic.RegisterLogic;
 import by.epam.javatraining.beseda.webproject.service.PasswordHash;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceLogicException;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 
 @Service
@@ -115,13 +112,9 @@ public class UserService extends AbstractEntityService<User> {
 		if (login != null && password != null && user_role != null && !loginExists(login)
 				&& RegisterLogic.legalPassword(password)) {
 			byte[] pw = PasswordHash.getHash(password);
-			try {
-				user.setLogin(login);
-				user.setPassword(pw);
-				user.setRole(user_role);
-			} catch (EntityLogicException e) {
-				throw new ServiceLogicException(e);
-			}
+			user.setLogin(login);
+			user.setPassword(pw);
+			user.setRole(user_role);
 		}
 		return user;
 	}
@@ -149,7 +142,7 @@ public class UserService extends AbstractEntityService<User> {
 	 * @return list of users
 	 * @throws ServiceLayerException
 	 */
-	public final List<User> getUsersByRole(String role) throws ServiceLayerException {
+	public final List<User> getUsersByRole(String role){
 		List<User> newList = new ArrayList<>();
 		if (role != null) {
 			List<User> all = getAll();
@@ -170,14 +163,10 @@ public class UserService extends AbstractEntityService<User> {
 	 * @return user
 	 * @throws ServiceTechnicalException
 	 */
-	public final User getUserByLogin(String login) throws ServiceLayerException {
+	public final User getUserByLogin(String login) {
 		User user = null;
 		if (login != null) {
-			try {
-				user = ((UserDAO) entityDAO).getUserByLogin(login);
-			} catch (DAOLayerException e) {
-				throw new ServiceLayerException(e);
-			}
+			user = ((UserDAO) entityDAO).getUserByLogin(login);
 		}
 		return user;
 	}
@@ -190,15 +179,11 @@ public class UserService extends AbstractEntityService<User> {
 	 * @return user
 	 * @throws ServiceTechnicalException
 	 */
-	public final User getUserByLoginAndPassword(String login, String password) throws ServiceLayerException {
+	public final User getUserByLoginAndPassword(String login, String password){
 		User user = null;
 		if (login != null && password != null) {
 			byte[] pw = PasswordHash.getHash(password);
-			try {
-				user = ((UserDAO) entityDAO).getUserByLoginAndPassword(login, pw);
-			} catch (DAOLayerException e) {
-				throw new ServiceLayerException(e);
-			}
+			user = ((UserDAO) entityDAO).getUserByLoginAndPassword(login, pw);
 		}
 		return user;
 	}
@@ -211,14 +196,10 @@ public class UserService extends AbstractEntityService<User> {
 	 * @return true if method succeeds
 	 * @throws ServiceLayerException
 	 */
-	public final void changePassword(int id, String newPassword) throws ServiceLayerException {
+	public final void changePassword(int id, String newPassword){
 		if (id > 0 && newPassword != null) {
 			byte[] pw = PasswordHash.getHash(newPassword);
-			try {
-				((UserDAO) entityDAO).updatePassword(id, pw);
-			} catch (DAOLayerException e) {
-				throw new ServiceTechnicalException(e);
-			}
+			((UserDAO) entityDAO).updatePassword(id, pw);
 		}
 	}
 

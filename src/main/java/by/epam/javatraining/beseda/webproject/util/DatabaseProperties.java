@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.connectionpool;
+package by.epam.javatraining.beseda.webproject.util;
 
 
 import java.util.ResourceBundle;

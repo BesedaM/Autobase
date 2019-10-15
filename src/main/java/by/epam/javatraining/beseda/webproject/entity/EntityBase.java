@@ -1,7 +1,5 @@
 package by.epam.javatraining.beseda.webproject.entity;
 
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -15,12 +13,8 @@ public abstract class EntityBase implements Serializable, Comparable<EntityBase>
 		this.id = id;
 	}
 
-	public void setId(int id) throws EntityIdException {
-		if (id > 0) {
-			this.id = id;
-		} else {
-			throw new EntityIdException();
-		}
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getId() {

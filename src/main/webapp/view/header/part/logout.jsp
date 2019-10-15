@@ -14,7 +14,6 @@
     <fmt:message key="logout" var="logout"/>
 </fmt:bundle>
 
-<form class="right_top_corner" name="Logout" method="get" action="${urlPrefix}/controller">
-    <input type="hidden" name="command" value="logout">
+<form class="right_top_corner" name="Logout" method="post" action="/login">
     <input type="submit" value="${logout}">
 </form>

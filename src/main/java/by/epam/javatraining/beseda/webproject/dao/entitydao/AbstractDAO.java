@@ -19,12 +19,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import by.epam.javatraining.beseda.webproject.dao.entitybuilder.EntityBuilderFactory;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 
 /**
  * Abstract class, containing generic methods for entity DAO.
@@ -32,8 +30,6 @@ import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException
  * @param <E> parameter type
  */
 public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> {
-
-	protected static EntityBuilderFactory entityBuilderFactory = EntityBuilderFactory.getFactory();
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
@@ -55,12 +51,12 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	protected abstract void setRowMapper(RowMapper<E> rowMapper);
 
 	@Override
-	public List<E> getAll() throws DAOLayerException {
+	public List<E> getAll(){
 		return jdbcTemplate.query(getAllStatement(), rowMapper);
 	}
 
 	@Override
-	public E getEntityById(int id) throws DAOLayerException {
+	public E getEntityById(int id){
 		return jdbcTemplate.queryForObject(getEntityByIdStatement(), rowMapper, id);
 	}
 
@@ -74,26 +70,22 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 			throw new DAOLayerException("Error adding entity to database");
 		}
 		int id = keyHolder.getKey().intValue();
-		try {
-			entity.setId(id);
-		} catch (EntityIdException e) {
-			throw new DAOLayerException(e);
-		}
+		entity.setId(id);
 		return id;
 	}
 
 	@Override
-	public void update(E entity) throws DAOLayerException {
+	public void update(E entity) throws DAOLayerException{
 		jdbcTemplate.update(updateStatement(), createEntityParamArray(entity), entity.getId());
 	}
 
 	@Override
-	public void delete(int id) throws DAOTechnicalException {
+	public void delete(int id){
 		jdbcTemplate.update(deleteStatement(), id);
 	}
 
 	@Override
-	public List<E> getEntitiesByIdList(int[] idArr) throws DAOLayerException {
+	public List<E> getEntitiesByIdList(int[] idArr){
 		String array = Arrays.toString(idArr);
 		String newArr = array.replace(OPENING_SQUARE_BRACKET, SPACE).replace(CLOSING_SQUARE_BRACKET, SPACE)
 				.replace(SPACE, EMPTY_CHARACTER);
@@ -118,7 +110,7 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 */
 	protected abstract String deleteStatement();
 
-	public void delete(E entity) throws DAOTechnicalException {
+	public void delete(E entity){
 		delete(entity.getId());
 	}
 
@@ -158,7 +150,6 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 * Returns string representation of SQL 'update entity' query.
 	 */
 	protected abstract String updateStatement();
-
 
 //	public void close() {
 //		connector.closeConnector();

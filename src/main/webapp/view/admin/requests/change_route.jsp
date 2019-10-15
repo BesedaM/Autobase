@@ -107,7 +107,7 @@
     </tr>
 </table>
 <br/>
-<form name="CurrentsRequestsRedirect" method="post" action="${urlPrefix}/controller">
+<form name="CurrentsRequestsRedirect" method="post" action="${urlPrefix}/admin/current_requests_redirect">
     <input type="hidden" name="command" value="current_requests_redirect">
     <input type="submit" value="${go_to_current_requests}"/>
 </form>

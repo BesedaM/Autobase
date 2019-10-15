@@ -7,7 +7,7 @@ import by.epam.javatraining.beseda.webproject.entity.route.Route;
 
 public interface RouteInterface extends EntityDAO<Route> {
 
-    void updateRouteStatus(int id, String status) throws DAOTechnicalException;
+    void updateRouteStatus(int id, String status);
     
 	void addCar(int routeId, int carId);
 

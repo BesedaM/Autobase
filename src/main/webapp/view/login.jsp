@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%-- <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> --%>
+<%-- <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> --%>
 
 
 <c:set var="urlPrefix" value="${pageContext.request.contextPath}"/>
@@ -38,9 +40,7 @@
 
 <%@include file="header/non_registered_user.jsp" %>
 
-<form name="LoginForm" method="post"
-      action="${urlPrefix}/controller">
-    <input type="hidden" name="command" value="login"/>
+<form name="LoginForm" method="post" action="${urlPrefix}/first_page">
 
     <p>${prompt}</p>
     <table>
@@ -72,8 +72,9 @@
 </form>
 <br/>
 <p>${whether_registered}</p>
-<form name="CustomerRegisterRedirect" method="get" action="${urlPrefix}/controller">
-    <input type="hidden" name="command" value="customer_register_page">
+
+
+<form name="CustomerRegisterRedirect" method="get" action="${urlPrefix}/register/customer">
     <input type="submit" value="${register}"/>
 </form>
 

@@ -1,4 +1,4 @@
-package by.epam.javatraining.beseda.webproject.controller.command.implementation.post;
+package by.epam.javatraining.beseda.webproject.controller;
 
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.CommandConstant.MINIMUM_COMPANY_NAME_LENGTH;
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.ERROR_REGISTER_LOGIN;
@@ -24,12 +24,19 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
 import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
-import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
 import by.epam.javatraining.beseda.webproject.logic.RegisterLogic;
@@ -37,28 +44,37 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.CustomerServ
 import by.epam.javatraining.beseda.webproject.service.entityservice.UserService;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 
-public class CustomerRegisterCommand implements ActionCommand {
+@Controller
+@ResponseBody
+@RequestMapping(value= {"/register"})
+public class RegisterController {
 
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private CustomerService customerService;
-	
 
-	@Override
-	public String execute(SessionRequestContent content) {
-		String page = CUSTOMER_REGISTER_PAGE;
-		Map<String, String[]> data = content.requestParameters();
-		Map<String, Object> attributes = content.requestAttributes();
+	@GetMapping(value = { "/customer" })
+	public ModelAndView gotoCustomerRegister() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(CUSTOMER_REGISTER_PAGE);
+		return mav;
+	}
+
+	@PostMapping(value = "/customer/add")
+	public ModelAndView registerCustomer(HttpServletRequest request, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(CUSTOMER_REGISTER_PAGE);
+		Map<String, String[]> data = request.getParameterMap();
 		String login = data.get(LOGIN)[0];
 		String password = data.get(PASSWORD)[0];
 		String passwordConfirm = data.get(PASSWORD_CONFIRM)[0];
 
 		try {
-			if (isValidUserData(attributes, login, password, passwordConfirm)) {
+			if (isValidUserData(request, login, password, passwordConfirm)) {
 				String companyName = Decoder.decode(data.get(COMPANY_NAME)[0]);
 				String customerType = defineCustomerType(companyName);
 				String name = Decoder.decode(data.get(NAME)[0]);
@@ -72,30 +88,29 @@ public class CustomerRegisterCommand implements ActionCommand {
 				Customer customer = customerService.createCustomer(user, name, surname, customerType, phone, email,
 						companyName);
 				customerService.add(customer);
-				content.getSession().setAttribute(USER_DATA, user);
-				content.getSession().setAttribute(USER_ROLE, USER_CUSTOMER);
-				page = CUSTOMER_MAIN_PAGE;
+				session.setAttribute(USER_DATA, user);
+				session.setAttribute(USER_ROLE, USER_CUSTOMER);
+				mav.setViewName(CUSTOMER_MAIN_PAGE);
 			}
 		} catch (ServiceLayerException e) {
 			log.error(e);
 		}
-		return page;
+		return mav;
 	}
 
-	private boolean isValidUserData(Map<String, Object> attributes, String login, String password,
-			String passwordConfirm) {
+	private boolean isValidUserData(HttpServletRequest request, String login, String password, String passwordConfirm) {
 		boolean correctData = true;
 		try {
 			if (userService.loginExists(login)) {
-				attributes.put(ERROR_REGISTER_LOGIN, STATUS_TRUE);
+				request.setAttribute(ERROR_REGISTER_LOGIN, STATUS_TRUE);
 				correctData = false;
 			}
 			if (!password.equals(passwordConfirm)) {
-				attributes.put(ERROR_REGISTER_PASSWORD, STATUS_TRUE);
+				request.setAttribute(ERROR_REGISTER_PASSWORD, STATUS_TRUE);
 				correctData = false;
 			}
 			if (!RegisterLogic.legalPassword(password)) {
-				attributes.put(UNSAFE_PASSWORD, STATUS_TRUE);
+				request.setAttribute(UNSAFE_PASSWORD, STATUS_TRUE);
 				correctData = false;
 			}
 		} catch (ServiceLayerException e) {
@@ -113,4 +128,5 @@ public class CustomerRegisterCommand implements ActionCommand {
 		}
 		return customerType;
 	}
+
 }

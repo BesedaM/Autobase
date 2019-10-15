@@ -24,8 +24,7 @@
     <link rel="stylesheet" type="text/css" href="<@spring.url '/css/styles.css'/>">
 </head>
 <body>
- <form name="LocaleChanger" method="get" action="${urlPrefix}/controller">
-        <input type="hidden" name="command" value="change_locale">
+ <form name="LocaleChanger" method="post" action="${urlPrefix}/change_locale">
         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
         <label for="language_select">${change_language}</label>
         <select id="language_select" name="language_select"  onchange='this.form.submit()'>

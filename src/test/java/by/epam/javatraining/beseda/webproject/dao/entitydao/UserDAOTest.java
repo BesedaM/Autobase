@@ -5,58 +5,35 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
-import org.testng.annotations.AfterClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import by.epam.javatraining.beseda.webproject.connectionpool.ConnectionPool;
-import by.epam.javatraining.beseda.webproject.connectionpool.TestPool;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
 import by.epam.javatraining.beseda.webproject.entity.exception.UserException;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
-import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseCreator;
+import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseConfigure;
 import by.epam.javatraining.beseda.webproject.service.PasswordHash;
 
 public class UserDAOTest {
 
 	static Logger log = Logger.getLogger(TEST_LOGGER);
-	static ConnectionPool pool;
+
+	@Autowired
 	static UserInterface userDAO;
-	static TestDAOEntityFactory entityFactory;
 
-	@BeforeClass
-	public static void init() {
-		pool = TestPool.createConnectionPool(DatabaseCreator.getDataSource());
-		entityFactory = TestDAOEntityFactory.getFactory(pool);
-		userDAO = entityFactory.getUserDAO();
-	}
-
-	@AfterClass
-	public static void destroy() throws IOException {
-		try {
-			pool.closePool();
-		} catch (SQLException e) {
-			log.error(e);
-		}
-	}
 
 	@BeforeMethod
 	public void fillData() {
-		DatabaseCreator.fillDatabase();
-		DatabaseEnumLoader.loadWithConnectionPool(pool);
+		DatabaseConfigure.fillDatabase();
 	}
 
 	@AfterMethod
 	public void cleanData() {
-		DatabaseCreator.cleanDatabase();
+		DatabaseConfigure.cleanDatabase();
 	}
 
 	@Test

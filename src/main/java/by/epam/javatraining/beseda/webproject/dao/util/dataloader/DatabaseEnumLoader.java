@@ -9,12 +9,17 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.T_TRUCK_CAPACITY;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.T_USER_ROLE;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import by.epam.javatraining.beseda.webproject.dao.entitydao.EnumDAO;
 import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 
+@Component
 public class DatabaseEnumLoader {
 
-	public static EnumDAO enumDAO = EnumDAO.getDAO();
+	@Autowired
+	public static EnumDAO enumDAO;
 	public static ReversalHashMap<Integer, String> USER_ROLE_MAP;
 	public static ReversalHashMap<Integer, String> CUSTOMER_TYPE_MAP;
 	public static ReversalHashMap<Integer, String> TRUCK_CAPACITY_MAP;
@@ -34,5 +39,8 @@ public class DatabaseEnumLoader {
 		ROUTE_STATUS_MAP = enumDAO.getEnumMap(T_ROUTE_STATUS);
 		REQUEST_STATUS_MAP = enumDAO.getEnumMap(T_REQUEST_STATUS);
 	}
+	
+	
+	
 
 }

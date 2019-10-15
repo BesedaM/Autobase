@@ -1,6 +1,5 @@
 package by.epam.javatraining.beseda.webproject.entity.user;
 
-import by.epam.javatraining.beseda.webproject.entity.exception.CustomerException;
 import static by.epam.javatraining.beseda.webproject.entity.DefaultValue.HYPHEN;
 
 import java.util.Objects;
@@ -33,28 +32,16 @@ public class Customer extends Person {
 		this.companyName = companyName;
 	}
 
-	public void setCustomerType(String type) throws CustomerException {
-		if (type != null) {
-			this.customerType = type;
-		} else {
-			throw new CustomerException();
-		}
+	public void setCustomerType(String type) {
+		this.customerType = type;
 	}
 
-	public void setEmail(String email) throws CustomerException {
-		if (email != null) {
-			this.email = email;
-		} else {
-			throw new CustomerException();
-		}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public void setCompanyName(String companyName) throws CustomerException {
-		if (companyName != null) {
-			this.companyName = companyName;
-		} else {
-			throw new CustomerException();
-		}
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	public String getCustomerType() {

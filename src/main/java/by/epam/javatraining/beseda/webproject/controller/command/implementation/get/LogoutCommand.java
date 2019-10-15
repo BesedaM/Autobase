@@ -10,6 +10,7 @@ import static by.epam.javatraining.beseda.webproject.controller.command.util.con
 import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LOCALE_FILE;
 
 public class LogoutCommand implements ActionCommand {
+	
 	@Override
 	public String execute(SessionRequestContent content) {
 		HttpSession httpSession = content.getSession();

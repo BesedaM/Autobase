@@ -1,7 +1,5 @@
 package by.epam.javatraining.beseda.webproject.entity.car;
 
-import by.epam.javatraining.beseda.webproject.entity.exception.CarException;
-
 import java.util.Objects;
 
 public class Bus extends Car {
@@ -17,12 +15,8 @@ public class Bus extends Car {
 		this.seats = seats;
 	}
 
-	public void setSeats(int seats) throws CarException {
-		if (seats > 0) {
+	public void setSeats(int seats){
 			this.seats = seats;
-		} else {
-			throw new CarException();
-		}
 	}
 
 	public int getSeats() {

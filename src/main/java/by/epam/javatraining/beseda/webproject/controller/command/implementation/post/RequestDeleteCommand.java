@@ -1,10 +1,10 @@
 package by.epam.javatraining.beseda.webproject.controller.command.implementation.post;
 
 import by.epam.javatraining.beseda.webproject.controller.command.ActionCommand;
-import by.epam.javatraining.beseda.webproject.controller.command.implementation.parts.CustomerProcessor;
 import by.epam.javatraining.beseda.webproject.controller.command.util.srcontent.SessionRequestContent;
 import by.epam.javatraining.beseda.webproject.service.entityservice.RequestService;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
+import by.epam.javatraining.beseda.webproject.service.processors.CustomerProcessor;
 import by.epam.javatraining.beseda.webproject.service.entityservice.ServiceEntityFactory;
 import org.apache.log4j.Logger;
 

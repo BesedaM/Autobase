@@ -5,7 +5,6 @@ import java.util.GregorianCalendar;
 import java.util.Objects;
 
 import by.epam.javatraining.beseda.webproject.entity.EntityBase;
-import by.epam.javatraining.beseda.webproject.entity.exception.TaskException;
 
 public class Task extends EntityBase {
 
@@ -28,32 +27,20 @@ public class Task extends EntityBase {
 		this.details = details;
 	}
 
-	public void setAddress(Address address) throws TaskException {
-		if (address != null) {
-			this.address = address;
-		} else {
-			throw new TaskException();
-		}
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public void removeAddress() {
 		this.address = null;
 	}
 
-	public void setTime(GregorianCalendar time) throws TaskException {
-		if (time != null) {
-			this.time = time;
-		} else {
-			throw new TaskException();
-		}
+	public void setTime(GregorianCalendar time) {
+		this.time = time;
 	}
 
-	public void setDetails(String details) throws TaskException {
-		if (details != null) {
-			this.details = details;
-		} else {
-			throw new TaskException();
-		}
+	public void setDetails(String details) {
+		this.details = details;
 	}
 
 	public Address getAddress() {

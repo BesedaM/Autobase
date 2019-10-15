@@ -147,8 +147,7 @@
     </form>
 </c:if>
 
-<form name="NewRequestsRedirect" method="post" action="${urlPrefix}/controller">
-    <input type="hidden" name="command" value="new_requests_redirect"/>
+<form name="NewRequestsRedirect" method="post" action="${urlPrefix}/admin/new_requests">
     <input type="submit" value="${new_requests_page}"/>
 </form>
 

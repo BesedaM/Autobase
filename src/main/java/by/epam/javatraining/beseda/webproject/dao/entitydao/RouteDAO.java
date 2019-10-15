@@ -1,8 +1,6 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_DELETE_DEPENDENCE;
-import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ACTIVE_PLANNED_ROUTE_ID;
-import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_ACTIVE_ROUTE_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_GET_CAR_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_ROUTE_UPDATE_DEPENDENCE;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_ROUTE_BY_ID;
@@ -107,7 +105,7 @@ public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
 	}
 
 	@Override
-	public void updateRouteStatus(int id, String status) throws DAOTechnicalException {
+	public void updateRouteStatus(int id, String status) {
 		int routeStatusIndex = DatabaseEnumLoader.ROUTE_STATUS_MAP.getKey(status);
 		jdbcTemplate.update(UPDATE_ROUTE_STATUS, routeStatusIndex, id);
 	}
