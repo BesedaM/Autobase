@@ -5,10 +5,11 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LANGUAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LOCALE_FILE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.LANGUAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.LOCALE_FILE;
+
+import java.io.IOException;
 
 @WebFilter(filterName = "LocaleFilter", urlPatterns = { "*.jsp", "*.html" }, initParams = {
 		@WebInitParam(name = "default_locale", value = "locale_en"),

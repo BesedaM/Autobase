@@ -5,23 +5,30 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.INSERT_TA
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_TASKS;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_TASKS_BY_ID_LIST;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_TASK_BY_ID;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ADDRESS_GET_ADDRESS_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ADDRESS_UPDATE_DEPENDENCE;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ROUTE_GET_ROUTE_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ROUTE_UPDATE_DEPENDENCE;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_TASK;
-import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.TASK_ADDRESS_GET_ADDRESS_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.ZERO_VALUE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.DETAILS;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.TIME;
+
+import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.TaskInterface;
+import by.epam.javatraining.beseda.webproject.dao.resultsetextractor.TaskExtraсtor;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
 
 @Repository
@@ -40,6 +47,14 @@ public class TaskDAO extends AbstractDAO<Task> implements TaskInterface {
 	@Override
 	protected void setRowMapper(RowMapper<Task> rowMapper) {
 		this.rowMapper = rowMapper;
+	}
+
+	@Autowired
+	@Qualifier("taskExtractor")
+	@Override
+	protected void setResultSetExtractor(ResultSetExtractor<Task> rsExtractor) {
+		this.rsExtractor = rsExtractor;
+
 	}
 
 	@Override
@@ -105,16 +120,19 @@ public class TaskDAO extends AbstractDAO<Task> implements TaskInterface {
 	@Override
 	protected MapSqlParameterSource createMapSqlParameterSource(Task entity) {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		parameters.addValue(TIME, entity.getTime());
+		Timestamp timestamp = new Timestamp(entity.getTime().getTimeInMillis());
+		parameters.addValue(TIME, timestamp);
 		parameters.addValue(DETAILS, entity.getDetails());
+		parameters.addValue(ID, entity.getId());
 		return parameters;
 	}
 
-	@Override
-	protected Object[] createEntityParamArray(Task entity) {
-		Object[] array = new Object[2];
-		array[0] = entity.getTime();
-		array[1] = entity.getDetails();
-		return array;
-	}
+//	@Override
+//	protected Object[] createEntityParamArray(Task entity) {
+//		Object[] array = new Object[2];
+//		Timestamp timestamp = new Timestamp(entity.getTime().getTimeInMillis());
+//		array[0] = timestamp;
+//		array[1] = entity.getDetails();
+//		return array;
+//	}
 }

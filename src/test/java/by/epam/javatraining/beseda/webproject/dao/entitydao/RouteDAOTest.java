@@ -4,92 +4,72 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.TEST_LOGGER
 import static org.junit.Assert.assertEquals;
 
 import org.apache.log4j.Logger;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
+import by.epam.javatraining.beseda.webproject.config.EnumConfig;
+import by.epam.javatraining.beseda.webproject.config.ResultSetExtractorConfig;
+import by.epam.javatraining.beseda.webproject.config.RowMapperConfig;
+import by.epam.javatraining.beseda.webproject.config.TestConfig;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
 import by.epam.javatraining.beseda.webproject.entity.Request;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseConfigure;
+import by.epam.javatraining.beseda.webproject.util.TestDatabaseConfigure;
 
-class RouteDAOTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class,classes= {RowMapperConfig.class, ResultSetExtractorConfig.class,EnumConfig.class,TestConfig.class})
+public class RouteDAOTest {
 
 	@Autowired
-	static CarInterface carDAO;
+	private RouteInterface routeDAO;	
 	
 	@Autowired
-	static RouteInterface routeDAO;	
+	private RequestInterface requestDAO;
 	
 	@Autowired
-	static RequestInterface requestDAO;
+	private CustomerInterface customerDAO;
 	
 	@Autowired
-	static CustomerInterface customerDAO;
+	private TestDatabaseConfigure dbc;
 	
-	static Logger log = Logger.getLogger(TEST_LOGGER);
+	private Logger log = Logger.getLogger(TEST_LOGGER);
 
 
-	@BeforeMethod
+	@Before
 	public void fillData() {
-		DatabaseConfigure.fillDatabase();
+		dbc.fillDatabase();
 	}
 
-	@AfterMethod
+	@After
 	public void cleanData() {
-		DatabaseConfigure.cleanDatabase();
+		dbc.cleanDatabase();
 	}
 
 	@Test
 	public void testAdd() {
 		try {
-			Customer customer = customerDAO.getEntityById(11);
-			Request req = new Request(customer, "new request", "рассматривается");
+			Customer customer = customerDAO.getEntityById(10);
+			Request req = new Request(customer, "new request");
 			int id = requestDAO.add(req);
-			req.setId(id);
 			Route route = new Route(id, "route with id=" + id);
 			routeDAO.add(route);
 			Route readRoute = routeDAO.getEntityById(id);
 			assertEquals(route, readRoute);
-		} catch (DAOLayerException | EntityIdException e) {
+		} catch (DAOLayerException e) {
 			log.error(e);
 		}
 	}
 
-	@Test
-	public void testUpdateRouteStatus() {
-		try {
-			Customer customer = customerDAO.getEntityById(11);
-			Request req = new Request(customer, "new request", "рассматривается");
-			int id = requestDAO.add(req);
-			req.setId(id);
-			Route route = new Route(id, "route with id=" + id);
-			routeDAO.add(route);
-			routeDAO.updateRouteStatus(id, "выполнен");
-			Route readRoute = routeDAO.getEntityById(id);
-			assertEquals("выполнен", readRoute.getStatus());
-		} catch (DAOLayerException | EntityIdException e) {
-			log.error(e);
-		}
-	}
-
-	@Test
-	public void testUpdateRouteStatus_wrong_data() throws DAOLayerException {
-		Customer customer = customerDAO.getEntityById(11);
-		Request req = new Request(customer, "new request");
-		int id = requestDAO.add(req);
-		Route route = new Route(id, "route with id=" + id);
-		routeDAO.add(route);
-		routeDAO.updateRouteStatus(id, "!!!!");
-		Route readRoute = routeDAO.getEntityById(id);
-		assertEquals("запланирован", readRoute.getStatus());
-	}
 
 }

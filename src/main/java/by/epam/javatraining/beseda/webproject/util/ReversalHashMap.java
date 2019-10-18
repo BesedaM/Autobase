@@ -2,12 +2,15 @@ package by.epam.javatraining.beseda.webproject.util;
 
 import java.util.HashMap;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Class designed to easily retrieve key by value from Map object.
  *
  * @param <K> type of key
  * @param <V> type of value
  */
+@Service
 public class ReversalHashMap<K, V> extends HashMap<K, V> {
 
     private final HashMap<V, K> reverseMap;

@@ -13,15 +13,16 @@ public class WebAppInitializer implements WebApplicationInitializer {
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-		
-		applicationContext.register(ProjectConfig.class, WebConfig.class,RowMapperConfig.class);
-		
+
+		applicationContext.register(WebConfig.class, RowMapperConfig.class, ResultSetExtractorConfig.class,
+				EnumConfig.class, ProjectConfig.class);
+		applicationContext.refresh();
 		applicationContext.setServletContext(servletContext);
 
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher",
 				new DispatcherServlet(applicationContext));
 		dispatcher.setLoadOnStartup(1);
-		dispatcher.addMapping("/");
+		dispatcher.addMapping("/Trucking_company/*");	
 	}
 
 }

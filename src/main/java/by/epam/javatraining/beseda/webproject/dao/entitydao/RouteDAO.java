@@ -14,25 +14,35 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_RO
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ROUTE_NAME;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.STATUS_ID_ROUTES;
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.REQUEST_STATUS;
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.ROUTE_STATUS;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.entity.Request;
+import by.epam.javatraining.beseda.webproject.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
+import by.epam.javatraining.beseda.webproject.service.EnumMap;
+import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 
 @Repository
 public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
 
+	@Autowired
+	@Qualifier("routeStatusMap")
+	private ReversalHashMap<Integer, String> routeStatusMap;
+	
 	RouteDAO() {
 		super();
 	}
@@ -48,6 +58,20 @@ public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
 		this.rowMapper = rowMapper;
 	}
 
+	@Autowired
+	@Qualifier("routeExtractor")
+	@Override
+	protected void setResultSetExtractor(ResultSetExtractor<Route> rsExtractor) {
+		this.rsExtractor = rsExtractor;
+	}
+
+	@Override
+	public int add(Route entity) throws DAOLayerException {
+		NamedParameterJdbcTemplate npjt = new NamedParameterJdbcTemplate(jdbcTemplate);
+		npjt.update(addStatement(), createMapSqlParameterSource(entity));
+		return entity.getId();
+	}
+
 	@Override
 	public void addCar(int routeId, int carId) {
 		jdbcTemplate.update(CAR_ROUTE_UPDATE_DEPENDENCE, routeId, carId);
@@ -57,21 +81,15 @@ public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
 	public void deleteCar(int routeId, int carId) {
 		jdbcTemplate.update(CAR_ROUTE_DELETE_DEPENDENCE, carId, routeId);
 	}
-	
+
 	@Override
-	public List<Integer> getCarsId(int routeId){
-		return jdbcTemplate.queryForList(CAR_ROUTE_GET_CAR_ID, new Object[] {routeId}, Integer.class);
+	public List<Integer> getCarsId(int routeId) {
+		return jdbcTemplate.queryForList(CAR_ROUTE_GET_CAR_ID, new Object[] { routeId }, Integer.class);
 	}
 
 	@Override
 	public List<Integer> getTasksId(int routeId) {
 		return this.jdbcTemplate.queryForList(TASK_ROUTE_GET_TASKS_ID, new Object[] { routeId }, Integer.class);
-	}
-
-	@Override
-	public int add(Route entity) throws DAOLayerException {
-		jdbcTemplate.update(addStatement(), createEntityParamArray(entity), entity.getId());
-		return entity.getId();
 	}
 
 	@Override
@@ -106,7 +124,7 @@ public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
 
 	@Override
 	public void updateRouteStatus(int id, String status) {
-		int routeStatusIndex = DatabaseEnumLoader.ROUTE_STATUS_MAP.getKey(status);
+		int routeStatusIndex = routeStatusMap.getKey(status);
 		jdbcTemplate.update(UPDATE_ROUTE_STATUS, routeStatusIndex, id);
 	}
 
@@ -117,15 +135,6 @@ public class RouteDAO extends AbstractDAO<Route> implements RouteInterface {
 		parameters.addValue(STATUS_ID_ROUTES, 1);
 		parameters.addValue(ID, entity.getId());
 		return parameters;
-	}
-
-	@Override
-	protected Object[] createEntityParamArray(Route entity) {
-		Object[] array = new Object[2];
-		int routeStatusIndex = DatabaseEnumLoader.ROUTE_STATUS_MAP.getKey(entity.getStatus());
-		array[0] = entity.getName();
-		array[1] = routeStatusIndex;
-		return array;
 	}
 
 }

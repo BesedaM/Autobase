@@ -15,16 +15,27 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 @EnableWebMvc
 @ComponentScan(basePackages = "by.epam.javatraining.beseda.webproject.controller")
 public class WebConfig implements WebMvcConfigurer {
+//
+//	@Bean
+//	public ViewResolver getViewResolver() {
+//		FreeMarkerViewResolver freeMarkerViewResolver = new FreeMarkerViewResolver();
+//		freeMarkerViewResolver.setOrder(1);
+//		freeMarkerViewResolver.setSuffix(".jsp");
+//		freeMarkerViewResolver.setPrefix("");
+//		return freeMarkerViewResolver;
+//	}
 
-	@Bean
-	public ViewResolver getViewResolver() {
-		FreeMarkerViewResolver freeMarkerViewResolver = new FreeMarkerViewResolver();
-		freeMarkerViewResolver.setOrder(1);
-		freeMarkerViewResolver.setSuffix(".html");
-		freeMarkerViewResolver.setPrefix("");
-		return freeMarkerViewResolver;
-	}
-
+	
+    @Bean
+    public ViewResolver viewResolver() {
+        InternalResourceViewResolver bean = new InternalResourceViewResolver();
+        bean.setOrder(1);
+        bean.setPrefix("/view/");
+        bean.setSuffix(".jsp");
+        return bean;
+    }
+	
+	
 	@Bean
 	public FreeMarkerConfigurer getFreeMarkerConfigurer() {
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
@@ -59,11 +70,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        registry.addResourceHandler("/css/**")
-                .addResourceLocations("/css/");
+        registry.addResourceHandler("/resources/css/**")
+                .addResourceLocations("classpath:/statics/");
 
-        registry.addResourceHandler("/js/**")
-                .addResourceLocations("/js/");
+        registry.addResourceHandler("/resources/js/**")
+                .addResourceLocations("classpath:/statics/");
         
 //        registry.addResourceHandler("/**")
 //        .addResourceLocations("classpath:/");

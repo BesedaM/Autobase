@@ -9,10 +9,10 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -20,7 +20,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import by.epam.javatraining.beseda.webproject.entity.EntityBase;
 
@@ -36,13 +35,13 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 
 	protected RowMapper<E> rowMapper;
 
+	protected ResultSetExtractor<E> rsExtractor;
+
 	protected Object[] entityParam;
 
 	protected AbstractDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-
-	protected final ReentrantLock lock = new ReentrantLock();
 
 	protected AbstractDAO() {
 		this.jdbcTemplate = null;
@@ -50,14 +49,16 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 
 	protected abstract void setRowMapper(RowMapper<E> rowMapper);
 
+	protected abstract void setResultSetExtractor(ResultSetExtractor<E> rsExtractor);
+
 	@Override
-	public List<E> getAll(){
+	public List<E> getAll() {
 		return jdbcTemplate.query(getAllStatement(), rowMapper);
 	}
 
 	@Override
-	public E getEntityById(int id){
-		return jdbcTemplate.queryForObject(getEntityByIdStatement(), rowMapper, id);
+	public E getEntityById(int id) {
+		return jdbcTemplate.query(getEntityByIdStatement(), new Object[] { id }, rsExtractor);
 	}
 
 	@Override
@@ -75,20 +76,20 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	}
 
 	@Override
-	public void update(E entity) throws DAOLayerException{
-		jdbcTemplate.update(updateStatement(), createEntityParamArray(entity), entity.getId());
+	public void update(E entity) throws DAOLayerException {
+		NamedParameterJdbcTemplate npjt = new NamedParameterJdbcTemplate(jdbcTemplate);
+		npjt.update(updateStatement(), createMapSqlParameterSource(entity));
 	}
 
 	@Override
-	public void delete(int id){
+	public void delete(int id) {
 		jdbcTemplate.update(deleteStatement(), id);
 	}
 
 	@Override
-	public List<E> getEntitiesByIdList(int[] idArr){
+	public List<E> getEntitiesByIdList(int[] idArr) {
 		String array = Arrays.toString(idArr);
-		String newArr = array.replace(OPENING_SQUARE_BRACKET, SPACE).replace(CLOSING_SQUARE_BRACKET, SPACE)
-				.replace(SPACE, EMPTY_CHARACTER);
+		String newArr = array.replace(OPENING_SQUARE_BRACKET, SPACE).replace(CLOSING_SQUARE_BRACKET, SPACE);
 		String modifiedStatement = getEntityListByIdStatement().replace(QUESTION_MARK, newArr);
 		return jdbcTemplate.query(modifiedStatement, rowMapper);
 	}
@@ -110,7 +111,7 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 */
 	protected abstract String deleteStatement();
 
-	public void delete(E entity){
+	public void delete(E entity) {
 		delete(entity.getId());
 	}
 
@@ -137,14 +138,6 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 * @return configured MapSqlParameterSource
 	 */
 	protected abstract MapSqlParameterSource createMapSqlParameterSource(E entity);
-
-	/**
-	 * Method used in UPDATE method to create array, filled with entity parameters
-	 * 
-	 * @param entity source of parameters
-	 * @return array of Object
-	 */
-	protected abstract Object[] createEntityParamArray(E entity);
 
 	/**
 	 * Returns string representation of SQL 'update entity' query.

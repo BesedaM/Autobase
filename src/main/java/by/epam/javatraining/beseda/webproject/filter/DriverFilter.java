@@ -5,9 +5,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.LOGIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.USER_ROLE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_DRIVER;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.LOGIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_ROLE;
 
 @WebFilter(filterName = "DriverFilter", urlPatterns = "/view/driver/*")
 public class DriverFilter implements Filter {
@@ -24,7 +24,7 @@ public class DriverFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             req.getSession().invalidate();
-            request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+            request.getRequestDispatcher("/view/login.jsp").forward(request, response);
         }
 
     }

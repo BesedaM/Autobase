@@ -13,6 +13,8 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_CA
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_BUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_CAR_STATE;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_TRUCK;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_BUS;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_TRUCK;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.QUESTION_MARK;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.ZERO_VALUE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.CAR_NUMBER;
@@ -24,7 +26,13 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.TRUCK_CAPACITY_ID_CARS;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.BUS;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.TRUCK;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
+
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.CAR_STATE;
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.CAR_STATUS;
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.CAR_TYPE;
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.TRUCK_CAPACITY;
 
 import java.util.List;
 
@@ -32,23 +40,44 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.CarTypeNotPresentException;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
 import by.epam.javatraining.beseda.webproject.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.car.Truck;
+import by.epam.javatraining.beseda.webproject.entity.route.Address;
+import by.epam.javatraining.beseda.webproject.service.EnumMap;
+import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 
 @Repository
 public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 
 	private Logger log = Logger.getLogger(ERROR_LOGGER);
+
+	@Autowired
+	@Qualifier("carTypeMap")
+	private ReversalHashMap<Integer, String> carTypeMap;
+
+	@Autowired
+	@Qualifier("truckCapacityMap")
+	private ReversalHashMap<Integer, String> truckCapacityMap;
+
+	@Autowired
+	@Qualifier("carStatusMap")
+	private ReversalHashMap<Integer, String> carStatusMap;
+
+	@Autowired
+	@Qualifier("carStateMap")
+	private ReversalHashMap<Integer, String> carStateMap;
+
+	private String addStatement;
+	private String updateStatement;
 
 	CarDAO() {
 		super();
@@ -63,6 +92,37 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 	@Override
 	protected void setRowMapper(RowMapper<Car> rowMapper) {
 		this.rowMapper = rowMapper;
+	}
+
+	@Autowired
+	@Qualifier("carExtractor")
+	@Override
+	protected void setResultSetExtractor(ResultSetExtractor<Car> rsExtractor) {
+		this.rsExtractor = rsExtractor;
+	}
+
+	@Override
+	public int add(Car car) throws DAOLayerException {
+		if (car instanceof Bus) {
+			addStatement = ADD_NEW_BUS;
+		} else if (car instanceof Truck) {
+			addStatement = ADD_NEW_TRUCK;
+		} else {
+			throw new DAOLayerException(new CarTypeNotPresentException());
+		}
+		return super.add(car);
+	}
+
+	@Override
+	public void update(Car car) throws DAOLayerException {
+		if (car instanceof Bus) {
+			updateStatement = UPDATE_BUS;
+		} else if (car instanceof Truck) {
+			updateStatement = UPDATE_TRUCK;
+		} else {
+			throw new DAOLayerException(new CarTypeNotPresentException());
+		}
+		super.update(car);
 	}
 
 	@Override
@@ -96,28 +156,7 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 	}
 
 	@Override
-	public int add(Car car) throws DAOLayerException {
-		if(!(car instanceof Bus||car instanceof Truck)) {
-			throw new DAOLayerException(new CarTypeNotPresentException());
-		}
-		return super.add(car);
-	}
-	
-	@Override
-	public void update(Car entity) throws DAOLayerException {
-		String sql = null;
-		if (entity instanceof Bus) {
-			sql = UPDATE_BUS;
-		} else if (entity instanceof Truck) {
-			sql = UPDATE_TRUCK;
-		} else {
-			throw new DAOLayerException(new CarTypeNotPresentException());
-		}
-		jdbcTemplate.update(sql, createEntityParamArray(entity), entity.getId());
-	}
-
-	@Override
-	public List<Car> getCarsByType(String carType){
+	public List<Car> getCarsByType(String carType) {
 		String sql = SELECT_CARS_BY_TYPE.replace(QUESTION_MARK, carType);
 		return jdbcTemplate.query(sql, rowMapper);
 	}
@@ -144,7 +183,7 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 	 */
 	@Override
 	protected String addStatement() {
-		return null;
+		return addStatement;
 	}
 
 	@Override
@@ -159,13 +198,13 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 	 */
 	@Override
 	protected String updateStatement() {
-		return null;
+		return updateStatement;
 	}
 
 	@Override
-	public void updateCarState(int id, String state){
+	public void updateCarState(int id, String state) {
 		if (id > 0 && state != null) {
-			int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(state);
+			int carStateIndex = carStateMap.getKey(state);
 			jdbcTemplate.update(UPDATE_CAR_STATE, carStateIndex, id);
 		}
 	}
@@ -175,12 +214,12 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
 		int carTypeIndex = 0;
 		if (entity instanceof Truck) {
-			carTypeIndex = DatabaseEnumLoader.CAR_TYPE_MAP.getKey(TRUCK);
+			carTypeIndex = carTypeMap.getKey(TRUCK);
 			int truckCapacity = ((Truck) entity).getCapacity();
-			int capacityID = DatabaseEnumLoader.TRUCK_CAPACITY_MAP.getKey(truckCapacity + "");
+			int capacityID = truckCapacityMap.getKey(truckCapacity + "");
 			parameters.addValue(TRUCK_CAPACITY_ID_CARS, capacityID);
 		} else if (entity instanceof Bus) {
-			carTypeIndex = DatabaseEnumLoader.CAR_TYPE_MAP.getKey(BUS);
+			carTypeIndex = carTypeMap.getKey(BUS);
 			int seatsNumber = ((Bus) entity).getSeats();
 			parameters.addValue(SEATS_NUMBER, seatsNumber);
 		} else {
@@ -188,38 +227,14 @@ public class CarDAO extends AbstractDAO<Car> implements CarInterface {
 		}
 
 		parameters.addValue(CAR_TYPE_ID_CARS, carTypeIndex);
-		int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(entity.getState());
-		int carStatusIndex = DatabaseEnumLoader.CAR_STATUS_MAP.getKey(entity.getStatus());
+		int carStateIndex = carStateMap.getKey(entity.getState());
+		int carStatusIndex = carStatusMap.getKey(entity.getStatus());
 		parameters.addValue(CAR_NUMBER, entity.getNumber());
 		parameters.addValue(MODEL, entity.getModel());
 		parameters.addValue(CAR_STATUS_ID_CARS, carStatusIndex);
 		parameters.addValue(CAR_STATE_ID_CARS, carStateIndex);
+		parameters.addValue(ID, entity.getId());
 		return parameters;
-	}
-
-	@Override
-	protected Object[] createEntityParamArray(Car entity) {
-		Object[] array = new Object[6];
-		int carTypeIndex = 0;
-		if (entity instanceof Truck) {
-			carTypeIndex = DatabaseEnumLoader.CAR_TYPE_MAP.getKey(TRUCK);
-			int truckCapacity = ((Truck) entity).getCapacity();
-			int capacityID = DatabaseEnumLoader.TRUCK_CAPACITY_MAP.getKey(truckCapacity + "");
-			array[1] = capacityID;
-		} else if (entity instanceof Bus) {
-			carTypeIndex = DatabaseEnumLoader.CAR_TYPE_MAP.getKey(BUS);
-			int seatsNumber = ((Bus) entity).getSeats();
-			array[1] = seatsNumber;
-		}
-		int carStateIndex = DatabaseEnumLoader.CAR_STATE_MAP.getKey(entity.getState());
-		int carStatusIndex = DatabaseEnumLoader.CAR_STATUS_MAP.getKey(entity.getStatus());
-		array[0] = carTypeIndex;
-
-		array[2] = entity.getNumber();
-		array[3] = entity.getModel();
-		array[4] = carStatusIndex;
-		array[5] = carStateIndex;
-		return array;
 	}
 
 }

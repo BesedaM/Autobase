@@ -4,53 +4,54 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.TEST_LOGGER
 import static org.junit.Assert.assertEquals;
 
 import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import by.epam.javatraining.beseda.webproject.config.EnumConfig;
+import by.epam.javatraining.beseda.webproject.config.ResultSetExtractorConfig;
+import by.epam.javatraining.beseda.webproject.config.RowMapperConfig;
 import by.epam.javatraining.beseda.webproject.config.TestConfig;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CarInterface;
 import by.epam.javatraining.beseda.webproject.entity.car.Bus;
 import by.epam.javatraining.beseda.webproject.entity.car.Truck;
-import by.epam.javatraining.beseda.webproject.entity.exception.CarException;
-import by.epam.javatraining.beseda.webproject.entity.exception.EntityIdException;
-import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseConfigure;
+import by.epam.javatraining.beseda.webproject.util.TestDatabaseConfigure;
 
 
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes= {TestConfig.class})
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class,classes= {RowMapperConfig.class, ResultSetExtractorConfig.class,EnumConfig.class,TestConfig.class})
 public class CarDAOTest {
 
 	static Logger log = Logger.getLogger(TEST_LOGGER);
 
 	@Autowired
-	static CarInterface carDAO;
+	private CarInterface carDAO;
 
-	@BeforeMethod
+	@Autowired
+	private TestDatabaseConfigure dbc;
+	
+	@Before
 	public void fillData() {
-		DatabaseConfigure.fillDatabase();
+		dbc.fillDatabase();
 	}
 
-	@AfterMethod
+	@After
 	public void cleanData() {
-		DatabaseConfigure.cleanDatabase();
+		dbc.cleanDatabase();
 	}
 
 	
-	@Test(expectedExceptions = DAOLayerException.class)
+	@Test(expected = Exception.class)
 	public void testAdd_wrong_bus()  throws DAOLayerException{
 			Bus bus = new Bus(null, null, 5);
 			int id = carDAO.add(bus);
-			try {
 				bus.setId(id);
-			} catch (EntityIdException e) {
-				log.error(e);
-			}
 			Bus readCar = (Bus) carDAO.getEntityById(id);
 			assertEquals(bus, readCar);
 	}
@@ -60,10 +61,9 @@ public class CarDAOTest {
 		try {
 			Bus bus = new Bus("123", "Nissan", 5);
 			int id = carDAO.add(bus);
-			bus.setId(id);
 			Bus readCar = (Bus) carDAO.getEntityById(id);
 			assertEquals(bus, readCar);
-		} catch (DAOLayerException | EntityIdException e) {
+		} catch (DAOLayerException e) {
 			log.error(e);
 		}
 	}
@@ -76,7 +76,7 @@ public class CarDAOTest {
 			truck.setId(id);
 			Truck readCar = (Truck) carDAO.getEntityById(id);
 			assertEquals(truck, readCar);
-		} catch (DAOLayerException | EntityIdException e) {
+		} catch (DAOLayerException e) {
 			log.error(e);
 		}
 	}
@@ -91,7 +91,7 @@ public class CarDAOTest {
 			carDAO.update(bus);
 			Bus readCar = (Bus) carDAO.getEntityById(id);
 			assertEquals(bus, readCar);
-		} catch (DAOLayerException | CarException | EntityIdException e) {
+		} catch (DAOLayerException e) {
 			log.error(e);
 		}
 	}
@@ -106,7 +106,7 @@ public class CarDAOTest {
 			carDAO.update(truck);
 			Truck readCar = (Truck) carDAO.getEntityById(id);
 			assertEquals(truck, readCar);
-		} catch (DAOLayerException | CarException | EntityIdException e) {
+		} catch (DAOLayerException e) {
 			log.error(e);
 		}
 	}

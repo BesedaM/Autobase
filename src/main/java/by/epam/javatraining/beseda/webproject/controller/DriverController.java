@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.controller;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.DRIVER_MAIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.DRIVER_MAIN_PAGE;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import javax.servlet.http.HttpSession;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
+import by.epam.javatraining.beseda.webproject.controller.util.Decoder;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CarService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.RouteService;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;

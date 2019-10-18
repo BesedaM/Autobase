@@ -1,11 +1,11 @@
 package by.epam.javatraining.beseda.webproject.controller;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LANGUAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LANGUAGE_EN;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LANGUAGE_RU;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LOCALE_EN;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LOCALE_FILE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.LOCALE_RU;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.LANGUAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.LANGUAGE_EN;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.LANGUAGE_RU;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.LOCALE_EN;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.LOCALE_FILE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.LOCALE_RU;
 
 import javax.servlet.http.HttpSession;
 

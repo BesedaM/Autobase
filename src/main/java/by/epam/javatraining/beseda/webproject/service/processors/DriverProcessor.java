@@ -1,12 +1,12 @@
 package by.epam.javatraining.beseda.webproject.service.processors;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CAR;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CAR_BUS;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CAR_TRUCK;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CAR_TYPE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.EMPTY_VALUE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.ROUTE_LIST;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_DATA;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CAR;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CAR_BUS;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CAR_TRUCK;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CAR_TYPE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.EMPTY_VALUE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.ROUTE_LIST;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.USER_DATA;
 import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.CAR_STATE;
 import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.ROUTE_STATUS;
 
@@ -24,7 +24,7 @@ import by.epam.javatraining.beseda.webproject.entity.car.Car;
 import by.epam.javatraining.beseda.webproject.entity.car.Truck;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Driver;
-import by.epam.javatraining.beseda.webproject.service.EnumService;
+import by.epam.javatraining.beseda.webproject.service.EnumMap;
 import by.epam.javatraining.beseda.webproject.service.entitybuilder.RouteBuilder;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CarService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.DriverService;
@@ -38,13 +38,13 @@ public class DriverProcessor {
 	private Map<String, ReversalHashMap<Integer, String>> enumCollection;
 	
 	@Autowired
-	private static DriverService driverService;
+	private DriverService driverService;
 	
 	@Autowired
-	private static CarService carService;
+	private CarService carService;
 
 	@Autowired
-	private static RouteBuilder routeBuilder;
+	private RouteBuilder routeBuilder;
 	
 	public DriverProcessor() {
 	}

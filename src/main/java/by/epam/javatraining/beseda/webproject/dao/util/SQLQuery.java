@@ -141,12 +141,9 @@ public class SQLQuery {
 		TASK_ADDRESS_UPDATE_DEPENDENCE = "UPDATE trucking_company.tasks SET address_id=? WHERE id=?";
 
 		// RequestCustomer DependenceDAO
-		REQUEST_CUSTOMER_GET_CUSTOMER_ID 
-		= "SELECT customer_id FROM trucking_company.requests WHERE id=?";
-		REQUEST_CUSTOMER_GET_REQUESTS_ID 
-		= "SELECT id FROM trucking_company.requests WHERE customer_id=?";
-		REQUEST_CUSTOMER_UPDATE_DEPENDENCE 
-		= "UPDATE trucking_company.requests SET customer_id=? WHERE id=?";
+		REQUEST_CUSTOMER_GET_CUSTOMER_ID = "SELECT customer_id FROM trucking_company.requests WHERE id=?";
+		REQUEST_CUSTOMER_GET_REQUESTS_ID = "SELECT id FROM trucking_company.requests WHERE customer_id=?";
+		REQUEST_CUSTOMER_UPDATE_DEPENDENCE = "UPDATE trucking_company.requests SET customer_id=? WHERE id=?";
 
 		// TaskRoute DependenceDAO
 		TASK_ROUTE_GET_ROUTE_ID = "SELECT route_id FROM trucking_company.tasks WHERE id=?";
@@ -183,7 +180,7 @@ public class SQLQuery {
 		DELETE_USER_BY_ID = "DELETE FROM trucking_company.users WHERE id=?";
 		ADD_NEW_USER = "INSERT INTO trucking_company.users (login, password, role_id) VALUES (:login, :password, :role_id)";
 		UPDATE_USER_PASSWORD = "UPDATE trucking_company.users SET password=? WHERE users.id=?";
-		UPDATE_USER = "UPDATE trucking_company.users SET login=?, password=?, role_id=? WHERE id=?";
+		UPDATE_USER = "UPDATE trucking_company.users SET login=:login, password=:password, role_id=:role_id WHERE id=:id";
 
 		// Car DAO
 		CAR_ID = "cars.id";
@@ -195,11 +192,15 @@ public class SQLQuery {
 		SELECT_CARS_BY_TYPE = SELECT_ALL_CARS + " WHERE car_type.type=?";
 		SELECT_CARS_BY_ID_LIST = SELECT_ALL_CARS + " WHERE cars.id IN (?)";
 		SELECT_CAR_BY_ID = SELECT_ALL_CARS + " WHERE cars.id=?";
-		ADD_NEW_BUS = "INSERT INTO trucking_company.cars  (type_id, seatsNumber, car_number, model, status_id, state_id) VALUES (?, ?, ?, ?, ?, ?)";
-		ADD_NEW_TRUCK = "INSERT INTO trucking_company.cars  (type_id, capacity_id, car_number, model, status_id, state_id) VALUES (?, ?, ?, ?, ?, ?)";
+		ADD_NEW_BUS = "INSERT INTO trucking_company.cars  (type_id, seatsNumber, car_number, model, status_id, state_id)"
+				+ " VALUES (:type_id, :seatsNumber, :car_number, :model, :status_id, :state_id)";
+		ADD_NEW_TRUCK = "INSERT INTO trucking_company.cars  (type_id, capacity_id, car_number, model, status_id, state_id) "
+				+ "VALUES (:type_id, :capacity_id, :car_number, :model, :status_id, :state_id)";
 		DELETE_CAR_BY_ID = "DELETE FROM trucking_company.cars WHERE id=?";
-		UPDATE_BUS = "UPDATE trucking_company.cars SET type_id=?, seatsNumber=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
-		UPDATE_TRUCK = "UPDATE trucking_company.cars SET type_id=?, capacity_id=?, car_number=?, model=?, status_id=?, state_id=? WHERE cars.id=?";
+		UPDATE_BUS = "UPDATE trucking_company.cars SET type_id=:type_id, seatsNumber=:seatsNumber, car_number=:car_number, model=:model,"
+				+ " status_id=:status_id, state_id=:state_id WHERE cars.id=:id";
+		UPDATE_TRUCK = "UPDATE trucking_company.cars SET type_id=:type_id, capacity_id=:capacity_id, car_number=:car_number, model=:model,"
+				+ " status_id=:status_id, state_id=:state_id WHERE cars.id=:id";
 		UPDATE_CAR_STATE = "UPDATE trucking_company.cars SET state_id=? WHERE cars.id=?";
 
 		// Address DAO
@@ -208,8 +209,10 @@ public class SQLQuery {
 		SELECT_ADDRESSES_BY_ID_LIST = SELECT_ALL_ADDRESSES + " WHERE addresses.id IN (?)";
 		SELECT_ADDRESS_BY_ID = SELECT_ALL_ADDRESSES + " WHERE id=?";
 		DELETE_ADDRESS_BY_ID = "DELETE FROM trucking_company.addresses WHERE id=?";
-		INSERT_ADDRESS = "INSERT INTO trucking_company.addresses (country, district, city, street, houseNum, building) VALUES (?,?,?,?,?,?)";
-		UPDATE_ADDRESS = "UPDATE trucking_company.cars SET country=?, district=?, city=?, street=?, houseNum=?, building=? WHERE id=?";
+		INSERT_ADDRESS = "INSERT INTO trucking_company.addresses (country, district, city, street, houseNum, building) "
+				+ "VALUES (:country, :district, :city, :street, :houseNum, :building)";
+		UPDATE_ADDRESS = "UPDATE trucking_company.cars SET country=:country, district=:district, city=:city, street=:street,"
+				+ " houseNum=:houseNum, building=:building WHERE id=:id";
 
 		// Task DAO
 		TASK_ID = "tasks.id";
@@ -217,8 +220,8 @@ public class SQLQuery {
 		SELECT_TASKS_BY_ID_LIST = SELECT_ALL_TASKS + " WHERE tasks.id IN (?)";
 		SELECT_TASK_BY_ID = SELECT_ALL_TASKS + " WHERE id=?";
 		DELETE_TASK_BY_ID = "DELETE FROM trucking_company.tasks WHERE id=?";
-		INSERT_TASK = "INSERT INTO trucking_company.tasks (time, details) VALUES (?, ?)";
-		UPDATE_TASK = "UPDATE trucking_company.tasks SET time=?, details=? WHERE tasks.id=?";
+		INSERT_TASK = "INSERT INTO trucking_company.tasks (time, details) VALUES (:time, :details)";
+		UPDATE_TASK = "UPDATE trucking_company.tasks SET time=:time, details=:details WHERE tasks.id=:id";
 
 		// Route DAO
 		ROUTE_ID = "routes.id";
@@ -227,8 +230,8 @@ public class SQLQuery {
 		SELECT_ROUTES_BY_ID_LIST = SELECT_ALL_ROUTES + " WHERE routes.id IN (?)";
 		SELECT_ROUTE_BY_ID = SELECT_ALL_ROUTES + " WHERE routes.id=?";
 		DELETE_ROUTE_BY_ID = "DELETE FROM trucking_company.routes WHERE id=?";
-		INSERT_ROUTE = "INSERT INTO trucking_company.routes (name, status_id,id) VALUES (?, ?, ?)";
-		UPDATE_ROUTE = "UPDATE trucking_company.routes SET name=?, status_id=? WHERE routes.id=?";
+		INSERT_ROUTE = "INSERT INTO trucking_company.routes (name, status_id,id) VALUES (:name, :status_id,:id)";
+		UPDATE_ROUTE = "UPDATE trucking_company.routes SET name=:name, status_id=:status_id WHERE routes.id=:id";
 		UPDATE_ROUTE_STATUS = "UPDATE trucking_company.routes SET status_id=? WHERE routes.id=?";
 
 		// Customer DAO
@@ -239,8 +242,10 @@ public class SQLQuery {
 		SELECT_CUSTOMERS_BY_ID_LIST = SELECT_ALL_CUSTOMERS + " WHERE customers.id IN (?)";
 		SELECT_CUSTOMER_BY_ID = SELECT_ALL_CUSTOMERS + " WHERE users.id=?";
 		DELETE_CUSTOMER_BY_ID = "DELETE FROM trucking_company.customers WHERE id=?";
-		ADD_NEW_CUSTOMER = "INSERT INTO trucking_company.customers (type_id, name, surname, phone, email ,company_name, id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-		UPDATE_CUSTOMER = "UPDATE trucking_company.customers SET type_id=?, name=?, surname=?, phone=?, email=? ,company_name=? WHERE customers.id=?";
+		ADD_NEW_CUSTOMER = "INSERT INTO trucking_company.customers (type_id, name, surname, phone, email ,company_name, id)"
+				+ " VALUES (:type_id, :name, :surname, :phone, :email ,:company_name, :id)";
+		UPDATE_CUSTOMER = "UPDATE trucking_company.customers SET type_id=:type_id, name=:name, surname=:surname, phone=:phone, "
+				+ "email=:email ,company_name=:company_name WHERE customers.id=:id";
 
 		// Driver DAO
 		DRIVER_ID = "drivers.id";
@@ -248,19 +253,19 @@ public class SQLQuery {
 		SELECT_DRIVERS_BY_ID_LIST = SELECT_ALL_DRIVERS + " WHERE drivers.id IN (?)";
 		SELECT_DRIVER_BY_ID = SELECT_ALL_DRIVERS + " WHERE drivers.id=?";
 		DELETE_DRIVER_BY_ID = "DELETE FROM trucking_company.drivers WHERE id=?";
-		ADD_NEW_DRIVER = "INSERT INTO trucking_company.drivers (surname, name, phone, id) VALUES (?, ?, ?, ?)";
-		UPDATE_DRIVER = "UPDATE trucking_company.drivers SET surname=?, name=?, phone=? WHERE drivers.id=?";
+		ADD_NEW_DRIVER = "INSERT INTO trucking_company.drivers (surname, name, phone, id) "
+				+ "VALUES (:surname, :name, :phone, :id)";
+		UPDATE_DRIVER = "UPDATE trucking_company.drivers SET surname=:surname, name=:name, phone=:phone WHERE drivers.id=:id";
 
 		// Request DAO
 		REQUEST_ID = "requests.id";
 		SELECT_ALL_REQUESTS = "SELECT * FROM trucking_company.requests LEFT JOIN trucking_company.request_status ON requests.status_id=request_status.id";
 		SELECT_REQUESTS_BY_ID_LIST = SELECT_ALL_REQUESTS + " WHERE requests.id IN (?)";
-		SELECT_ACTIVE_CUSTOMER_REQUESTS = "SELECT * FROM \n"
-				+ "(SELECT * FROM trucking_company.requests WHERE requests.status_id IN(1,3) "
-				+ "UNION SELECT * FROM trucking_company.requests JOIN trucking_company.routes ON requests.id=routes.id \n"
-				+ "WHERE routes.status_id IN(1,2) ) AS a WHERE a.customer_id=?";
-		SELECT_NEW_REQUESTS = SELECT_ALL_REQUESTS 
-				+ " LEFT JOIN trucking_company.routes ON requests.id=routes.id  "
+		SELECT_ACTIVE_CUSTOMER_REQUESTS = "SELECT a.id,comment,request_status.status,a.request_date FROM \n"
+				+ "(SELECT id,comment,status_id,customer_id,requests.request_date FROM trucking_company.requests WHERE requests.status_id IN(1,3) "
+				+ "UNION SELECT requests.id,comment,requests.status_id,customer_id,requests.request_date FROM trucking_company.requests JOIN trucking_company.routes ON requests.id=routes.id \n"
+				+ "WHERE routes.status_id IN(1,2) ) AS a LEFT JOIN trucking_company.request_status ON a.status_id=request_status.id WHERE a.customer_id=?";
+		SELECT_NEW_REQUESTS = SELECT_ALL_REQUESTS + " LEFT JOIN trucking_company.routes ON requests.id=routes.id  "
 				+ "WHERE request_status.status='рассматривается' OR (request_status.status='принята' AND coalesce(routes.id,0)=0)";
 		SELECT_CURRENT_REQUESTS = SELECT_ALL_REQUESTS
 				+ " RIGHT JOIN trucking_company.routes ON requests.id=routes.id  \n"
@@ -270,13 +275,13 @@ public class SQLQuery {
 				+ " RIGHT JOIN trucking_company.routes ON requests.id=routes.id  \n"
 				+ "LEFT JOIN trucking_company.route_status ON routes.status_id=route_status.id\n"
 				+ "WHERE route_status.status='выполнен' LIMIT 20";
-		SELECT_REJECTED_REQUESTS = SELECT_ALL_REQUESTS
-				+ " WHERE request_status.status='отклонена' LIMIT 20";
+		SELECT_REJECTED_REQUESTS = SELECT_ALL_REQUESTS + " WHERE request_status.status='отклонена' LIMIT 20";
 
 		SELECT_REQUEST_BY_ID = SELECT_ALL_REQUESTS + " WHERE requests.id=?";
 		DELETE_REQUEST_BY_ID = "DELETE FROM trucking_company.requests WHERE id=?";
-		ADD_NEW_REQUEST = "INSERT INTO trucking_company.requests (status_id, comment, customer_id) VALUES (?,?,?)";
-		UPDATE_REQUEST = "UPDATE trucking_company.requests SET status_id=?, comment=? WHERE id=?";
+		ADD_NEW_REQUEST = "INSERT INTO trucking_company.requests (status_id, comment, customer_id, request_date) "
+				+ " VALUES (:status_id, :comment, :customer_id, now())";
+		UPDATE_REQUEST = "UPDATE trucking_company.requests SET status_id=:status_id, comment=:comment WHERE id=:id";
 
 	}
 }

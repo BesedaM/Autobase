@@ -77,8 +77,7 @@
 <p>${request_text}</p>
 
 <c:if test="${current_route==null}">
-    <form name="NewRoute" method="post" action="${urlPrefix}/controller" onsubmit="return requiredInCheckbox()">
-        <input type="hidden" name="command" value="add_new_route"/>
+    <form name="NewRoute" method="post" action="${urlPrefix}/admin/add_new_route" onsubmit="return requiredInCheckbox()">
         <input type="hidden" name="id" value="${id}"/>
         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
         <fieldset>
@@ -119,8 +118,7 @@
 
 <c:if test="${current_route!=null}">
 
-    <form name="NewTask" method="post" action="${urlPrefix}/controller">
-        <input type="hidden" name="command" value="add_change_task"/>
+    <form name="NewTask" method="post" action="${urlPrefix}/admin/tasks/process_task">
         <input type="hidden" name="route_id" value="${id}"/>
         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
         <fieldset>

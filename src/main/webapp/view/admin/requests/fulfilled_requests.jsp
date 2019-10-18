@@ -109,8 +109,7 @@
             </table>
 
             <br/>
-            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/controller">
-                <input type="hidden" name="command" value="admin_main_redirect"/>
+            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/admin/main">
                 <input type="submit" value="${admin_main_redirect}"/>
             </form>
         </td>

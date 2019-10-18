@@ -18,6 +18,12 @@ import by.epam.javatraining.beseda.webproject.dao.mapper.UserMapper;
 @ComponentScan({ "by.epam.javatraining.beseda.webproject.dao.mapper" })
 public class RowMapperConfig {
 
+	
+	@Bean(name = "enumMapper")
+	public EnumElementMapper getEnumMapper() {
+		return new EnumElementMapper();
+	}
+	
 	@Bean(name = "userMapper")
 	public UserMapper getUserMapper() {
 		return new UserMapper();
@@ -56,11 +62,6 @@ public class RowMapperConfig {
 	@Bean(name = "taskMapper")
 	public TaskMapper getTaskMapper() {
 		return new TaskMapper();
-	}
-	
-	@Bean(name = "enumMapper")
-	public EnumElementMapper getEnumMapper() {
-		return new EnumElementMapper();
 	}
 
 }

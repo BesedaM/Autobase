@@ -9,26 +9,36 @@ import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_US
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_USER_BY_LOGIN_AND_PASSWORD;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_USER;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_USER_PASSWORD;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.LOGIN;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.PASSWORD;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ROLE_ID_USERS;
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.REQUEST_STATUS;
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.USER_ROLE;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
-import by.epam.javatraining.beseda.webproject.dao.exception.DAOTechnicalException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
+import by.epam.javatraining.beseda.webproject.entity.Request;
+import by.epam.javatraining.beseda.webproject.entity.route.Address;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
+import by.epam.javatraining.beseda.webproject.service.EnumMap;
+import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 
 @Repository
 public class UserDAO extends AbstractDAO<User> implements UserInterface {
 
+	@Autowired
+	@Qualifier("userRoleMap")
+	private ReversalHashMap<Integer, String> userRoleMap;
+	
 	public UserDAO(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
 	}
@@ -44,67 +54,22 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
 		this.rowMapper = rowMapper;
 	}
 
-//	@Override
-//	public List<User> getAll() throws DAOLayerException {
-//		return jdbcTemplate.query(getAllStatement(), rowMapper);
-//	}
-//
-//	@Override
-//	public User getEntityById(int id) throws DAOLayerException {
-//		return jdbcTemplate.queryForObject(getEntityByIdStatement(), rowMapper, id);
-//	}
-//
-//	@Override
-//	public int add(User user) throws DAOLayerException {
-//		KeyHolder keyHolder = new GeneratedKeyHolder();
-//		NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-//
-//		MapSqlParameterSource parameters = new MapSqlParameterSource();
-//		int roleIndex = DatabaseEnumLoader.USER_ROLE_MAP.getKey(user.getRole());
-//		parameters.addValue(LOGIN, user.getLogin());
-//		parameters.addValue(PASSWORD, user.getPassword());
-//		parameters.addValue(ROLE_ID_USERS, roleIndex);
-//
-//		int rowsNum = namedJdbcTemplate.update(addStatement(), parameters, keyHolder, new String[] { "id" });
-//		if (rowsNum != 1) {
-//			throw new DAOLayerException("Error adding entity to database");
-//		}
-//		int id = keyHolder.getKey().intValue();
-//		try {
-//			user.setId(id);
-//		} catch (EntityIdException e) {
-//			throw new DAOLayerException(e);
-//		}
-//		return id;
-//	}
-//
-//	@Override
-//	public void update(User user) throws DAOLayerException {
-//		jdbcTemplate.update(updateStatement(), user.getLogin(), user.getPassword(), user.getRole(), user.getId());
-//	}
-//
-//	@Override
-//	public void delete(int id) throws DAOTechnicalException {
-//		jdbcTemplate.update(deleteStatement(), id);
-//	}
-//
-//	@Override
-//	public List<User> getEntitiesByIdList(int[] idArr) throws DAOLayerException {
-//		String array = Arrays.toString(idArr);
-//		String newArr = array.replace(OPENING_SQUARE_BRACKET, SPACE).replace(CLOSING_SQUARE_BRACKET, SPACE)
-//				.replace(SPACE, EMPTY_CHARACTER);
-//		String modifiedStatement = getEntityListByIdStatement().replace(QUESTION_MARK, newArr);
-//		return jdbcTemplate.query(modifiedStatement, rowMapper);
-//	}
-
+	@Autowired
+	@Qualifier("userExtractor")
+	@Override
+	protected void setResultSetExtractor(ResultSetExtractor<User> rsExtractor) {
+		this.rsExtractor = rsExtractor;
+	}
+	
+	
 	@Override
 	public User getUserByLoginAndPassword(String login, byte[] password) {
-		return jdbcTemplate.queryForObject(SELECT_USER_BY_LOGIN_AND_PASSWORD, rowMapper, login, password);
+		return jdbcTemplate.query(SELECT_USER_BY_LOGIN_AND_PASSWORD, new Object[] { login, password }, rsExtractor);
 	}
 
 	@Override
 	public User getUserByLogin(String login){
-		return jdbcTemplate.queryForObject(SELECT_USER_BY_LOGIN, rowMapper, login);
+		return jdbcTemplate.query(SELECT_USER_BY_LOGIN, new Object[] { login }, rsExtractor);
 	}
 
 	@Override
@@ -145,20 +110,12 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
 	@Override
 	protected MapSqlParameterSource createMapSqlParameterSource(User entity) {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		int roleIndex = DatabaseEnumLoader.USER_ROLE_MAP.getKey(entity.getRole());
+		int roleIndex = userRoleMap.getKey(entity.getRole());
 		parameters.addValue(LOGIN, entity.getLogin());
 		parameters.addValue(PASSWORD, entity.getPassword());
 		parameters.addValue(ROLE_ID_USERS, roleIndex);
+		parameters.addValue(ID, entity.getId());
 		return parameters;
-	}
-
-	@Override
-	protected Object[] createEntityParamArray(User entity) {
-		Object[] array = new Object[3];
-		array[0] = entity.getLogin();
-		array[1] = entity.getPassword();
-		array[2] = entity.getRole();
-		return array;
 	}
 
 }

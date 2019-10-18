@@ -1,9 +1,9 @@
 package by.epam.javatraining.beseda.webproject.service.processors;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.DRIVER_MAP;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.REQUEST_LIST;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.REQUEST_STATUS_LIST;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_DATA;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.DRIVER_MAP;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.REQUEST_LIST;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.REQUEST_STATUS_LIST;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.USER_DATA;
 import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.REQUEST_STATUS;
 
 import java.util.ArrayList;

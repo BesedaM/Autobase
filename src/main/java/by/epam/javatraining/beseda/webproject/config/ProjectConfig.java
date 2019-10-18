@@ -21,7 +21,7 @@ import by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAO;
 import by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAO;
 import by.epam.javatraining.beseda.webproject.dao.entitydao.TaskDAO;
 import by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAO;
-import by.epam.javatraining.beseda.webproject.service.EnumService;
+import by.epam.javatraining.beseda.webproject.service.EnumMap;
 import by.epam.javatraining.beseda.webproject.service.entitybuilder.RouteBuilder;
 import by.epam.javatraining.beseda.webproject.service.entityservice.AddressService;
 import by.epam.javatraining.beseda.webproject.service.entityservice.CarService;
@@ -54,6 +54,11 @@ public class ProjectConfig {
 		return dataSource;
 	}
 
+	@Bean(name = "enumDAO")
+	public EnumDAO getEnumDAO() {
+		return new EnumDAO(getJdbcTemplate());
+	}
+	
 	@Bean(name = "userDAO")
 	public UserDAO getUserDAO() {
 		return new UserDAO(getJdbcTemplate());
@@ -94,11 +99,6 @@ public class ProjectConfig {
 		return new RequestDAO(getJdbcTemplate());
 	}
 
-	@Bean(name = "enumDAO")
-	public EnumDAO getEnumDAO() {
-		return new EnumDAO(getJdbcTemplate());
-	}
-
 	@Bean
 	public UserService getUserService() {
 		return new UserService();
@@ -137,11 +137,6 @@ public class ProjectConfig {
 	@Bean
 	public RequestService getRequestservice() {
 		return new RequestService();
-	}
-	
-	@Bean
-	public EnumService getEnumService() {
-		return new EnumService();
 	}
 	
 	@Bean

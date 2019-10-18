@@ -61,16 +61,25 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M3</version>
 				<configuration>
-					<skipTests>false</skipTests>
+					<skipTests>true</skipTests>
 					<property>
-						<name>junit</name>
+						<name>testng</name>
 						<value>false</value>
 					</property>
-					<suiteXmlFiles>
-						<file>src/test/resources/suite.xml</file>
-					</suiteXmlFiles>
+					<includes>
+						<include>**/by.epam.javatraining.beseda.webproject.TestSuite.java</include>
+						<include>**/by.epam.javatraining.beseda.webproject.logic.RegisterLogicTest.java</include>
+					</includes>
 				</configuration>
 			</plugin>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/surefire-booter -->
+			<plugin>
+				<groupId>org.apache.maven.surefire</groupId>
+				<artifactId>surefire-booter</artifactId>
+				<version>3.0.0-M3</version>
+			</plugin>
+
 
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
 			<plugin>
@@ -86,7 +95,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.4</version>
+				<version>0.8.5</version>
 				<executions>
 					<execution>
 						<goals>
@@ -129,12 +138,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.0.0-M3</version>
-			</plugin>
+
 
 		</plugins>
 	</reporting>
@@ -221,7 +225,22 @@
 		</dependency>
 
 
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+			<scope>test</scope>
+		</dependency>
 
+
+		<!-- https://mvnrepository.com/artifact/org.jacoco/org.jacoco.agent -->
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.agent</artifactId>
+			<version>0.8.5</version>
+			<scope>test</scope>
+		</dependency>
 
 
 
@@ -288,29 +307,12 @@
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/org.junit/junit-engine-api -->
-
-		<dependency>
-			<groupId>org.junit</groupId>
-			<artifactId>junit-engine-api</artifactId>
-			<version>5.0.0-ALPHA</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>7.0.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/surefire-testng -->
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/surefire-junit4 -->
 		<dependency>
 			<groupId>org.apache.maven.surefire</groupId>
-			<artifactId>surefire-testng</artifactId>
+			<artifactId>surefire-junit4</artifactId>
 			<version>3.0.0-M3</version>
 		</dependency>
-
 
 		<!-- https://mvnrepository.com/artifact/com.github.slavaz/embedded-postgresql-maven-plugin -->
 		<dependency>

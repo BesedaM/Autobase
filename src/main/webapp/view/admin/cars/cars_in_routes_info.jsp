@@ -25,15 +25,14 @@
 </head>
 <body>
 <table class="available_cars_info">
-    <caption><h4>${cars_available}</h4></caption>
+    <caption>${cars_available}</caption>
     <tr>
         <td>${car}</td>
         <td>${busy_day}</td>
     </tr>
     <tr>
         <td>
-            <form name="CarsInRoutes" method="post" action="${urlPrefix}/controller" onchange="submit()">
-                <input type="hidden" name="command" value="cars_in_routes_reload"/>
+            <form name="CarsInRoutes" method="post" action="${urlPrefix}/admin/cars/reload_cars_in_routes" onchange="submit()">
                 <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
                 <c:forEach items="${car_busy_dates_map}" var="car_dates">
                     <c:set var="car" value="${car_dates.key}"/>

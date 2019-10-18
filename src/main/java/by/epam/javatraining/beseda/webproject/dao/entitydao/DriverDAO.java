@@ -1,12 +1,12 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.ADD_NEW_DRIVER;
+import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_GET_CAR_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.DELETE_DRIVER_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_ALL_DRIVERS;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_DRIVERS_BY_ID_LIST;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.SELECT_DRIVER_BY_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.UPDATE_DRIVER;
-import static by.epam.javatraining.beseda.webproject.dao.util.SQLQuery.CAR_DRIVER_GET_CAR_ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.NAME;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.PHONE;
@@ -15,8 +15,10 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
@@ -41,6 +43,13 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 		this.rowMapper = rowMapper;
 	}
 
+	@Autowired
+	@Qualifier("driverExtractor")
+	@Override
+	protected void setResultSetExtractor(ResultSetExtractor<Driver> rsExtractor) {
+		this.rsExtractor = rsExtractor;
+	}
+	
 	@Override
 	public int getCarId(int driverId) {
 		return jdbcTemplate.queryForObject(CAR_DRIVER_GET_CAR_ID, new Object[] { driverId }, Integer.class);
@@ -48,9 +57,16 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 
 	@Override
 	public int add(Driver entity) throws DAOLayerException {
-		jdbcTemplate.update(addStatement(), createEntityParamArray(entity), entity.getId());
+		NamedParameterJdbcTemplate npjt=new NamedParameterJdbcTemplate(jdbcTemplate);
+		npjt.update(addStatement(), createMapSqlParameterSource(entity));
 		return entity.getId();
 	}
+
+//	@Override
+//	public void update(Driver entity) throws DAOLayerException {
+//		jdbcTemplate.update(updateStatement(), entity.getSurname(), entity.getName(), entity.getPhone(),
+//				entity.getId());
+//	}
 
 	@Override
 	protected String getAllStatement() {
@@ -90,15 +106,6 @@ public class DriverDAO extends AbstractDAO<Driver> implements DriverInterface {
 		parameters.addValue(PHONE, entity.getPhone());
 		parameters.addValue(ID, entity.getId());
 		return parameters;
-	}
-
-	@Override
-	protected Object[] createEntityParamArray(Driver entity) {
-		Object[] array = new Object[3];
-		array[0] = entity.getLogin();
-		array[1] = entity.getPassword();
-		array[2] = entity.getRole();
-		return array;
 	}
 
 }

@@ -1,7 +1,5 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import static by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader.REQUEST_STATUS_MAP;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -12,11 +10,17 @@ import by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAO;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
 import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
+import by.epam.javatraining.beseda.webproject.service.EnumMap;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
+
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.REQUEST_STATUS;
 
 @Service
 public class RequestService extends AbstractEntityService<Request> {
 
+	@Autowired
+	private EnumMap enumMap;
+	
 	public RequestService() {
 		super();
 	}
@@ -31,7 +35,7 @@ public class RequestService extends AbstractEntityService<Request> {
 	public Request createRequest(Customer customer, String comment) {
 		Request req = null;
 		if (comment != null) {
-			String status = REQUEST_STATUS_MAP.get(1);
+			String status = enumMap.getCollection().get(REQUEST_STATUS).get(1);
 			req = new Request(customer, comment, status);
 		}
 		return req;

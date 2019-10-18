@@ -107,13 +107,11 @@
                     </c:if>
                     <tr>
                         <td colspan="3">
-                            <form class="right_side" name="CurrentRequestProcessor" method="post"
-                                  action="${urlPrefix}/controller">
+                            <form class="right_side" name="CurrentRequestProcessor" method="post" action="/admin/change_route">
                                 <input type="hidden" name="id" value="${route.id}"/>
-                                <button type="submit" name="command" value="delete_request">${delete_request}</button>
+<%--                                 <button type="submit" name="command" value="delete_request">${delete_request}</button> --%>
                                 <br/>
-                                <button type="submit" name="command"
-                                        value="change_current_route">${change_route}</button>
+                                <input type="submit" value="${change_route}"/>
                             </form>
                         </td>
                     </tr>
@@ -121,8 +119,7 @@
             </table>
 
             <br/>
-            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/controller">
-                <input type="hidden" name="command" value="admin_main_redirect"/>
+            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/admin/main">
                 <input type="submit" value="${admin_main_redirect}"/>
             </form>
         </td>

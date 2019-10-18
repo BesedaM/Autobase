@@ -1,20 +1,24 @@
 package by.epam.javatraining.beseda.webproject.controller;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.CUSTOMER;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CARS_ID;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CURRENT_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.CUSTOMER_ID;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.ID;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.NEW_REQUEST_ID;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.NEW_REQUEST_TEXT;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.REQUEST_TEXT;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPParameter.ROUTE_NAME;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.ADD_NEW_ROUTE_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CURRENT_ROUTE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_LIST;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPAttribute.CUSTOMER;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.CARS_ID;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.CURRENT_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.CUSTOMER_ID;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.ID;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.NEW_REQUEST_ID;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.NEW_REQUEST_TEXT;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.REQUEST_TEXT;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.ROUTE_NAME;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.ADD_NEW_ROUTE_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.CHANGE_ROUTE_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CHANGING_ROUTE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CURRENT_ROUTE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.REQUEST_CUSTOMER_MAP;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.TASK_LIST;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,11 +26,15 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
+import by.epam.javatraining.beseda.webproject.controller.util.Decoder;
+import by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter;
+import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.route.Task;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
@@ -87,5 +95,21 @@ public class AdminRouteController {
 		return mav;
 	}
 	
+	
+	@PostMapping(value = { "/admin/change_route" })
+	public ModelAndView addChangeRoute(@RequestParam String id, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		int routeId = Integer.parseInt(id);
+		Map<Request, Customer> requestCustomerMap = (Map<Request, Customer>) session.getAttribute(REQUEST_CUSTOMER_MAP);
+		Route route = null;
+		for (Map.Entry<Request, Customer> entry : requestCustomerMap.entrySet()) {
+			if (entry.getKey().getId() == routeId) {
+				route = entry.getKey().getRoute();
+			}
+		}
+		session.setAttribute(CHANGING_ROUTE, route);
+		mav.setViewName(CHANGE_ROUTE_PAGE);
+		return mav;
+	}
 	
 }

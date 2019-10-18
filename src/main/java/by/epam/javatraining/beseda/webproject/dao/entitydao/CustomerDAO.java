@@ -14,24 +14,32 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.NAME;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.PHONE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.SURNAME;
+import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.CUSTOMER_TYPE;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.CustomerInterface;
-import by.epam.javatraining.beseda.webproject.dao.util.dataloader.DatabaseEnumLoader;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
+import by.epam.javatraining.beseda.webproject.service.EnumMap;
+import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 
 @Repository
 public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterface {
-
+	
+	@Autowired
+	@Qualifier("customerTypeMap")
+	private ReversalHashMap<Integer, String> customerTypeMap;
+	
 	CustomerDAO() {
 		super();
 	}
@@ -39,23 +47,38 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
 	public CustomerDAO(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
 	}
-	
+
 	@Override
 	@Autowired
 	@Qualifier("customerMapper")
 	protected void setRowMapper(RowMapper<Customer> rowMapper) {
 		this.rowMapper = rowMapper;
 	}
-
-	public List<Integer> getRequestsId(int customerId){
-		return jdbcTemplate.queryForList(REQUEST_CUSTOMER_GET_REQUESTS_ID, new Object[] {customerId}, Integer.class);
-	}
 	
+	@Autowired
+	@Qualifier("customerExtractor")
+	@Override
+	protected void setResultSetExtractor(ResultSetExtractor<Customer> rsExtractor) {
+		this.rsExtractor = rsExtractor;
+	}
+
+	public List<Integer> getRequestsId(int customerId) {
+		return jdbcTemplate.queryForList(REQUEST_CUSTOMER_GET_REQUESTS_ID, new Object[] { customerId }, Integer.class);
+	}
+
 	@Override
 	public int add(Customer entity) throws DAOLayerException {
-		jdbcTemplate.update(addStatement(), createEntityParamArray(entity), entity.getId());
+		NamedParameterJdbcTemplate npjt=new NamedParameterJdbcTemplate(jdbcTemplate);
+		npjt.update(addStatement(), createMapSqlParameterSource(entity));
 		return entity.getId();
 	}
+//
+//	@Override
+//	public void update(Customer entity) throws DAOLayerException {
+//		int typeIndex = enumMap.getCollection().get(CUSTOMER_TYPE).getKey(entity.getCustomerType());
+//		jdbcTemplate.update(updateStatement(), typeIndex, entity.getName(), entity.getSurname(), entity.getPhone(),
+//				entity.getEmail(), entity.getCompanyName(), entity.getId());
+//	}
 
 	@Override
 	protected String getAllStatement() {
@@ -90,7 +113,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
 	@Override
 	protected MapSqlParameterSource createMapSqlParameterSource(Customer entity) {
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		int typeIndex = DatabaseEnumLoader.CUSTOMER_TYPE_MAP.getKey(entity.getCustomerType());
+		int typeIndex = customerTypeMap.getKey(entity.getCustomerType());
 		parameters.addValue(CUSTOMER_TYPE_ID_CUSTOMERS, typeIndex);
 		parameters.addValue(NAME, entity.getName());
 		parameters.addValue(SURNAME, entity.getSurname());
@@ -99,19 +122,6 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
 		parameters.addValue(COMPANY_NAME, entity.getCompanyName());
 		parameters.addValue(ID, entity.getId());
 		return parameters;
-	}
-
-	@Override
-	protected Object[] createEntityParamArray(Customer entity) {
-		Object[] array = new Object[6];
-		int typeIndex = DatabaseEnumLoader.CUSTOMER_TYPE_MAP.getKey(entity.getCustomerType());
-		array[0] = typeIndex;
-		array[1] = entity.getName();
-		array[2] = entity.getSurname();
-		array[3] = entity.getPhone();
-		array[4] = entity.getEmail();
-		array[5] = entity.getCompanyName();
-		return array;
 	}
 
 }

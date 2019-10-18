@@ -18,16 +18,16 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.TaskService;
 public class RouteBuilder implements EntityBuilder<Route> {
 
 	@Autowired
-	private static CarService carService;
+	private CarService carService;
 
 	@Autowired
-	private static RouteService routeService;
+	private RouteService routeService;
 
 	@Autowired
-	private static TaskService taskService;
+	private TaskService taskService;
 
 	@Autowired
-	private static AddressService addressService;
+	private AddressService addressService;
 
 	public RouteBuilder() {
 	}

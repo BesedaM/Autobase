@@ -1,12 +1,12 @@
 package by.epam.javatraining.beseda.webproject.controller;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.ERROR_MESSAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPAttribute.STATUS_TRUE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.ADMIN_MAIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.CUSTOMER_MAIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.DRIVER_MAIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.LOGIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.USER_DATA;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPAttribute.ERROR_MESSAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPAttribute.STATUS_TRUE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.ADMIN_MAIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.CUSTOMER_MAIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.DRIVER_MAIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.LOGIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.USER_DATA;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_ADMIN;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_CUSTOMER;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_DRIVER;
@@ -14,7 +14,6 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.AUTHORIZATION_LOGGER;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -22,8 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import by.epam.javatraining.beseda.webproject.entity.user.User;
@@ -37,7 +36,6 @@ import by.epam.javatraining.beseda.webproject.service.processors.CustomerProcess
 import by.epam.javatraining.beseda.webproject.service.processors.DriverProcessor;
 
 @Controller
-@ResponseBody
 public class LoginController {
 
 	private static Logger log;

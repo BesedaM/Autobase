@@ -24,8 +24,7 @@
 <p>Please, contact the software provider</p>
 </c:if>
 
-<form name="LoginRedirect" method="get" action="${urlPrefix}/controller">
-    <input type="hidden" name="command" value="logout">
+<form name="LoginRedirect" method="get" action="${urlPrefix}/login">
     <input type="submit" value="Return to login"/>
 </form>
 

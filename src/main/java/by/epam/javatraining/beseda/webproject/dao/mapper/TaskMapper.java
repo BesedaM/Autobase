@@ -18,7 +18,7 @@ public class TaskMapper implements RowMapper<Task> {
 	@Override
 	public Task mapRow(ResultSet result, int rowNum) throws SQLException {
 		Task task = null;
-		if (result != null) {
+		if (rowNum > 0) {
 			task = new Task();
 			GregorianCalendar time = new GregorianCalendar();
 			Timestamp ts = result.getTimestamp(TIME, new GregorianCalendar());

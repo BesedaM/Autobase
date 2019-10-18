@@ -1,14 +1,14 @@
 package by.epam.javatraining.beseda.webproject.controller;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.ADMIN_MAIN_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.CURRENT_REQUESTS_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.FULFILLED_REQUESTS_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.NEW_REQUESTS_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPPath.REJECTED_REQUESTS_PAGE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CHANGE_CAR;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CHANGING_ROUTE;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.REQUEST_CUSTOMER_MAP;
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.TASK_TO_CHANGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.ADMIN_MAIN_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.CURRENT_REQUESTS_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.FULFILLED_REQUESTS_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.NEW_REQUESTS_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.REJECTED_REQUESTS_PAGE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CHANGE_CAR;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CHANGING_ROUTE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.REQUEST_CUSTOMER_MAP;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.TASK_TO_CHANGE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.ADOPTED_REQUEST;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import by.epam.javatraining.beseda.webproject.controller.command.util.Decoder;
+import by.epam.javatraining.beseda.webproject.controller.util.Decoder;
 import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.route.Route;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;

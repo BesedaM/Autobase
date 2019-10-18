@@ -70,10 +70,9 @@
 
         </td>
         <td>
-            <form name="CarListChanger" method="post" action="${urlPrefix}/controller" class="right_side">
+            <form name="CarListChanger" method="post" action="${urlPrefix}/admin/cars/change_cars_list" class="right_side">
                 <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
                 <input type="hidden" name="id" value="${route.id}">
-                <input type="hidden" name="command" value="change_cars_list"/>
                 <input type="submit" value="${change_car_list}">
             </form>
         </td>
@@ -86,20 +85,19 @@
             <td>${task.address}</td>
             <td>${task.details}</td>
             <td>
-                <form name="ProcessTask" method="post" action="${urlPrefix}/controller">
+                <form name="ProcessTask" method="post">
                     <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
                     <input type="hidden" name="id" value="${task.id}"/>
-                    <button type="submit" name="command" value="delete_task">${delete}</button>
-                    <button type="submit" name="command" value="change_task">${change}</button>
+                    <button type="submit" formaction="/admin/tasks/delete_task">${delete}</button>
+                    <button type="submit" formaction="/admin/tasks/change_task">${change}</button>
                 </form>
             </td>
         </tr>
     </c:forEach>
     <tr>
         <td colspan="5">
-            <form name="AddNewTask" method="post" action="${urlPrefix}/controller" class="right_side">
+            <form name="AddNewTask" method="post" action="${urlPrefix}/admin/tasks/add_task" class="right_side">
                 <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
-                <input type="hidden" name="command" value="add_task"/>
                 <input type="hidden" name="route_id" value="${route.id}"/>
                 <input type="submit" value="${add_new_task}"/>
             </form>
@@ -107,6 +105,7 @@
     </tr>
 </table>
 <br/>
+
 <form name="CurrentsRequestsRedirect" method="post" action="${urlPrefix}/admin/current_requests_redirect">
     <input type="hidden" name="command" value="current_requests_redirect">
     <input type="submit" value="${go_to_current_requests}"/>
@@ -114,9 +113,8 @@
 
 <%--Add part for cars changing--%>
 <c:if test="${change_car!=null}">
-    <form name="ChangeCars" method="post" action="${urlPrefix}/controller" onsubmit="return requiredInCheckbox()">
+    <form name="ChangeCars" method="post" action="${urlPrefix}/admin/cars/change_cars" onsubmit="return requiredInCheckbox()">
         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
-        <input type="hidden" name="command" value="change_cars"/>
         <h4>${cars_for_route}</h4>
         <c:forEach items="${car_busy_dates_map}" var="car_dates">
             <c:set var="car" value="${car_dates.key}"/>
@@ -140,10 +138,9 @@
 
     <c:set var="task" value="${task_to_change}"/>
 
-<form name="TaskChanger" method="post" action="${urlPrefix}/controller">
+<form name="TaskChanger" method="post" action="${urlPrefix}/admin/tasks/process_task">
     <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
     <input type="hidden" name="route_id" value="${route.id}"/>
-    <input type="hidden" name="command" value="add_change_task">
     <%@include file="../../route/part_task_form.jsp"%>
 </form>
 

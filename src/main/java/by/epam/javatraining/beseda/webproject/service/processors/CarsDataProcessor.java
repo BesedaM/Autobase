@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.service.processors;
 
-import static by.epam.javatraining.beseda.webproject.controller.command.util.constant.JSPSessionAttribute.CAR_BUSY_DATES;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CAR_BUSY_DATES;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.util.Calendar;
@@ -32,10 +32,10 @@ public class CarsDataProcessor {
 	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 
 	@Autowired
-	private static CarInterface carDAO;
+	private CarInterface carDAO;
 
 	@Autowired
-	private static RouteBuilder routeBuilder;
+	private RouteBuilder routeBuilder;
 
 	public CarsDataProcessor() {
 	}

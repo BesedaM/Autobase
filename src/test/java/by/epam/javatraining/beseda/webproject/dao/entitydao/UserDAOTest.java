@@ -1,94 +1,96 @@
 package by.epam.javatraining.beseda.webproject.dao.entitydao;
 
-import static by.epam.javatraining.beseda.webproject.util.LoggerName.TEST_LOGGER;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_DRIVER;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import by.epam.javatraining.beseda.webproject.config.EnumConfig;
+import by.epam.javatraining.beseda.webproject.config.ResultSetExtractorConfig;
+import by.epam.javatraining.beseda.webproject.config.RowMapperConfig;
+import by.epam.javatraining.beseda.webproject.config.TestConfig;
 import by.epam.javatraining.beseda.webproject.dao.exception.DAOLayerException;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.UserInterface;
-import by.epam.javatraining.beseda.webproject.entity.exception.UserException;
+import by.epam.javatraining.beseda.webproject.entity.user.Driver;
 import by.epam.javatraining.beseda.webproject.entity.user.User;
-import by.epam.javatraining.beseda.webproject.integrationtests.databasecreator.DatabaseConfigure;
 import by.epam.javatraining.beseda.webproject.service.PasswordHash;
+import by.epam.javatraining.beseda.webproject.util.TestDatabaseConfigure;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class,classes= {RowMapperConfig.class, ResultSetExtractorConfig.class,EnumConfig.class,TestConfig.class})
 public class UserDAOTest {
 
-	static Logger log = Logger.getLogger(TEST_LOGGER);
 
 	@Autowired
-	static UserInterface userDAO;
+	private UserInterface userDAO;
 
-
-	@BeforeMethod
+	@Autowired
+	private TestDatabaseConfigure dbc;
+	
+	@Before
 	public void fillData() {
-		DatabaseConfigure.fillDatabase();
+		dbc.fillDatabase();
 	}
 
-	@AfterMethod
+	@After
 	public void cleanData() {
-		DatabaseConfigure.cleanDatabase();
+		dbc.cleanDatabase();
 	}
 
+	
+	@Test
+	public void testAdd() throws DAOLayerException {
+		String newPassword = "1245QWEqw";
+		byte[] hash = PasswordHash.getHash(newPassword);
+		User user = new User("123456", hash, USER_DRIVER);
+		int id = userDAO.add(user);
+		assertEquals(user, userDAO.getEntityById(id));
+	}
+	
+	
 	@Test
 	public void testGetUserByLogin() {
-		try {
-			User user = userDAO.getUserByLogin("tatianaA");
-			assertNotNull(user);
-		} catch (DAOLayerException e) {
-			log.error(e);
-		}
+		User user = userDAO.getUserByLogin("tatianaA");
+		assertNotNull(user);
 	}
 
 	@Test
 	public void testGetUserByLogin_no_such_user() {
-		try {
-			User user = userDAO.getUserByLogin("unreal user");
-			assertNull(user);
-		} catch (DAOLayerException e) {
-			log.error(e);
-		}
+		User user = userDAO.getUserByLogin("unreal user");
+		assertNull(user);
 	}
 
 	@Test
 	public void testGetUserByLoginAndPassword() {
-		try {
-			User user = userDAO.getUserByLoginAndPassword("tatianaA", PasswordHash.getHash("25taniaQ"));
-			assertNotNull(user);
-		} catch (DAOLayerException e) {
-			log.error(e);
-		}
+		User user = userDAO.getUserByLoginAndPassword("tatianaA", PasswordHash.getHash("25taniaQ"));
+		assertNotNull(user);
 	}
 
 	@Test
 	public void testGetUserByLoginAndPassword_no_such_user() {
-		try {
-			User user = userDAO.getUserByLoginAndPassword("tatianaA", PasswordHash.getHash("wrong password"));
-			assertNull(user);
-		} catch (DAOLayerException e) {
-			log.error(e);
-		}
+		User user = userDAO.getUserByLoginAndPassword("tatianaA", PasswordHash.getHash("wrong password"));
+		assertNull(user);
 	}
 
 	@Test
 	public void testUpdatePassword() {
-		try {
-			String newPassword = "12345QWEqw";
-			byte[] hash = PasswordHash.getHash(newPassword);
-			User user = userDAO.getEntityById(3);
-			user.setPassword(hash);
-			userDAO.updatePassword(user.getId(), hash);
-			User readUser = userDAO.getEntityById(user.getId());
-			assertArrayEquals(hash, readUser.getPassword());
-		} catch (DAOLayerException | UserException e) {
-			log.error(e);
-		}
+		String newPassword = "12345QWEqw";
+		byte[] hash = PasswordHash.getHash(newPassword);
+		User user = userDAO.getEntityById(3);
+		user.setPassword(hash);
+		userDAO.updatePassword(user.getId(), hash);
+		User readUser = userDAO.getEntityById(user.getId());
+		assertArrayEquals(hash, readUser.getPassword());
 	}
 
 }
