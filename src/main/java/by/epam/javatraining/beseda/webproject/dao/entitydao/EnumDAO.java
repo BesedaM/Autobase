@@ -42,7 +42,6 @@ public class EnumDAO {
 	 * Method retrieves data from table, containing enum constants, and returns the
 	 * ReversableHashMap representation of it.
 	 *
-	 * @param statement statement object
 	 * @param tableName name of the table from where the data will be retrieved
 	 * @return ReversableHashMap<Integer , String> object with table data
 	 */

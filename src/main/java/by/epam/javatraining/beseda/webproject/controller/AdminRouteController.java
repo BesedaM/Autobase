@@ -15,6 +15,7 @@ import static by.epam.javatraining.beseda.webproject.controller.util.constant.JS
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.CURRENT_ROUTE;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.REQUEST_CUSTOMER_MAP;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.TASK_LIST;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_ADMIN;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import by.epam.javatraining.beseda.webproject.controller.util.CurrentPageProcessor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +46,7 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.RouteService
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 
 @Controller
+@PreAuthorize("hasAuthority('" + USER_ADMIN + "')")
 @ResponseBody
 public class AdminRouteController {
 
@@ -91,7 +95,7 @@ public class AdminRouteController {
 		session.setAttribute(CURRENT_ROUTE, route);
 		session.setAttribute(TASK_LIST, new ArrayList<Task>());
 
-		mav.setViewName(request.getParameter(CURRENT_PAGE));
+		mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
 		return mav;
 	}
 	

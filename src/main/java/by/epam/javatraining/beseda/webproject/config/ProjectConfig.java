@@ -6,9 +6,11 @@ import static by.epam.javatraining.beseda.webproject.util.DatabaseProperties.DAT
 
 import javax.sql.DataSource;
 
+import by.epam.javatraining.beseda.webproject.service.PasswordHash;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -36,7 +38,9 @@ import by.epam.javatraining.beseda.webproject.service.processors.CustomerProcess
 import by.epam.javatraining.beseda.webproject.service.processors.DriverProcessor;
 
 @Configuration
-@ComponentScan({ "by.epam.javatraining.beseda.webproject.dao", "by.epam.javatraining.beseda.webproject.service" })
+@ComponentScan({ "by.epam.javatraining.beseda.webproject.dao", "by.epam.javatraining.beseda.webproject.service",
+		"by.epam.javatraining.beseda.webproject.controller" })
+@Import({ RowMapperConfig.class, ResultSetExtractorConfig.class, EnumConfig.class })
 public class ProjectConfig {
 
 	@Bean
@@ -58,7 +62,7 @@ public class ProjectConfig {
 	public EnumDAO getEnumDAO() {
 		return new EnumDAO(getJdbcTemplate());
 	}
-	
+
 	@Bean(name = "userDAO")
 	public UserDAO getUserDAO() {
 		return new UserDAO(getJdbcTemplate());
@@ -113,49 +117,53 @@ public class ProjectConfig {
 	public DriverService getDriverService() {
 		return new DriverService();
 	}
-	
+
 	@Bean
 	public AddressService getAddressService() {
 		return new AddressService();
 	}
-	
+
 	@Bean
 	public CarService getCarService() {
 		return new CarService();
 	}
-	
+
 	@Bean
 	public TaskService getTaskService() {
 		return new TaskService();
 	}
-	
+
 	@Bean
 	public RouteService getRouteService() {
 		return new RouteService();
 	}
-	
+
 	@Bean
 	public RequestService getRequestservice() {
 		return new RequestService();
 	}
-	
+
 	@Bean
 	public RouteBuilder getRouteBuilder() {
 		return new RouteBuilder();
 	}
-	
+
 	@Bean
 	public CarsDataProcessor getCarsDataProcessor() {
 		return new CarsDataProcessor();
 	}
-	
+
 	@Bean
 	public CustomerProcessor getCustomerProcessor() {
 		return new CustomerProcessor();
 	}
-	
+
 	@Bean
 	public DriverProcessor getDriverProcesor() {
 		return new DriverProcessor();
 	}
+
+	@Bean
+	public PasswordHash getPasswordHash(){	return new PasswordHash();	}
+
 }

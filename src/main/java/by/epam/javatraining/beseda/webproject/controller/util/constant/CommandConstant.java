@@ -8,6 +8,8 @@ public class CommandConstant {
 	public static final int MINIMUM_COMPANY_NAME_LENGTH;
 	public static final String CONTEXT_TO_REPLACE;
 	public static final String EMPTY_STRING = "";
+	public static final String FIRST_PAGE_DELETE_FROM_START;
+	public static final String FIRST_PAGE_DELETE_FROM_END;
 
 	static {
 		TIMEZONE = "UTC";
@@ -15,5 +17,7 @@ public class CommandConstant {
 		TIME_FORMAT = "HH:mm";
 		MINIMUM_COMPANY_NAME_LENGTH = 3;
 		CONTEXT_TO_REPLACE = "/Trucking_company";
+		FIRST_PAGE_DELETE_FROM_START="/Trucking_company/view/";
+		FIRST_PAGE_DELETE_FROM_END=".jsp";
 	}
 }

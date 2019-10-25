@@ -9,11 +9,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<c:set var="urlPrefix" value="${pageContext.request.contextPath}"/>
+
 
 <fmt:bundle basename="${locale}" prefix="footer.">
     <fmt:message key="logout" var="logout"/>
 </fmt:bundle>
 
-<form class="right_top_corner" name="Logout" method="post" action="/login">
+<form class="right_top_corner" name="Logout" method="get" action="${urlPrefix}/logout" />">
     <input type="submit" value="${logout}">
 </form>

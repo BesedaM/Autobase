@@ -27,9 +27,11 @@ import by.epam.javatraining.beseda.webproject.util.TestDatabaseConfigure;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_DRIVER;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { RowMapperConfig.class,
-		ResultSetExtractorConfig.class, EnumConfig.class, TestConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {TestConfig.class })
 public class DriverDAOTest {
+
+//	@Autowired
+//	private PasswordHash passwordEncoder;
 
 	@Autowired
 	private UserInterface userDAO;
@@ -45,7 +47,7 @@ public class DriverDAOTest {
 	@BeforeClass
 	public static void createEntities() {
 		String newPassword = "1245QWEqw";
-		byte[] hash = PasswordHash.getHash(newPassword);
+		byte[] hash = new PasswordHash().getHash(newPassword);
 		user = new User("123456", hash, USER_DRIVER);
 	}
 

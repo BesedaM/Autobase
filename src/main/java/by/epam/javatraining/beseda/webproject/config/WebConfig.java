@@ -1,12 +1,13 @@
 package by.epam.javatraining.beseda.webproject.config;
 
+import by.epam.javatraining.beseda.webproject.interceptors.CharsetSetter;
+import by.epam.javatraining.beseda.webproject.interceptors.LocaleInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
@@ -34,30 +35,39 @@ public class WebConfig implements WebMvcConfigurer {
         bean.setSuffix(".jsp");
         return bean;
     }
-	
-	
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
+    }
+
 	@Bean
 	public FreeMarkerConfigurer getFreeMarkerConfigurer() {
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
 		configurer.setTemplateLoaderPaths("/view/");
 		return configurer;
 	}
-	
-    @Bean(name="jsConfig")
-    public InternalResourceViewResolver getInternalResourceViewResolverJS(){
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/js/");
-        resolver.setSuffix(".js");
-        return resolver;
-    }
-    
-    @Bean(name="cssConfig")
-    public InternalResourceViewResolver getInternalResourceViewResolverCSS(){
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/css/");
-        resolver.setSuffix(".css");
-        return resolver;
-    }
+
+//    public void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/doLogin").setViewName("doLogin");
+//    }
+
+
+//    @Bean(name="jsConfig")
+//    public InternalResourceViewResolver getInternalResourceViewResolverJS(){
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/js/");
+//        resolver.setSuffix(".js");
+//        return resolver;
+//    }
+//    
+//    @Bean(name="cssConfig")
+//    public InternalResourceViewResolver getInternalResourceViewResolverCSS(){
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/css/");
+//        resolver.setSuffix(".css");
+//        return resolver;
+//    }
 	
 //    @Bean(name="propertiesConfig")
 //    public InternalResourceViewResolver getInternalResourceViewResolverProperty(){
@@ -70,13 +80,21 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        registry.addResourceHandler("/resources/css/**")
-                .addResourceLocations("classpath:/statics/");
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("/css/");
 
-        registry.addResourceHandler("/resources/js/**")
-                .addResourceLocations("classpath:/statics/");
-        
+        registry.addResourceHandler("/javascript/**")
+                .addResourceLocations("/javascript/");
+//
 //        registry.addResourceHandler("/**")
-//        .addResourceLocations("classpath:/");
+//        .addResourceLocations("/");
     }
+
+    public void addInterceptors (InterceptorRegistry registry) {
+        registry.addInterceptor(new LocaleInterceptor());
+        registry.addInterceptor(new CharsetSetter());
+    }
+
+
+
 }

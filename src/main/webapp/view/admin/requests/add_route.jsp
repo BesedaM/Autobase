@@ -65,8 +65,8 @@
 <html lang="${lang}">
 <head>
     <title>Add new route</title>
-    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
-    <script src="../../../javascript/js.js"></script>
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
+    <script src="static/javascript/js.js"></script>
 
 </head>
 <body>

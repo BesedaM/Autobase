@@ -35,7 +35,7 @@
 <html lang="${lang}">
 <head>
     <title>Rejected requests</title>
-    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
 </head>
 <body>
 <%@include file="../../header/registered_user.jsp" %>
@@ -73,7 +73,7 @@
                 </c:forEach>
             </table>
             <br/>
-            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/admin/main">
+            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/admin/admin_main">
                 <input type="hidden" name="command" value="admin_main_redirect"/>
                 <input type="submit" value="${admin_main_redirect}"/>
             </form>

@@ -14,11 +14,13 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import by.epam.javatraining.beseda.webproject.service.PasswordHash;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
@@ -49,6 +51,7 @@ import by.epam.javatraining.beseda.webproject.util.TestDatabaseConfigure;
 @Configuration
 @ComponentScan({ "by.epam.javatraining.beseda.webproject.dao", 
 	"by.epam.javatraining.beseda.webproject.service", "by.epam.javatraining.beseda.webproject.util" })
+@Import({RowMapperConfig.class, ResultSetExtractorConfig.class,EnumConfig.class})
 public class TestConfig {
 
 	private Logger log = Logger.getLogger(ERROR_LOGGER);
@@ -201,4 +204,6 @@ public class TestConfig {
 		return new TestDatabaseConfigure();
 	}
 
+	@Bean
+	public PasswordHash getPasswordHash(){	return new PasswordHash();	}
 }

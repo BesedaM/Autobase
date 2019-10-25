@@ -1,9 +1,6 @@
 package by.epam.javatraining.beseda.webproject.controller;
 
-import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPAttribute.DATA_CHANGED;
-import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPAttribute.ERROR_MESSAGE;
-import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPAttribute.PASSWORD_CHANGED;
-import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPAttribute.STATUS_TRUE;
+import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPAttribute.*;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.COMPANY_NAME;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.CURRENT_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.EMAIL;
@@ -18,6 +15,7 @@ import static by.epam.javatraining.beseda.webproject.controller.util.constant.JS
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.CUSTOMER_PERSONAL_DATA_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.REQUEST_LIST;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.USER_DATA;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_CUSTOMER;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.util.List;
@@ -25,8 +23,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import by.epam.javatraining.beseda.webproject.controller.util.CurrentPageProcessor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,8 +45,11 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.RequestServi
 import by.epam.javatraining.beseda.webproject.service.entityservice.UserService;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 import by.epam.javatraining.beseda.webproject.service.processors.CustomerProcessor;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
+@PreAuthorize("hasAuthority('" + USER_CUSTOMER + "')")
 @ResponseBody
 @RequestMapping(value= {"/customer"})
 public class CustomerController {
@@ -66,7 +69,7 @@ public class CustomerController {
 	private UserService userService;
 
 	
-	@GetMapping(value = { "/customer_main_redirect" })
+	@GetMapping(value = { "/customer_main" })
 	public ModelAndView gotoCustomerMain() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(CUSTOMER_MAIN_PAGE);
@@ -85,7 +88,7 @@ public class CustomerController {
 	@PostMapping(value = { "/delete_request" })
 	public ModelAndView deleteRequest(@RequestParam String id, @RequestParam String current_page, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(current_page);
+		mav.setViewName(CurrentPageProcessor.processPage(current_page));
 		try {
 			int requestId = Integer.parseInt(id);
 			requestService.delete(requestId);
@@ -98,20 +101,27 @@ public class CustomerController {
 
 	
 	@PostMapping(value = { "/add_request" })
-	public ModelAndView addRequest(@RequestParam String new_request_text, @RequestParam String current_page,
-			HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(current_page);
+	public RedirectView addRequest(@RequestParam String new_request_text, @RequestParam String current_page,
+								   HttpSession session, RedirectAttributes attributes) {
 		Customer customer = (Customer) session.getAttribute(USER_DATA);
 		try {
+
+			log.error(customer);
+
 			String requestText = Decoder.decode(new_request_text);
 			Request request = requestService.createRequest(customer, requestText);
+
+			log.error("request created");
+
 			requestService.add(request);
-			session.setAttribute(NEW_REQUEST, request);
+
+			log.error("request added");
+
+			attributes.addAttribute(NEW_REQUEST, request);
 		} catch (ServiceLayerException e) {
 			log.error(this.getClass().getSimpleName() + " " + e);
 		}
-		return mav;
+		return new RedirectView(CUSTOMER_MAIN_PAGE);
 	}
 
 	
@@ -119,11 +129,10 @@ public class CustomerController {
 	@PostMapping(value = { "/add_another_request" })
 	public ModelAndView addAnotherRequest(@RequestParam String current_page, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(current_page);
+		mav.setViewName(CurrentPageProcessor.processPage(current_page));
 		List<Request> requestList = (List<Request>) session.getAttribute(REQUEST_LIST);
 		Request newRequest = (Request) session.getAttribute(NEW_REQUEST);
 		requestList.add(newRequest);
-		session.setAttribute(NEW_REQUEST, null);
 		return mav;
 	}
 
@@ -131,7 +140,7 @@ public class CustomerController {
 	@PostMapping(value = { "/change_data" })
 	public ModelAndView addChangeData(HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(request.getParameter(CURRENT_PAGE));
+		mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
 		Customer customer = (Customer) session.getAttribute(USER_DATA);
 		try {
 			String companyName = Decoder.decode(request.getParameter(COMPANY_NAME));
@@ -169,7 +178,7 @@ public class CustomerController {
 	@PostMapping(value = { "/change_password" })
 	public ModelAndView changePassword(HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(request.getParameter(CURRENT_PAGE));
+		mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
 
 		String newPassword = request.getParameter(NEW_PASSWORD);
 		String password = request.getParameter(PASSWORD);

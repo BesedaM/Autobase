@@ -42,7 +42,7 @@
 <html lang="${lang}">
 <head>
     <title>Fulfilled requests</title>
-    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
 </head>
 <body>
 <%@include file="../../header/registered_user.jsp" %>
@@ -109,7 +109,7 @@
             </table>
 
             <br/>
-            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/admin/main">
+            <form name="AdminMainRedirect" method="post" action="${urlPrefix}/admin/admin_main">
                 <input type="submit" value="${admin_main_redirect}"/>
             </form>
         </td>

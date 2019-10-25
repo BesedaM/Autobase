@@ -9,6 +9,7 @@ import static by.epam.javatraining.beseda.webproject.controller.util.constant.JS
 
 import javax.servlet.http.HttpSession;
 
+import by.epam.javatraining.beseda.webproject.controller.util.CurrentPageProcessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +23,7 @@ public class LocaleChangerController {
 	@PostMapping(value= {"/change_locale"})
 	public ModelAndView changeLocale(@RequestParam String language_select, @RequestParam String current_page ,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(current_page);
+		mav.setViewName(CurrentPageProcessor.processPage(current_page));
 		String locale = null;
 		session.setAttribute(LANGUAGE, language_select);
 		if (language_select.equals(LANGUAGE_EN)) {

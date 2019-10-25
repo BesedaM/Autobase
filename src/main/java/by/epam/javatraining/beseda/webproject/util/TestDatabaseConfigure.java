@@ -52,27 +52,21 @@ public class TestDatabaseConfigure {
 	}
 
 	public void cleanDatabase() {
-//		lock.lock();
 		try (Connection connection = dataSource.getConnection()) {
 			Statement st = connection.createStatement();
 			st.execute(DROP_DB_STATEMENT);
 		} catch (SQLException e) {
 			log.error(e);
-		} finally {
-//			lock.unlock();
 		}
 	}
 
 	public void truncateTable(String tableName) {
-//		lock.lock();
 		try (Connection connection = dataSource.getConnection()) {
 			Statement st = connection.createStatement();
 			String sql = TRUNCATE_TABLE_STATEMENT.replace("table", tableName);
 			st.execute(sql);
 		} catch (SQLException e) {
 			log.error(e);
-		} finally {
-//			lock.unlock();
 		}
 	}
 

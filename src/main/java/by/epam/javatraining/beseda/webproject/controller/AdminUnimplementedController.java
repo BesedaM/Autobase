@@ -3,13 +3,16 @@ package by.epam.javatraining.beseda.webproject.controller;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.CAR_LIST_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.CLIENT_LIST_PAGE;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPPath.DRIVER_LIST_PAGE;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_ADMIN;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@PreAuthorize("hasAuthority('" + USER_ADMIN + "')")
 @ResponseBody
 public class AdminUnimplementedController {
 

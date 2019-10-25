@@ -1,6 +1,6 @@
 package by.epam.javatraining.beseda.webproject.service.exception;
 
-import by.epam.javatraining.beseda.webproject.exception.AutobaseProjectException;
+import by.epam.javatraining.beseda.webproject.exception.TruckingCompanyProjectException;
 
 /**
  * General class for all the exceptions in ServiceLayer.
@@ -8,7 +8,7 @@ import by.epam.javatraining.beseda.webproject.exception.AutobaseProjectException
  * @author Maryia_Biaseda
  *
  */
-public class ServiceLayerException extends AutobaseProjectException {
+public class ServiceLayerException extends TruckingCompanyProjectException {
 
 	public ServiceLayerException() {
 	}

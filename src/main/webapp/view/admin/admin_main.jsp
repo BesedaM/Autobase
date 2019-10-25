@@ -34,8 +34,7 @@
 <html lang="${lang}">
 <head>
 <title>Admin main</title>
-<link rel="stylesheet" type="text/css"
-	href="${urlPrefix}/css/styles.css">
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
 </head>
 <body>
 	<%@include file="../header/registered_user.jsp"%>
@@ -47,32 +46,32 @@
 			</tr>
 			<tr>
 				<td>
-					<button type="submit" formaction="/admin/new_requests">${new_requests}</button>
+					<button type="submit" formaction="${urlPrefix}/admin/new_requests">${new_requests}</button>
 				</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td>
-					<button type="submit" formaction="/admin/current_requests">${current_requests}</button>
+					<button type="submit" formaction="${urlPrefix}/admin/current_requests">${current_requests}</button>
 				</td>
 				<td>
-					<button type="submit" formaction="/admin/car_list">${car_list}</button>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<button type="submit" formaction="/admin/fulfilled_requests">${fulfilled_requests}</button>
-				</td>
-				<td>
-					<button type="submit" formaction="/admin/drivers">${driver_list}</button>
+					<button type="submit" formaction="${urlPrefix}/admin/car_list">${car_list}</button>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<button type="submit" formaction="/admin/rejected_requests">${rejected_requests}</button>
+					<button type="submit" formaction="${urlPrefix}/admin/fulfilled_requests">${fulfilled_requests}</button>
 				</td>
 				<td>
-					<button type="submit" formaction="/admin/customers">${client_list}</button>
+					<button type="submit" formaction="${urlPrefix}/admin/drivers">${driver_list}</button>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button type="submit" formaction="${urlPrefix}/admin/rejected_requests">${rejected_requests}</button>
+				</td>
+				<td>
+					<button type="submit" formaction="${urlPrefix}/admin/customers">${client_list}</button>
 				</td>
 			</tr>
 		</table>

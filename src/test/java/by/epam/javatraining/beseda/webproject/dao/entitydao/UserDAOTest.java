@@ -27,7 +27,7 @@ import by.epam.javatraining.beseda.webproject.service.PasswordHash;
 import by.epam.javatraining.beseda.webproject.util.TestDatabaseConfigure;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class,classes= {RowMapperConfig.class, ResultSetExtractorConfig.class,EnumConfig.class,TestConfig.class})
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class,classes= {TestConfig.class})
 public class UserDAOTest {
 
 
@@ -51,7 +51,7 @@ public class UserDAOTest {
 	@Test
 	public void testAdd() throws DAOLayerException {
 		String newPassword = "1245QWEqw";
-		byte[] hash = PasswordHash.getHash(newPassword);
+		byte[] hash = new PasswordHash().getHash(newPassword);
 		User user = new User("123456", hash, USER_DRIVER);
 		int id = userDAO.add(user);
 		assertEquals(user, userDAO.getEntityById(id));
@@ -72,20 +72,20 @@ public class UserDAOTest {
 
 	@Test
 	public void testGetUserByLoginAndPassword() {
-		User user = userDAO.getUserByLoginAndPassword("tatianaA", PasswordHash.getHash("25taniaQ"));
+		User user = userDAO.getUserByLoginAndPassword("tatianaA", new PasswordHash().getHash("25taniaQ"));
 		assertNotNull(user);
 	}
 
 	@Test
 	public void testGetUserByLoginAndPassword_no_such_user() {
-		User user = userDAO.getUserByLoginAndPassword("tatianaA", PasswordHash.getHash("wrong password"));
+		User user = userDAO.getUserByLoginAndPassword("tatianaA", new PasswordHash().getHash("wrong password"));
 		assertNull(user);
 	}
 
 	@Test
 	public void testUpdatePassword() {
 		String newPassword = "12345QWEqw";
-		byte[] hash = PasswordHash.getHash(newPassword);
+		byte[] hash = new PasswordHash().getHash(newPassword);
 		User user = userDAO.getEntityById(3);
 		user.setPassword(hash);
 		userDAO.updatePassword(user.getId(), hash);

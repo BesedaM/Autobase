@@ -20,84 +20,13 @@ public class UserService extends AbstractEntityService<User> {
 	@Autowired
 	private UserInterface entityDAO;
 
+	@Autowired
+	private PasswordHash passwordEncoder;
+
 	public UserService() {
 		super();
 	}
 
-//    @Override
-//    public final List<User> getAll() throws ServiceLayerException {
-//        List<User> list = null;
-//        try {
-//            list = entityDAO.getAll();
-//        } catch (DAOLayerException e) {
-//            throw new ServiceLayerException(e);
-//        }
-//        return list;
-//    }
-//	
-//    @Override
-//    public final User getEntityById(int id) throws ServiceLayerException {
-//        User entity = null;
-//        if (id > 0) {
-//            try {
-//                entity = entityDAO.getEntityById(id);
-//            } catch (DAOLayerException e) {
-//                throw new ServiceTechnicalException(e);
-//            }
-//        }
-//        return entity;
-//    }
-//
-//    @Override
-//    public List<User> getEntitiesByIdList(int[] idArr) throws ServiceLayerException {
-//        List<User> list = null;
-//        try {
-//            list = entityDAO.getEntitiesByIdList(idArr);
-//        } catch (DAOLayerException e) {
-//            throw new ServiceLayerException(e);
-//        }
-//        return list;
-//    }
-//
-//    /**
-//     * Adds entityservice to database and assigns to entityservice the value of id
-//     *
-//     * @param entity entityservice to add
-//     * @throws ServiceLayerException
-//     */
-//    @Override
-//    public void add(User entity) throws ServiceLayerException {
-//        if (entity != null) {
-//            try {
-//                int id = entityDAO.add(entity);
-//                entity.setId(id);
-//            } catch (DAOLayerException | EntityIdException e) {
-//                throw new ServiceLogicException(e);
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void update(User entity) throws ServiceLayerException {
-//        if (entity != null) {
-//            try {
-//                entityDAO.update(entity);
-//            } catch (DAOLayerException e) {
-//                throw new ServiceLogicException(e);
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public final void delete(int id) throws ServiceLogicException {
-//        if (id > 0) {
-//            try {
-//                entityDAO.delete(id);
-//            } catch (DAOTechnicalException e) {
-//                throw new ServiceLogicException(e);
-//            }
-//        }
-//    }
 	/**
 	 * Creates entity with the given data WITHOUT id
 	 * 
@@ -111,7 +40,7 @@ public class UserService extends AbstractEntityService<User> {
 		User user = new User();
 		if (login != null && password != null && user_role != null && !loginExists(login)
 				&& RegisterLogic.legalPassword(password)) {
-			byte[] pw = PasswordHash.getHash(password);
+			byte[] pw = passwordEncoder.getHash(password);
 			user.setLogin(login);
 			user.setPassword(pw);
 			user.setRole(user_role);
@@ -140,7 +69,6 @@ public class UserService extends AbstractEntityService<User> {
 	 * 
 	 * @param role user role
 	 * @return list of users
-	 * @throws ServiceLayerException
 	 */
 	public final List<User> getUsersByRole(String role){
 		List<User> newList = new ArrayList<>();
@@ -161,7 +89,6 @@ public class UserService extends AbstractEntityService<User> {
 	 * 
 	 * @param login user login
 	 * @return user
-	 * @throws ServiceTechnicalException
 	 */
 	public final User getUserByLogin(String login) {
 		User user = null;
@@ -177,12 +104,11 @@ public class UserService extends AbstractEntityService<User> {
 	 * @param login    user login
 	 * @param password user password
 	 * @return user
-	 * @throws ServiceTechnicalException
 	 */
 	public final User getUserByLoginAndPassword(String login, String password){
 		User user = null;
 		if (login != null && password != null) {
-			byte[] pw = PasswordHash.getHash(password);
+			byte[] pw = passwordEncoder.getHash(password);
 			user = ((UserDAO) entityDAO).getUserByLoginAndPassword(login, pw);
 		}
 		return user;
@@ -193,12 +119,10 @@ public class UserService extends AbstractEntityService<User> {
 	 * 
 	 * @param id          user id
 	 * @param newPassword new password for user
-	 * @return true if method succeeds
-	 * @throws ServiceLayerException
 	 */
 	public final void changePassword(int id, String newPassword){
 		if (id > 0 && newPassword != null) {
-			byte[] pw = PasswordHash.getHash(newPassword);
+			byte[] pw = passwordEncoder.getHash(newPassword);
 			((UserDAO) entityDAO).updatePassword(id, pw);
 		}
 	}

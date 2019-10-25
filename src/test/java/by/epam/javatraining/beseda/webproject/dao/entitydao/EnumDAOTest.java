@@ -17,7 +17,7 @@ import by.epam.javatraining.beseda.webproject.config.TestConfig;
 import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class,classes= {RowMapperConfig.class, ResultSetExtractorConfig.class,EnumConfig.class,TestConfig.class})
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class,classes= {TestConfig.class})
 public class EnumDAOTest {
 
 	@Autowired

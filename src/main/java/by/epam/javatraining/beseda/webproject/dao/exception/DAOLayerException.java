@@ -1,9 +1,9 @@
 package by.epam.javatraining.beseda.webproject.dao.exception;
 
-import by.epam.javatraining.beseda.webproject.exception.AutobaseProjectException;
+import by.epam.javatraining.beseda.webproject.exception.TruckingCompanyProjectException;
 
 @SuppressWarnings("serial")
-public class DAOLayerException extends AutobaseProjectException{
+public class DAOLayerException extends TruckingCompanyProjectException {
 
     public DAOLayerException() {
     }

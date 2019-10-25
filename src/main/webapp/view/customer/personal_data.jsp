@@ -48,7 +48,7 @@
 <html lang="${lang}">
 <head>
     <title>Personal data</title>
-    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
 </head>
 <body>
 <%@include file="../header/registered_user.jsp" %>
@@ -184,7 +184,7 @@
     <input type="submit" value="${change_data}"/>
 </form>
 
-<form name="GoToCustomerMain" action="${urlPrefix}/customer/customer_main_redirect" method="get">
+<form name="GoToCustomerMain" action="${urlPrefix}/customer/customer_main" method="get">
     <input type="submit" value="${back_to_customer_main}"/>
 </form>
 

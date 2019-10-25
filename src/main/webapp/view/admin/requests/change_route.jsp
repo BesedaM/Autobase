@@ -51,8 +51,8 @@
 <html lang="${lang}">
 <head>
     <title>Change route</title>
-    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
-    <script src="../../../javascript/js.js"></script>
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
+    <script src="static/javascript/js.js"></script>
 </head>
 <body>
 <%@include file="../../header/registered_user.jsp" %>

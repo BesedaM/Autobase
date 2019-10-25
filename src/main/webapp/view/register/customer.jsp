@@ -53,7 +53,7 @@
 <head>
 <title>${title}</title>
 <meta http-equiv="Content-Type" content="text/html">
-    <link rel="stylesheet" type="text/css" href="<@spring.url '/css/styles.css'/>">
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
 </head>
 <body>
 

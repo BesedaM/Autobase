@@ -101,16 +101,4 @@ public class AddressDAO extends AbstractDAO<Address> implements AddressInterface
 		return parameters;
 	}
 
-//	@Override
-//	protected Object[] createEntityParamArray(Address entity) {
-//		Object[] array = new Object[6];
-//		array[0] = entity.getCountry();
-//		array[1] = entity.getDistrict();
-//		array[2] = entity.getCity();
-//		array[3] = entity.getStreet();
-//		array[4] = entity.getHouse();
-//		array[5] = entity.getBuilding();
-//		return array;
-//	}
-
 }

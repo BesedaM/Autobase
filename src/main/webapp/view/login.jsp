@@ -9,7 +9,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%-- <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> --%>
 <%-- <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> --%>
 
 
@@ -35,22 +34,22 @@
 <html lang="${lang}">
 <head>
     <title>${title}</title>
-    <link rel="stylesheet" href="<spring:url value="/resources/css/style.css"/>" type="text/css"/>
+    <link rel="stylesheet" href="css/style.css" type="text/css"/>
 </head>
 <body>
 
 <%@include file="header/non_registered_user.jsp" %>
 
-<form name="LoginForm" method="post" action="${urlPrefix}/first_page">
+<form name="loginForm" method="POST" action="${urlPrefix}/doLogin">
 
     <p>${prompt}</p>
     <table>
         <tr>
             <td class="login">
-                <label for="login">${login}${colon}</label>
+                <label for="username">${login}${colon}</label>
             </td>
             <td>
-                <input id="login" name="login" type="text" required/>
+                <input id="username" name="username" type="text" required/>
             </td>
         </tr>
         <tr>

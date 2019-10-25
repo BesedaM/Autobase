@@ -10,6 +10,7 @@ import static by.epam.javatraining.beseda.webproject.controller.util.constant.JS
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.REQUEST_CUSTOMER_MAP;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.TASK_TO_CHANGE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.ADOPTED_REQUEST;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_ADMIN;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.util.Collections;
@@ -20,10 +21,13 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
+import by.epam.javatraining.beseda.webproject.controller.util.CurrentPageProcessor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,6 +43,7 @@ import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerExce
 import by.epam.javatraining.beseda.webproject.service.processors.CarsDataProcessor;
 
 @Controller
+@PreAuthorize("hasAuthority('" + USER_ADMIN + "')")
 @ResponseBody
 public class AdminRequestsController {
 
@@ -118,7 +123,7 @@ public class AdminRequestsController {
 				routeBuilder.addCarList(route);
 				request.setRoute(route);
 			}
-			int customerId = requestService.getCustomerId(requests.get(i).getId());
+			int customerId = requestService.getCustomerId(request.getId());
 			Customer customer = customerService.getEntityById(customerId);
 			requestCustomerMap.put(requests.get(i), customer);
 		}
@@ -147,7 +152,7 @@ public class AdminRequestsController {
 	@PostMapping(value = { "/admin/new_requests/process_request" })
 	public ModelAndView processRequest(@RequestParam String current_page, @RequestParam String status, @RequestParam String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(current_page);
+		mav.setViewName(CurrentPageProcessor.processPage(current_page));
 		try {
 			String newRequestStatus = Decoder.decode(status);
 			int requestId = Integer.parseInt(id);
@@ -170,7 +175,7 @@ public class AdminRequestsController {
 		return mav;
 	}
 	
-	@PostMapping(value = { "/admin/main" })
+	@RequestMapping(value = { "/admin/admin_main" })
 	public ModelAndView gotoMain(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(ADMIN_MAIN_PAGE);

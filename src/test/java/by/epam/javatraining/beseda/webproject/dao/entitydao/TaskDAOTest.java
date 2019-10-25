@@ -30,8 +30,7 @@ import by.epam.javatraining.beseda.webproject.entity.route.Task;
 import by.epam.javatraining.beseda.webproject.util.TestDatabaseConfigure;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { RowMapperConfig.class,
-		ResultSetExtractorConfig.class, EnumConfig.class, TestConfig.class })
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {TestConfig.class })
 public class TaskDAOTest {
 
 	private Logger log = Logger.getLogger(TEST_LOGGER);

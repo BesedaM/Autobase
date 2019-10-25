@@ -1,6 +1,8 @@
 package by.epam.javatraining.beseda.webproject.service;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -17,34 +19,51 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 /**
  * Class for passwords hashing.
  */
-public class PasswordHash {
+public class PasswordHash implements PasswordEncoder {
 
-	private static Logger log = Logger.getLogger(ERROR_LOGGER);
+    private static Logger log = Logger.getLogger(ERROR_LOGGER);
+    private static byte[] salt = SALT_HASHING;
 
-	private PasswordHash() {
-	}
 
-	/**
-	 * Creates byte array representation of the password.
-	 *
-	 * @param password password to hash
-	 * @return byte array
-	 */
-	public static final byte[] getHash(String password) {
-		byte[] hash = null;
-		if (password != null) {
-			byte[] salt = SALT_HASHING;
+    public PasswordHash() {
+    }
 
-			KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
+    /**
+     * Creates byte array representation of the password.
+     *
+     * @param password password to hash
+     * @return byte array
+     */
+    public byte[] getHash(String password) {
+        byte[] hash = null;
+        if (password != null) {
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
 
-			try {
-				SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-				hash = factory.generateSecret(spec).getEncoded();
-			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-				log.error("Error encrypting a password: " + e);
-			}
-		}
-		return hash;
-	}
+            try {
+                SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+                hash = factory.generateSecret(spec).getEncoded();
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                log.error("Error encrypting a password: " + e);
+            }
+        }
+        return hash;
+    }
 
+    /**
+     * Method created for working with Spring Security
+     *
+     * @param rawPassword original password
+     * @return string representation in hex format of the password
+     */
+    @Override
+    public String encode(CharSequence rawPassword) {
+        byte[] hash = getHash(rawPassword.toString());
+        return Hex.encodeHexString(hash);
+    }
+
+
+    @Override
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        return encode(rawPassword).equals(encodedPassword);
+    }
 }

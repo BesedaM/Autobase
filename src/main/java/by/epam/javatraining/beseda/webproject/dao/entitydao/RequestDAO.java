@@ -43,115 +43,116 @@ import by.epam.javatraining.beseda.webproject.util.ReversalHashMap;
 @Repository
 public class RequestDAO extends AbstractDAO<Request> implements RequestInterface {
 
-	@Autowired
-	@Qualifier("requestStatusMap")
-	private ReversalHashMap<Integer, String> requestStatusMap;
+    @Autowired
+    @Qualifier("requestStatusMap")
+    private ReversalHashMap<Integer, String> requestStatusMap;
 
-	public RequestDAO() {
-		super();
-	}
+    public RequestDAO() {
+        super();
+    }
 
-	public RequestDAO(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
+    public RequestDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-	@Autowired
-	@Qualifier("requestMapper")
-	@Override
-	protected void setRowMapper(RowMapper<Request> rowMapper) {
-		this.rowMapper = rowMapper;
-	}
+    @Autowired
+    @Qualifier("requestMapper")
+    @Override
+    protected void setRowMapper(RowMapper<Request> rowMapper) {
+        this.rowMapper = rowMapper;
+    }
 
-	@Autowired
-	@Qualifier("requestExtractor")
-	@Override
-	protected void setResultSetExtractor(ResultSetExtractor<Request> rsExtractor) {
-		this.rsExtractor = rsExtractor;
-	}
+    @Autowired
+    @Qualifier("requestExtractor")
+    @Override
+    protected void setResultSetExtractor(ResultSetExtractor<Request> rsExtractor) {
+        this.rsExtractor = rsExtractor;
+    }
 
-	@Override
-	public void setCustomer(int customerId, int requestId) {
-		jdbcTemplate.update(REQUEST_CUSTOMER_UPDATE_DEPENDENCE, customerId, requestId);
-	}
+    @Override
+    public void setCustomer(int customerId, int requestId) {
+        jdbcTemplate.update(REQUEST_CUSTOMER_UPDATE_DEPENDENCE, customerId, requestId);
+    }
 
-	@Override
-	public int getCustomerId(int requestId) {
-		return jdbcTemplate.update(REQUEST_CUSTOMER_GET_CUSTOMER_ID, requestId);
-	}
+    @Override
+    public int getCustomerId(int requestId) {
+        Integer customerId = jdbcTemplate.queryForObject(REQUEST_CUSTOMER_GET_CUSTOMER_ID, new Object[]{requestId}, Integer.class);
+        return customerId != null ? customerId : 0;
+    }
 
-	@Override
-	public void deleteCustomer(int customerId, int requestId) {
-		jdbcTemplate.update(REQUEST_CUSTOMER_UPDATE_DEPENDENCE, ZERO_VALUE, requestId);
-	}
+    @Override
+    public void deleteCustomer(int customerId, int requestId) {
+        jdbcTemplate.update(REQUEST_CUSTOMER_UPDATE_DEPENDENCE, ZERO_VALUE, requestId);
+    }
 
-	@Override
-	protected String getAllStatement() {
-		return SELECT_ALL_REQUESTS;
-	}
+    @Override
+    protected String getAllStatement() {
+        return SELECT_ALL_REQUESTS;
+    }
 
-	@Override
-	protected String getEntityByIdStatement() {
-		return SELECT_REQUEST_BY_ID;
-	}
+    @Override
+    protected String getEntityByIdStatement() {
+        return SELECT_REQUEST_BY_ID;
+    }
 
-	@Override
-	protected String getEntityListByIdStatement() {
-		return SELECT_REQUESTS_BY_ID_LIST;
-	}
+    @Override
+    protected String getEntityListByIdStatement() {
+        return SELECT_REQUESTS_BY_ID_LIST;
+    }
 
-	@Override
-	protected String deleteStatement() {
-		return DELETE_REQUEST_BY_ID;
-	}
+    @Override
+    protected String deleteStatement() {
+        return DELETE_REQUEST_BY_ID;
+    }
 
-	@Override
-	protected String addStatement() {
-		return ADD_NEW_REQUEST;
-	}
+    @Override
+    protected String addStatement() {
+        return ADD_NEW_REQUEST;
+    }
 
-	@Override
-	protected String updateStatement() {
-		return UPDATE_REQUEST;
-	}
+    @Override
+    protected String updateStatement() {
+        return UPDATE_REQUEST;
+    }
 
-	@Override
-	public List<Request> selectActiveCustomerRequests(int customerId) {
-		String sql = SELECT_ACTIVE_CUSTOMER_REQUESTS.replace(QUESTION_MARK, customerId + EMPTY_CHARACTER);
-		return jdbcTemplate.query(sql, rowMapper);
-	}
+    @Override
+    public List<Request> selectActiveCustomerRequests(int customerId) {
+        String sql = SELECT_ACTIVE_CUSTOMER_REQUESTS.replace(QUESTION_MARK, customerId + EMPTY_CHARACTER);
+        return jdbcTemplate.query(sql, rowMapper);
+    }
 
-	@Override
-	public List<Request> getNewRequests() {
-		return jdbcTemplate.query(SELECT_NEW_REQUESTS, rowMapper);
-	}
+    @Override
+    public List<Request> getNewRequests() {
+        return jdbcTemplate.query(SELECT_NEW_REQUESTS, rowMapper);
+    }
 
-	@Override
-	public List<Request> getCurrentRequests() {
-		return jdbcTemplate.query(SELECT_CURRENT_REQUESTS, rowMapper);
-	}
+    @Override
+    public List<Request> getCurrentRequests() {
+        return jdbcTemplate.query(SELECT_CURRENT_REQUESTS, rowMapper);
+    }
 
-	@Override
-	public List<Request> getFulfilledRequests() {
-		return jdbcTemplate.query(SELECT_FULFILLED_REQUESTS, rowMapper);
-	}
+    @Override
+    public List<Request> getFulfilledRequests() {
+        return jdbcTemplate.query(SELECT_FULFILLED_REQUESTS, rowMapper);
+    }
 
-	@Override
-	public List<Request> getRejectedRequests() {
-		return jdbcTemplate.query(SELECT_REJECTED_REQUESTS, rowMapper);
-	}
+    @Override
+    public List<Request> getRejectedRequests() {
+        return jdbcTemplate.query(SELECT_REJECTED_REQUESTS, rowMapper);
+    }
 
-	@Override
-	protected MapSqlParameterSource createMapSqlParameterSource(Request entity) {
-		int statusId = requestStatusMap.getKey(entity.getStatus());
-		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		if (entity.getCustomer() != null) {
-			parameters.addValue(CUSTOMER_ID_REQUESTS, entity.getCustomer().getId());
-		}
-		parameters.addValue(REQUEST_STATUS_ID_REQUESTS, statusId);
-		parameters.addValue(COMMENT, entity.getComment());
-		parameters.addValue(CUSTOMER_ID_REQUESTS, entity.getCustomer().getId());
-		parameters.addValue(ID, entity.getId());
-		return parameters;
-	}
+    @Override
+    protected MapSqlParameterSource createMapSqlParameterSource(Request entity) {
+        int statusId = requestStatusMap.getKey(entity.getStatus());
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        if (entity.getCustomer() != null) {
+            parameters.addValue(CUSTOMER_ID_REQUESTS, entity.getCustomer().getId());
+        }
+        parameters.addValue(REQUEST_STATUS_ID_REQUESTS, statusId);
+        parameters.addValue(COMMENT, entity.getComment());
+        parameters.addValue(CUSTOMER_ID_REQUESTS, entity.getCustomer().getId());
+        parameters.addValue(ID, entity.getId());
+        return parameters;
+    }
 
 }

@@ -24,7 +24,7 @@
 	Not supported!!!
 	
 	<form name="AdminMainRedirect" method="post"
-		action="${urlPrefix}/admin/main">
+		action="${urlPrefix}/admin/admin_main">
  <input	type="submit" value="${admin_main_redirect}" />
 	</form>
 </body>

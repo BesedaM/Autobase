@@ -55,7 +55,7 @@
 <html lang="${lang}">
 <head>
     <title>Customer main</title>
-    <link rel="stylesheet" type="text/css" href="${urlPrefix}/css/styles.css">
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
 </head>
 <body>
 <%@include file="../header/registered_user.jsp" %>
@@ -124,7 +124,7 @@
 
 <br/>
 <h1>${leave_request}</h1>
-<c:if test="${sessionScope.new_request==null}">
+<c:if test="${new_request==null}">
     <form name="AddNewRequest" method="post" action="${urlPrefix}/customer/add_request">
         <input type="hidden" name="current_page" value="${pageContext.request.requestURI}"/>
         <p>${new_request_info}</p>
@@ -134,7 +134,7 @@
     </form>
 </c:if>
 
-<c:if test="${sessionScope.new_request!=null}">
+<c:if test="${new_request!=null}">
     <c:set var="new_request" value="${sessionScope.new_request}"/>
     <p class="important_info">${new_request_id_message}
         <span>${new_request.id}</span> ${from}

@@ -1,5 +1,6 @@
 package by.epam.javatraining.beseda.webproject.controller;
 
+
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.BUILDING;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.CITY;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPParameter.COUNTRY;
@@ -17,6 +18,7 @@ import static by.epam.javatraining.beseda.webproject.controller.util.constant.JS
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.STATUS_TRUE;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.TASK_LIST;
 import static by.epam.javatraining.beseda.webproject.controller.util.constant.JSPSessionAttribute.TASK_TO_CHANGE;
+import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEnumTable.USER_ADMIN;
 import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.text.ParseException;
@@ -29,8 +31,10 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import by.epam.javatraining.beseda.webproject.controller.util.CurrentPageProcessor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +51,7 @@ import by.epam.javatraining.beseda.webproject.service.entityservice.TaskService;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
 
 @Controller
+@PreAuthorize("hasAuthority('" + USER_ADMIN + "')")
 @ResponseBody
 public class AdminTaskController {
 
@@ -62,7 +67,7 @@ public class AdminTaskController {
 	@PostMapping(value = { "/admin/tasks/add_task" })
 	public ModelAndView addTask(@RequestParam String current_page, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(current_page);
+		mav.setViewName(CurrentPageProcessor.processPage(current_page));
 		session.setAttribute(ADD_TASK_FLAG, STATUS_TRUE);
 		return mav;
 	}
@@ -70,7 +75,7 @@ public class AdminTaskController {
 	@PostMapping(value = { "/admin/tasks/delete_task" })
 	public ModelAndView deleteTask(@RequestParam String current_page, @RequestParam String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(current_page);
+		mav.setViewName(CurrentPageProcessor.processPage(current_page));
 		Route route = (Route) session.getAttribute(CHANGING_ROUTE);
 		int taskId = Integer.parseInt(id);
 		taskService.delete(taskId);
@@ -82,7 +87,7 @@ public class AdminTaskController {
 	@PostMapping(value = { "/admin/tasks/change_task" })
 	public ModelAndView changeTask(@RequestParam String current_page, @RequestParam String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(current_page);
+		mav.setViewName(CurrentPageProcessor.processPage(current_page));
 		
 		int taskId = Integer.parseInt(id);
 		Route route = (Route) session.getAttribute(CHANGING_ROUTE);
@@ -103,7 +108,7 @@ public class AdminTaskController {
 	@PostMapping(value = { "/admin/tasks/process_task" })
 	public ModelAndView processTask(HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(request.getParameter(CURRENT_PAGE));
+		mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
 		
 		Task taskToChange = null;
 		Route route = null;

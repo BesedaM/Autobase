@@ -72,13 +72,6 @@ public class CustomerDAO extends AbstractDAO<Customer> implements CustomerInterf
 		npjt.update(addStatement(), createMapSqlParameterSource(entity));
 		return entity.getId();
 	}
-//
-//	@Override
-//	public void update(Customer entity) throws DAOLayerException {
-//		int typeIndex = enumMap.getCollection().get(CUSTOMER_TYPE).getKey(entity.getCustomerType());
-//		jdbcTemplate.update(updateStatement(), typeIndex, entity.getName(), entity.getSurname(), entity.getPhone(),
-//				entity.getEmail(), entity.getCompanyName(), entity.getId());
-//	}
 
 	@Override
 	protected String getAllStatement() {
