@@ -17,6 +17,14 @@
 </head>
 <body>
 
+<p class="error_page_main">Error code ${pageContext.errorData.statusCode}</p>
+
+<c:set var="message" value="${pageContext.exception.message}" scope="page"/>
+<c:if test="${message}!=null">
+<p>Exception: ${pageContext.exception}</p>
+<p>Please, contact the software provider</p>
+</c:if>
+
 <p>Exception: ${exception.message}</p>
 
 <form name="LoginRedirect" method="get" action="${urlPrefix}/login">

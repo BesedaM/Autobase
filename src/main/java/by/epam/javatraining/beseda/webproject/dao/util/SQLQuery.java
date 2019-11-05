@@ -281,7 +281,7 @@ public class SQLQuery {
 		DELETE_REQUEST_BY_ID = "DELETE FROM trucking_company.requests WHERE id=?";
 		ADD_NEW_REQUEST = "INSERT INTO trucking_company.requests (status_id, comment, customer_id, request_date) "
 				+ " VALUES (:status_id, :comment, :customer_id, now())";
-		UPDATE_REQUEST = "UPDATE trucking_company.requests SET status_id=:status_id, comment=:comment WHERE id=:id";
+		UPDATE_REQUEST = "UPDATE trucking_company.requests SET status_id=:status_id, comment=:comment WHERE requests.id=:id";
 
 	}
 }

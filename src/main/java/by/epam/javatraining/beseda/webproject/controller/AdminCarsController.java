@@ -44,16 +44,13 @@ public class AdminCarsController {
     private static Logger log = Logger.getLogger(ERROR_LOGGER);
 
     @PostMapping(value = {"/admin/cars/change_state"})
-    public ModelAndView changeCarState(@RequestParam String car_state_changer, @RequestParam String car_id, @RequestParam String current_page) {
+    public ModelAndView changeCarState(@RequestParam String car_state_changer, @RequestParam String car_id, @RequestParam String current_page)
+            throws ServiceLayerException {
         ModelAndView mav = new ModelAndView();
         mav.setViewName(CurrentPageProcessor.processPage(current_page));
-        try {
-            String carState = Decoder.decode(car_state_changer);
-            int carId = Integer.parseInt(car_id);
-            carService.updateCarState(carId, carState);
-        } catch (ServiceLayerException e) {
-            log.error(this.getClass().getSimpleName() + e);
-        }
+        String carState = Decoder.decode(car_state_changer);
+        int carId = Integer.parseInt(car_id);
+        carService.updateCarState(carId, carState);
         return mav;
     }
 
@@ -68,7 +65,7 @@ public class AdminCarsController {
     }
 
     @PostMapping(value = {"/admin/cars/change_cars_list"})
-    public ModelAndView changeCarList(@RequestParam String current_page, HttpSession session) {
+    public ModelAndView changeCarListFlag(@RequestParam String current_page, HttpSession session) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName(CurrentPageProcessor.processPage(current_page));
         session.setAttribute(CHANGE_CAR, STATUS_TRUE);
@@ -87,7 +84,7 @@ public class AdminCarsController {
             newCars.add(carId);
         }
         processCarsData(route, newCars, previousCars);
-        session.setAttribute(CHANGE_CAR, null);
+        session.removeAttribute(CHANGE_CAR);
         return mav;
     }
 

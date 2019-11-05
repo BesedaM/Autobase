@@ -1,26 +1,23 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import by.epam.javatraining.beseda.webproject.dao.entitydao.RequestDAO;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.RequestInterface;
 import by.epam.javatraining.beseda.webproject.entity.Request;
 import by.epam.javatraining.beseda.webproject.entity.user.Customer;
-import by.epam.javatraining.beseda.webproject.service.EnumMap;
 import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.REQUEST_STATUS;
+import java.util.Collections;
+import java.util.List;
+
 
 @Service
 public class RequestService extends AbstractEntityService<Request> {
 
-	@Autowired
-	private EnumMap enumMap;
-	
+
 	public RequestService() {
 		super();
 	}
@@ -35,8 +32,7 @@ public class RequestService extends AbstractEntityService<Request> {
 	public Request createRequest(Customer customer, String comment) {
 		Request req = null;
 		if (comment != null) {
-			String status = enumMap.getCollection().get(REQUEST_STATUS).get(1);
-			req = new Request(customer, comment, status);
+			req = new Request(customer, comment);
 		}
 		return req;
 	}
@@ -46,7 +42,6 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * 
 	 * @param customerId customer id
 	 * @return array of requests id
-	 * @throws ServiceLayerException
 	 */
 	public List<Request> selectActiveCustomerRequests(int customerId){
 		List<Request> list = null;
@@ -56,9 +51,11 @@ public class RequestService extends AbstractEntityService<Request> {
 		return list;
 	}
 
+	@Qualifier("requestDAO")
 	@Autowired
-	public void setDAO(RequestDAO requestDAO) {
-		this.entityDAO = requestDAO;
+	@Override
+	public void setEntityDAO(EntityDAO<Request> entityDAO) {
+		this.entityDAO=entityDAO;
 	}
 
 	/**
@@ -66,7 +63,6 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * without route).
 	 * 
 	 * @return list of new requests
-	 * @throws ServiceLayerException
 	 */
 	public List<Request> getNewRequests() {
 		List<Request> list = null;
@@ -79,7 +75,6 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * Returns an array of current requests id.
 	 * 
 	 * @return array of current requests id
-	 * @throws ServiceLayerException
 	 */
 	public List<Request> getCurrentRequests() {
 		List<Request> list;
@@ -91,7 +86,6 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * Returns an array of fulfilled requests id.
 	 * 
 	 * @return array of fulfilled requests id
-	 * @throws ServiceLayerException
 	 */
 	public List<Request> getFulfilledRequests(){
 		List<Request> list;
@@ -103,7 +97,6 @@ public class RequestService extends AbstractEntityService<Request> {
 	 * Returns an array of rejected requests id.
 	 * 
 	 * @return array of rejected requests id
-	 * @throws ServiceLayerException
 	 */
 	public List<Request> getRejectedRequests() {
 		List<Request> list;

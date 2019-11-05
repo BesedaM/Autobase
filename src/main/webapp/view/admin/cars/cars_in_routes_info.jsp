@@ -21,7 +21,7 @@
 <html lang="${lang}">
 <head>
     <title>Cars routes info</title>
-    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/styles.css" type="text/css"/>
 </head>
 <body>
 <table class="available_cars_info">

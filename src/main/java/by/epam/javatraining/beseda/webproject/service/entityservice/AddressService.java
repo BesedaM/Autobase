@@ -2,7 +2,9 @@ package by.epam.javatraining.beseda.webproject.service.entityservice;
 
 import java.util.List;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.AddressDAO;
@@ -43,9 +45,11 @@ public class AddressService extends AbstractEntityService<Address> {
 		return addr;
 	}
 
+	@Qualifier("addressDAO")
 	@Autowired
-	public void setDAO(AddressDAO addressDAO) {
-		this.entityDAO = addressDAO;
+	@Override
+	public void setEntityDAO(EntityDAO<Address> entityDAO) {
+		this.entityDAO=entityDAO;
 	}
 
 	public List<Integer> getTasksId(int addressId) {

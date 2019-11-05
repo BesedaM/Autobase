@@ -2,7 +2,6 @@ package by.epam.javatraining.beseda.webproject.config;
 
 import by.epam.javatraining.beseda.webproject.controller.security.AuthSuccessHandler;
 import by.epam.javatraining.beseda.webproject.controller.security.SuccessLogoutHandler;
-import by.epam.javatraining.beseda.webproject.service.PasswordHash;
 import by.epam.javatraining.beseda.webproject.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,11 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -36,11 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService getSecurityService(){ return new SecurityService();}
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Bean
     public LogoutHandler getLogoutHandler() {
         return new SuccessLogoutHandler();
     }
@@ -56,16 +50,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll();
 
-        http.formLogin()//
-                // Submit URL of login page.
+        http.formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/doLogin")
                 .failureUrl("/login?error")
-                .successHandler(getSuccessHandler())/// Submit URL
+                .successHandler(getSuccessHandler())
                 .usernameParameter("username")//
                 .passwordParameter("password");
 
-        http.logout().logoutUrl("/logout").invalidateHttpSession(true).addLogoutHandler(getLogoutHandler());
+        http.logout().logoutUrl("/logout")
+                .invalidateHttpSession(false)
+                .addLogoutHandler(getLogoutHandler())
+                .clearAuthentication(true);
         http.sessionManagement().maximumSessions(1).expiredUrl("/");
     }
 

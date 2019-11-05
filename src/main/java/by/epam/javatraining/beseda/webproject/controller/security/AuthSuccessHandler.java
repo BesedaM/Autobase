@@ -35,8 +35,6 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private Logger log = Logger.getLogger(ERROR_LOGGER);
 
-    private Logger authenticationLogger = Logger.getLogger(AUTHORIZATION_LOGGER);
-
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Autowired
@@ -80,7 +78,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
-    protected String determineTargetUrl(Authentication authentication) {
+    private String determineTargetUrl(Authentication authentication) {
         String page = null;
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
@@ -109,6 +107,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
             switch (userRole) {
                 case USER_ADMIN:
                     carsDataProcessor.processCarsData(session);
+                    fullUserData = user;
                     break;
                 case USER_CUSTOMER:
                     fullUserData = customerService.getEntityById(userId);
@@ -123,7 +122,6 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
                 default:
                     throw new ServiceLogicException("Unknown user type");
             }
-            authenticationLogger.trace(fullUserData);
         }
     }
 

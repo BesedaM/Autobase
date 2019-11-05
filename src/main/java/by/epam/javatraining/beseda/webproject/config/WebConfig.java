@@ -1,32 +1,38 @@
 package by.epam.javatraining.beseda.webproject.config;
 
+import by.epam.javatraining.beseda.webproject.aop.LoggingAspect;
 import by.epam.javatraining.beseda.webproject.interceptors.CharsetSetter;
 import by.epam.javatraining.beseda.webproject.interceptors.LocaleInterceptor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-@Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "by.epam.javatraining.beseda.webproject.controller")
+@Configuration
+@ComponentScan(basePackages = {"by.epam.javatraining.beseda.webproject.controller"})
+@EnableAspectJAutoProxy(proxyTargetClass = true)
+@Import({LoggingAspect.class})
 public class WebConfig implements WebMvcConfigurer {
-//
-//	@Bean
+
+
+
+//    @Bean
 //	public ViewResolver getViewResolver() {
 //		FreeMarkerViewResolver freeMarkerViewResolver = new FreeMarkerViewResolver();
 //		freeMarkerViewResolver.setOrder(1);
-//		freeMarkerViewResolver.setSuffix(".jsp");
+//		freeMarkerViewResolver.setSuffix(".ftl");
 //		freeMarkerViewResolver.setPrefix("");
 //		return freeMarkerViewResolver;
 //	}
 
-	
+//    @Bean
+//    public FreeMarkerConfigurer freemarkerConfig() {
+//        FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
+//        freeMarkerConfigurer.setTemplateLoaderPath("/views/");
+//        return freeMarkerConfigurer;
+//    }
+
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
@@ -41,12 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
     }
 
-	@Bean
-	public FreeMarkerConfigurer getFreeMarkerConfigurer() {
-		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
-		configurer.setTemplateLoaderPaths("/view/");
-		return configurer;
-	}
+
 
 //    public void addViewControllers(ViewControllerRegistry registry) {
 //        registry.addViewController("/doLogin").setViewName("doLogin");
@@ -95,6 +96,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new CharsetSetter());
     }
 
-
+//
+//	@Bean
+//	public LoggingAspect getLoggingAspect(){return new LoggingAspect();}
 
 }

@@ -3,7 +3,9 @@ package by.epam.javatraining.beseda.webproject.service.entityservice;
 import java.util.ArrayList;
 import java.util.List;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.UserDAO;
@@ -16,9 +18,6 @@ import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnical
 
 @Service
 public class UserService extends AbstractEntityService<User> {
-
-	@Autowired
-	private UserInterface entityDAO;
 
 	@Autowired
 	private PasswordHash passwordEncoder;
@@ -48,9 +47,11 @@ public class UserService extends AbstractEntityService<User> {
 		return user;
 	}
 
+	@Qualifier("userDAO")
 	@Autowired
-	public void setDAO(UserDAO userDAO) {
-		this.entityDAO = userDAO;
+	@Override
+	public void setEntityDAO(EntityDAO<User> entityDAO) {
+		this.entityDAO=entityDAO;
 	}
 
 	/**

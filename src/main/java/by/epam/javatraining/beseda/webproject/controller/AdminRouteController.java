@@ -20,6 +20,7 @@ import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGE
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -50,70 +51,65 @@ import by.epam.javatraining.beseda.webproject.service.exception.ServiceLayerExce
 @ResponseBody
 public class AdminRouteController {
 
-	private static Logger log = Logger.getLogger(ERROR_LOGGER);
+    private static Logger log = Logger.getLogger(ERROR_LOGGER);
 
-	@Autowired
-	private CustomerService customerService;
+    @Autowired
+    private CustomerService customerService;
 
-	@Autowired
-	private RouteService routeService;
+    @Autowired
+    private RouteService routeService;
 
-	@PostMapping(value = { "/admin/create_route" })
-	public ModelAndView gotoAddNewRoute(HttpServletRequest request, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		Integer requestId = Integer.parseInt(request.getParameter(ID));
-		int customerId = Integer.parseInt(request.getParameter(CUSTOMER_ID));
-		Customer customer = customerService.getEntityById(customerId);
-		request.setAttribute(CUSTOMER, customer);
+    @PostMapping(value = {"/admin/create_route"})
+    public ModelAndView gotoAddNewRoute(HttpServletRequest request, HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        Integer requestId = Integer.parseInt(request.getParameter(ID));
+        int customerId = Integer.parseInt(request.getParameter(CUSTOMER_ID));
+        Customer customer = customerService.getEntityById(customerId);
+        request.setAttribute(CUSTOMER, customer);
 
-		String text = request.getParameter(REQUEST_TEXT);
-		session.setAttribute(NEW_REQUEST_ID, requestId);
-		session.setAttribute(NEW_REQUEST_TEXT, text);
-		mav.setViewName(ADD_NEW_ROUTE_PAGE);
-		return mav;
-	}
+        String text = request.getParameter(REQUEST_TEXT);
+        session.setAttribute(NEW_REQUEST_ID, requestId);
+        session.setAttribute(NEW_REQUEST_TEXT, text);
+        mav.setViewName(ADD_NEW_ROUTE_PAGE);
+        return mav;
+    }
 
-	@PostMapping(value = { "/admin/add_new_route" })
-	public ModelAndView addNewRoute(HttpServletRequest request, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
+    @PostMapping(value = {"/admin/add_new_route"})
+    public ModelAndView addNewRoute(HttpServletRequest request, HttpSession session) throws ServiceLayerException {
+        ModelAndView mav = new ModelAndView();
+        Route route = null;
+        int routeId = -1;
+        String routeName = Decoder.decode(request.getParameter(ROUTE_NAME));
+        routeId = Integer.parseInt(request.getParameter(ID));
+        route = routeService.createRoute(routeId, routeName);
+        routeService.add(route);
+        String[] carsId = request.getParameterValues(CARS_ID);
+        for (int i = 0; i < carsId.length; i++) {
+            int carId = Integer.parseInt(carsId[i]);
+            routeService.addCar(routeId, carId);
+        }
+        session.setAttribute(CURRENT_ROUTE, route);
+        session.setAttribute(TASK_LIST, new ArrayList<Task>());
+        mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
+        return mav;
+    }
 
-		Route route = null;
-		int routeId = -1;
-		try {
-			String routeName = Decoder.decode(request.getParameter(ROUTE_NAME));
-			routeId = Integer.parseInt(request.getParameter(ID));
-			route = routeService.createRoute(routeId, routeName);
-			routeService.add(route);
-		} catch (ServiceLayerException e) {
-			log.error(e);
-		}
-		String[] carsId = request.getParameterValues(CARS_ID);
-		for (int i = 0; i < carsId.length; i++) {
-			int carId = Integer.parseInt(carsId[i]);
-			routeService.addCar(routeId, carId);
-		}
-		session.setAttribute(CURRENT_ROUTE, route);
-		session.setAttribute(TASK_LIST, new ArrayList<Task>());
 
-		mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
-		return mav;
-	}
-	
-	
-	@PostMapping(value = { "/admin/change_route" })
-	public ModelAndView addChangeRoute(@RequestParam String id, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		int routeId = Integer.parseInt(id);
-		Map<Request, Customer> requestCustomerMap = (Map<Request, Customer>) session.getAttribute(REQUEST_CUSTOMER_MAP);
-		Route route = null;
-		for (Map.Entry<Request, Customer> entry : requestCustomerMap.entrySet()) {
-			if (entry.getKey().getId() == routeId) {
-				route = entry.getKey().getRoute();
-			}
-		}
-		session.setAttribute(CHANGING_ROUTE, route);
-		mav.setViewName(CHANGE_ROUTE_PAGE);
-		return mav;
-	}
-	
+    @PostMapping(value = {"/admin/change_route"})
+    public ModelAndView addChangeRoute(@RequestParam String id, HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        int routeId = Integer.parseInt(id);
+        Map<Request, Customer> requestCustomerMap = (Map<Request, Customer>) session.getAttribute(REQUEST_CUSTOMER_MAP);
+        Route route = null;
+        Set<Request> keys = requestCustomerMap.keySet();
+        for (Request req : keys) {
+            if (req.getId() == routeId) {
+                route = req.getRoute();
+            }
+        }
+        session.setAttribute(CHANGING_ROUTE, route);
+        mav.setViewName(CHANGE_ROUTE_PAGE);
+        return mav;
+    }
+
 }

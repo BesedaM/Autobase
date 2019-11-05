@@ -51,147 +51,121 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @PreAuthorize("hasAuthority('" + USER_CUSTOMER + "')")
 @ResponseBody
-@RequestMapping(value= {"/customer"})
+@RequestMapping(value = {"/customer"})
 public class CustomerController {
 
-	private static Logger log = Logger.getLogger(ERROR_LOGGER);
+    private static Logger log = Logger.getLogger(ERROR_LOGGER);
 
-	@Autowired
-	private CustomerProcessor customerProcessor;
+    @Autowired
+    private CustomerProcessor customerProcessor;
 
-	@Autowired
-	private CustomerService customerService;
+    @Autowired
+    private CustomerService customerService;
 
-	@Autowired
-	private RequestService requestService;
+    @Autowired
+    private RequestService requestService;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	
-	@GetMapping(value = { "/customer_main" })
-	public ModelAndView gotoCustomerMain() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(CUSTOMER_MAIN_PAGE);
-		return mav;
-	}
 
-	
-	@GetMapping(value = { "/customer_personal_data" })
-	public ModelAndView gotoCustomerPersonalData() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(CUSTOMER_PERSONAL_DATA_PAGE);
-		return mav;
-	}
+    @GetMapping(value = {"/customer_main"})
+    public ModelAndView gotoCustomerMain() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(CUSTOMER_MAIN_PAGE);
+        return mav;
+    }
 
-	
-	@PostMapping(value = { "/delete_request" })
-	public ModelAndView deleteRequest(@RequestParam String id, @RequestParam String current_page, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(CurrentPageProcessor.processPage(current_page));
-		try {
-			int requestId = Integer.parseInt(id);
-			requestService.delete(requestId);
-			customerProcessor.processCustomerData(session);
-		} catch (ServiceLayerException e) {
-			log.error(this.getClass().getSimpleName() + e);
-		}
-		return mav;
-	}
 
-	
-	@PostMapping(value = { "/add_request" })
-	public RedirectView addRequest(@RequestParam String new_request_text, @RequestParam String current_page,
-								   HttpSession session, RedirectAttributes attributes) {
-		Customer customer = (Customer) session.getAttribute(USER_DATA);
-		try {
+    @GetMapping(value = {"/customer_personal_data"})
+    public ModelAndView gotoCustomerPersonalData() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(CUSTOMER_PERSONAL_DATA_PAGE);
+        return mav;
+    }
 
-			log.error(customer);
 
-			String requestText = Decoder.decode(new_request_text);
-			Request request = requestService.createRequest(customer, requestText);
+    @PostMapping(value = {"/delete_request"})
+    public ModelAndView deleteRequest(@RequestParam String id, @RequestParam String current_page, HttpSession session)
+            throws ServiceLayerException {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(CurrentPageProcessor.processPage(current_page));
+        int requestId = Integer.parseInt(id);
+        requestService.delete(requestId);
+        customerProcessor.processCustomerData(session);
+        return mav;
+    }
 
-			log.error("request created");
 
-			requestService.add(request);
+    @PostMapping(value = {"/add_request"})
+    public ModelAndView addRequest(@RequestParam String new_request_text, HttpSession session) throws ServiceLayerException {
+        Customer customer = (Customer) session.getAttribute(USER_DATA);
+        String requestText = Decoder.decode(new_request_text);
+        Request request = requestService.createRequest(customer, requestText);
+        requestService.add(request);
+        session.setAttribute(NEW_REQUEST, request);
+        return new ModelAndView(CUSTOMER_MAIN_PAGE);
+    }
 
-			log.error("request added");
 
-			attributes.addAttribute(NEW_REQUEST, request);
-		} catch (ServiceLayerException e) {
-			log.error(this.getClass().getSimpleName() + " " + e);
-		}
-		return new RedirectView(CUSTOMER_MAIN_PAGE);
-	}
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = {"/add_another_request"})
+    public ModelAndView addAnotherRequest(HttpSession session) {
+        List<Request> requestList = (List<Request>) session.getAttribute(REQUEST_LIST);
+        Request newRequest = (Request) session.getAttribute(NEW_REQUEST);
+        session.removeAttribute(NEW_REQUEST);
+        requestList.add(newRequest);
+        return new ModelAndView(CUSTOMER_MAIN_PAGE);
+    }
 
-	
-	@SuppressWarnings("unchecked")
-	@PostMapping(value = { "/add_another_request" })
-	public ModelAndView addAnotherRequest(@RequestParam String current_page, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(CurrentPageProcessor.processPage(current_page));
-		List<Request> requestList = (List<Request>) session.getAttribute(REQUEST_LIST);
-		Request newRequest = (Request) session.getAttribute(NEW_REQUEST);
-		requestList.add(newRequest);
-		return mav;
-	}
 
-	
-	@PostMapping(value = { "/change_data" })
-	public ModelAndView addChangeData(HttpServletRequest request, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
-		Customer customer = (Customer) session.getAttribute(USER_DATA);
-		try {
-			String companyName = Decoder.decode(request.getParameter(COMPANY_NAME));
-			String name = Decoder.decode(request.getParameter(NAME));
-			String surname = Decoder.decode(request.getParameter(SURNAME));
-			String phone = request.getParameter(PHONE);
-			String email = request.getParameter(EMAIL);
-			boolean dataChanged = true;
+    @PostMapping(value = {"/change_data"})
+    public ModelAndView addChangeData(HttpServletRequest request, HttpSession session) throws ServiceLayerException {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
+        Customer customer = (Customer) session.getAttribute(USER_DATA);
+        String companyName = Decoder.decode(request.getParameter(COMPANY_NAME));
+        String name = Decoder.decode(request.getParameter(NAME));
+        String surname = Decoder.decode(request.getParameter(SURNAME));
+        String phone = request.getParameter(PHONE);
+        String email = request.getParameter(EMAIL);
 
-			if (parameterNonNull(companyName) && parameterNonNull(name) && parameterNonNull(surname)
-					&& parameterNonNull(phone) && parameterNonNull(email)) {
-				customer.setCompanyName(companyName);
-				customer.setName(name);
-				customer.setSurname(surname);
-				customer.setPhone(phone);
-				customer.setEmail(email);
-			} else {
-				dataChanged = false;
-			}
-			customerService.update(customer);
-			if (dataChanged) {
-				request.setAttribute(DATA_CHANGED, STATUS_TRUE);
-			}
-		} catch (ServiceLayerException e) {
-			log.error(e);
-		}
-		return mav;
-	}
+        if (parameterNonNull(companyName) && parameterNonNull(name) && parameterNonNull(surname)
+                && parameterNonNull(phone) && parameterNonNull(email)) {
+            customer.setCompanyName(companyName);
+            customer.setName(name);
+            customer.setSurname(surname);
+            customer.setPhone(phone);
+            customer.setEmail(email);
 
-	private boolean parameterNonNull(String parameter) {
-		return parameter.trim().length() > 0;
-	}
+            customerService.update(customer);
+            request.setAttribute(DATA_CHANGED, STATUS_TRUE);
+        }
+        return mav;
+    }
 
-	
-	@PostMapping(value = { "/change_password" })
-	public ModelAndView changePassword(HttpServletRequest request, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
+    private boolean parameterNonNull(String parameter) {
+        return parameter.trim().length() > 0;
+    }
 
-		String newPassword = request.getParameter(NEW_PASSWORD);
-		String password = request.getParameter(PASSWORD);
-		String passwordConfirm = request.getParameter(PASSWORD_CONFIRM);
 
-		if (password.equals(passwordConfirm) && RegisterLogic.legalPassword(newPassword)) {
-			User user = (User) session.getAttribute(USER_DATA);
-			userService.changePassword(user.getId(), newPassword);
-			request.setAttribute(PASSWORD_CHANGED, STATUS_TRUE);
-		} else {
-			request.setAttribute(ERROR_MESSAGE, STATUS_TRUE);
-		}
-		return mav;
-	}
+    @PostMapping(value = {"/change_password"})
+    public ModelAndView changePassword(HttpServletRequest request, HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
+
+        String newPassword = request.getParameter(NEW_PASSWORD);
+        String password = request.getParameter(PASSWORD);
+        String passwordConfirm = request.getParameter(PASSWORD_CONFIRM);
+
+        if (password.equals(passwordConfirm) && RegisterLogic.legalPassword(newPassword)) {
+            User user = (User) session.getAttribute(USER_DATA);
+            userService.changePassword(user.getId(), newPassword);
+            request.setAttribute(PASSWORD_CHANGED, STATUS_TRUE);
+        } else {
+            request.setAttribute(ERROR_MESSAGE, STATUS_TRUE);
+        }
+        return mav;
+    }
 
 }

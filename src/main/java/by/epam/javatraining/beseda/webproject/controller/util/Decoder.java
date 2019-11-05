@@ -21,7 +21,7 @@ public class Decoder {
 	 */
 	public static String decode(String string) throws ServiceLayerException {
 		String newStr = string;
-		if (!GeneralProperties.PROJECT_ENCODING.equals(GeneralProperties.SERVER_ENCODING)) {
+		if (!(GeneralProperties.PROJECT_ENCODING).equals(GeneralProperties.SERVER_ENCODING)) {
 			byte[] bytes;
 			try {
 				bytes = string.getBytes(GeneralProperties.SERVER_ENCODING);

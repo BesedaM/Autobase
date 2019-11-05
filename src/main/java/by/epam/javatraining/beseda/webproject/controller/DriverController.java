@@ -49,38 +49,28 @@ public class DriverController {
     @PostMapping(value = {"/driver_main/update_car_route"})
     public ModelAndView changeRouteStatusCarState(@RequestParam String route_status_changer,
                                                   @RequestParam String car_state_changer, @RequestParam String car_id, @RequestParam String route_id,
-                                                  HttpSession session) {
+                                                  HttpSession session) throws ServiceLayerException {
         ModelAndView mav = new ModelAndView();
         mav.setViewName(DRIVER_MAIN_PAGE);
-        try {
             String carState = Decoder.decode(car_state_changer);
             int carId = Integer.parseInt(car_id);
             carService.updateCarState(carId, carState);
-
             String routeStatus = Decoder.decode(route_status_changer);
             int routeId = Integer.parseInt(route_id);
             routeService.updateRouteStatus(routeId, routeStatus);
-
             driverProcessor.processDriverData(session);
-        } catch (ServiceLayerException e) {
-            log.error(e);
-        }
         return mav;
     }
 
     @PostMapping(value = {"/driver_main/update_route"})
     public ModelAndView changeRouteStatus(@RequestParam String route_status_changer, @RequestParam String route_id,
-                                          HttpSession session) {
+                                          HttpSession session) throws ServiceLayerException {
         ModelAndView mav = new ModelAndView();
         mav.setViewName(DRIVER_MAIN_PAGE);
-        try {
             String routeStatus = Decoder.decode(route_status_changer);
             int routeId = Integer.parseInt(route_id);
             routeService.updateRouteStatus(routeId, routeStatus);
             driverProcessor.processDriverData(session);
-        } catch (ServiceLayerException e) {
-            log.error(e);
-        }
         return mav;
     }
 

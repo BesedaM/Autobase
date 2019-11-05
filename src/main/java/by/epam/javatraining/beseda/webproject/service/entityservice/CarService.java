@@ -5,7 +5,9 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 
 import java.util.List;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.CarDAO;
@@ -66,9 +68,11 @@ public class CarService extends AbstractEntityService<Car> {
 		return car;
 	}
 
+	@Qualifier("carDAO")
 	@Autowired
-	public void setDAO(CarDAO carDAO) {
-		this.entityDAO = carDAO;
+	@Override
+	public void setEntityDAO(EntityDAO<Car> entityDAO) {
+		this.entityDAO=entityDAO;
 	}
 
 	/**

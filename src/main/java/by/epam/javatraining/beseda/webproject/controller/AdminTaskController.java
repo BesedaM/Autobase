@@ -106,25 +106,22 @@ public class AdminTaskController {
 	
 	
 	@PostMapping(value = { "/admin/tasks/process_task" })
-	public ModelAndView processTask(HttpServletRequest request, HttpSession session) {
+	public ModelAndView processTask(HttpServletRequest request, HttpSession session) throws ServiceLayerException {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(CurrentPageProcessor.processPage(request.getParameter(CURRENT_PAGE)));
 		
 		Task taskToChange = null;
 		Route route = null;
-		try {
 
 			if (session.getAttribute(TASK_TO_CHANGE) != null) {
 				taskToChange = (Task) session.getAttribute(TASK_TO_CHANGE);
 			}
-
 			int routeId = Integer.parseInt(request.getParameter(ROUTE_ID));
 			String details = Decoder.decode(request.getParameter(DETAILS));
 
 			Date time = getTime(request);
 			GregorianCalendar calendar = new GregorianCalendar();
 			calendar.setTime(time);
-
 			Address address = getAddress(request);
 			addressService.add(address);
 
@@ -152,11 +149,6 @@ public class AdminTaskController {
 				List<Task> taskList = (List<Task>) session.getAttribute(TASK_LIST);
 				taskList.add(newTask);
 			}
-
-		} catch (ServiceLayerException  e) {
-			log.error(e);
-		}
-		
 		return mav;
 	}
 	

@@ -10,9 +10,9 @@ import java.util.ResourceBundle;
  */
 public class GeneralProperties {
 
-
-	private static final ResourceBundle GENERAL_PROP;
 	public static final String GENERAL_PROP_NAME;
+	private static final ResourceBundle GENERAL_PROP;
+
 
 	// Connection pool properties
 	public static final int INITIAL_POOL_SIZE;
@@ -24,8 +24,8 @@ public class GeneralProperties {
 
 	static {
 		GENERAL_PROP_NAME = "general";
-		
 		GENERAL_PROP =  ResourceBundle.getBundle(GENERAL_PROP_NAME);
+
 		INITIAL_POOL_SIZE = Integer.parseInt(GENERAL_PROP.getString("INITIAL_POOL_SIZE").trim());
 		WAIT_FOR_DB_RESPONSE = Integer.parseInt(GENERAL_PROP.getString("WAIT_FOR_DB_RESPONSE").trim());
 

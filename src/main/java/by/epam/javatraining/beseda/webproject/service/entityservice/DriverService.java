@@ -1,6 +1,8 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.DriverDAO;
@@ -32,9 +34,11 @@ public class DriverService extends AbstractEntityService<Driver> {
 		return driver;
 	}
 
+	@Qualifier("driverDAO")
 	@Autowired
-	public void setDAO(DriverDAO driverDAO) {
-		this.entityDAO = driverDAO;
+	@Override
+	public void setEntityDAO(EntityDAO<Driver> entityDAO) {
+		this.entityDAO=entityDAO;
 	}
 
 	public int getCarId(int driverId) {

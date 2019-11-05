@@ -126,13 +126,4 @@ public class TaskDAO extends AbstractDAO<Task> implements TaskInterface {
 		parameters.addValue(ID, entity.getId());
 		return parameters;
 	}
-
-//	@Override
-//	protected Object[] createEntityParamArray(Task entity) {
-//		Object[] array = new Object[2];
-//		Timestamp timestamp = new Timestamp(entity.getTime().getTimeInMillis());
-//		array[0] = timestamp;
-//		array[1] = entity.getDetails();
-//		return array;
-//	}
 }

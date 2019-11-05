@@ -2,7 +2,9 @@ package by.epam.javatraining.beseda.webproject.service.entityservice;
 
 import java.util.List;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAO;
@@ -16,9 +18,6 @@ import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.RO
 @Service
 public class RouteService extends AbstractEntityService<Route> {
 
-	@Autowired
-	private EnumMap enumMap;
-	
 	public RouteService() {
 		super();
 	}
@@ -33,15 +32,16 @@ public class RouteService extends AbstractEntityService<Route> {
 	public Route createRoute(int id, String routeName) {
 		Route route = null;
 		if (routeName != null) {
-			String routeStatus = enumMap.getCollection().get(ROUTE_STATUS).get(1);
-			route = new Route(id, routeName, routeStatus);
+			route = new Route(id, routeName);
 		}
 		return route;
 	}
 
+	@Qualifier("routeDAO")
 	@Autowired
-	public void setDAO(RouteDAO routeDAO) {
-		this.entityDAO = routeDAO;
+	@Override
+	public void setEntityDAO(EntityDAO<Route> entityDAO) {
+		this.entityDAO=entityDAO;
 	}
 
 	/**

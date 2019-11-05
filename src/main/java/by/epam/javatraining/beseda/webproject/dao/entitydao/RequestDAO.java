@@ -150,7 +150,6 @@ public class RequestDAO extends AbstractDAO<Request> implements RequestInterface
         }
         parameters.addValue(REQUEST_STATUS_ID_REQUESTS, statusId);
         parameters.addValue(COMMENT, entity.getComment());
-        parameters.addValue(CUSTOMER_ID_REQUESTS, entity.getCustomer().getId());
         parameters.addValue(ID, entity.getId());
         return parameters;
     }

@@ -2,7 +2,9 @@ package by.epam.javatraining.beseda.webproject.service.entityservice;
 
 import java.util.List;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.CustomerDAO;
@@ -44,9 +46,11 @@ public class CustomerService extends AbstractEntityService<Customer> {
 		return customer;
 	}
 
+	@Qualifier("customerDAO")
 	@Autowired
-	public void setDAO(CustomerDAO customerDAO) {
-		this.entityDAO = customerDAO;
+	@Override
+	public void setEntityDAO(EntityDAO<Customer> entityDAO) {
+		this.entityDAO=entityDAO;
 	}
 
 	@Override

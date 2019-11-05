@@ -21,7 +21,7 @@
 <html lang="${lang}">
 <head>
     <title>Locale</title>
-    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="../../css/styles.css" type="text/css"/>
 </head>
 <body>
  <form name="LocaleChanger" method="post" action="${urlPrefix}/change_locale">

@@ -2,7 +2,9 @@ package by.epam.javatraining.beseda.webproject.service.entityservice;
 
 import java.util.GregorianCalendar;
 
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import by.epam.javatraining.beseda.webproject.dao.entitydao.TaskDAO;
@@ -31,9 +33,11 @@ public class TaskService extends AbstractEntityService<Task> {
 		return task;
 	}
 
+	@Qualifier("taskDAO")
 	@Autowired
-	public void setDAO(TaskDAO taskDAO) {
-		this.entityDAO = taskDAO;
+	@Override
+	public void setEntityDAO(EntityDAO<Task> entityDAO) {
+		this.entityDAO=entityDAO;
 	}
 
 	public void setRoute(int routeId, int taskId) {

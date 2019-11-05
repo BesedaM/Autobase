@@ -13,9 +13,6 @@ public class CurrentPageProcessor {
         String address = wholeName
                 .replace(FIRST_PAGE_DELETE_FROM_START, "")
                 .replace(FIRST_PAGE_DELETE_FROM_END, "");
-
-        log.error(address);
-
         return address;
     }
 }

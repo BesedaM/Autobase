@@ -22,6 +22,8 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
 
     protected EntityDAO<E> entityDAO;
 
+    public abstract void setEntityDAO(EntityDAO<E> entityDAO);
+
     @Override
     public List<E> getAll(){
         List<E> list = null;
@@ -67,6 +69,9 @@ public abstract class AbstractEntityService<E extends EntityBase> implements Ent
     public void update(E entity) throws ServiceLayerException {
         if (entity != null) {
             try {
+
+                System.out.println("inside service update method");
+
                 entityDAO.update(entity);
             } catch (DAOLayerException e) {
                 throw new ServiceLogicException(e);

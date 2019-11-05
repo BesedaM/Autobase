@@ -50,12 +50,8 @@ public class EnumDAO {
 		String sql = SELECT_ENUM + tableName;
 		List<EnumElement> list = jdbcTemplate.query(sql, rowMapper);
 		for (int i = 0; i < list.size(); i++) {
-			try {
-				map.put(list.get(i).getNumber(), Decoder.decode(list.get(i).getValue()));
-			} catch (ServiceLayerException e) {
-				log.error(e);
-			}
-		}
+            map.put(list.get(i).getNumber(), list.get(i).getValue());
+        }
 		return map;
 	}
 }

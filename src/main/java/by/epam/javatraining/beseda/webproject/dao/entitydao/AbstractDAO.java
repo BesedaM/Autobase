@@ -6,10 +6,12 @@ import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.QUESTION_MARK;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBConstants.SPACE;
 import static by.epam.javatraining.beseda.webproject.dao.util.databaseconstants.DBEntityTable.ID;
+import static by.epam.javatraining.beseda.webproject.util.LoggerName.ERROR_LOGGER;
 
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -29,6 +31,8 @@ import by.epam.javatraining.beseda.webproject.entity.EntityBase;
  * @param <E> parameter type
  */
 public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> {
+
+	private static Logger log = Logger.getLogger(ERROR_LOGGER);
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
@@ -64,9 +68,9 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	@Override
 	public int add(E entity) throws DAOLayerException {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+		NamedParameterJdbcTemplate namedTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
 		MapSqlParameterSource parameters = createMapSqlParameterSource(entity);
-		int rowsNum = namedJdbcTemplate.update(addStatement(), parameters, keyHolder, new String[] { ID });
+		int rowsNum = namedTemplate.update(addStatement(), parameters, keyHolder, new String[] { ID });
 		if (rowsNum != 1) {
 			throw new DAOLayerException("Error adding entity to database");
 		}
@@ -78,7 +82,8 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	@Override
 	public void update(E entity) throws DAOLayerException {
 		NamedParameterJdbcTemplate npjt = new NamedParameterJdbcTemplate(jdbcTemplate);
-		npjt.update(updateStatement(), createMapSqlParameterSource(entity));
+        MapSqlParameterSource parameters = createMapSqlParameterSource(entity);
+		npjt.update(updateStatement(), parameters);
 	}
 
 	@Override
@@ -115,16 +120,6 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 		delete(entity.getId());
 	}
 
-	/**
-	 * Sets data on prepared statement object.
-	 *
-	 * @param st     prepared statement
-	 * @param entity source of data
-	 * @throws SQLException
-	 * @throws DAOTechnicalException
-	 */
-//	protected abstract void setDataOnPreparedStatement(PreparedStatement st, E entity)
-//			throws SQLException, DAOLayerException;
 
 	/**
 	 * Returns string representation of SQL 'add entity service' query.
@@ -144,7 +139,4 @@ public abstract class AbstractDAO<E extends EntityBase> implements EntityDAO<E> 
 	 */
 	protected abstract String updateStatement();
 
-//	public void close() {
-//		connector.closeConnector();
-//	}
 }

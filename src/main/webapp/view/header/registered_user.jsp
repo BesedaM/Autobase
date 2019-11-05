@@ -22,6 +22,6 @@
 <h1>${trucking_company}</h1>
 
 <%@include file="part/locale_changer.jsp" %><br/>
-<%@include file="/view/header/part/logout.jsp"%>
+<%@include file="/view/header/part/logout.jsp" %>
 </body>
 </html>

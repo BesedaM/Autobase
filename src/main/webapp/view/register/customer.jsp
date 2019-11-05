@@ -53,7 +53,7 @@
 <head>
 <title>${title}</title>
 <meta http-equiv="Content-Type" content="text/html">
-    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="../../css/styles.css" type="text/css"/>
 </head>
 <body>
 
@@ -139,8 +139,8 @@
 				<tr>
 					<td><label for="phone">${phone}${colon}</label></td>
 					<td><input id="phone" name="phone" type="text"
-						placeholder="(29)123-45-67"
-						pattern="^\(((29)|(33)|(44)|(25))\)[0-9]{3}-[0-9]{2}-[0-9]{2}(\s){0,}"
+						placeholder="(29)1234567"
+						pattern="^(29|33|44|25)[0-9]{7}(\s){0,}"
 						required></td>
 				</tr>
 				<tr>

@@ -40,7 +40,7 @@
 <html lang="${lang}">
 <head>
     <title>Current routes</title>
-    <link rel="stylesheet" href="static/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="../../../css/styles.css" type="text/css"/>
 </head>
 <body>
 <%@include file="../../header/registered_user.jsp" %>
