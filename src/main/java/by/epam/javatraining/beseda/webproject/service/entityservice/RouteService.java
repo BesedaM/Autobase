@@ -1,19 +1,15 @@
 package by.epam.javatraining.beseda.webproject.service.entityservice;
 
-import java.util.List;
-
+import by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAO;
 import by.epam.javatraining.beseda.webproject.dao.interfacedao.EntityDAO;
+import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
+import by.epam.javatraining.beseda.webproject.entity.route.Route;
+import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import by.epam.javatraining.beseda.webproject.dao.entitydao.RouteDAO;
-import by.epam.javatraining.beseda.webproject.dao.interfacedao.RouteInterface;
-import by.epam.javatraining.beseda.webproject.entity.route.Route;
-import by.epam.javatraining.beseda.webproject.service.EnumMap;
-import by.epam.javatraining.beseda.webproject.service.exception.ServiceTechnicalException;
-
-import static by.epam.javatraining.beseda.webproject.service.ServiceConstants.ROUTE_STATUS;
+import java.util.List;
 
 @Service
 public class RouteService extends AbstractEntityService<Route> {

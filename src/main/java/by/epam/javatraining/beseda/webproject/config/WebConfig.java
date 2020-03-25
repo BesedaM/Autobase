@@ -15,24 +15,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Import({LoggingAspect.class})
 public class WebConfig implements WebMvcConfigurer {
 
-
-
-//    @Bean
-//	public ViewResolver getViewResolver() {
-//		FreeMarkerViewResolver freeMarkerViewResolver = new FreeMarkerViewResolver();
-//		freeMarkerViewResolver.setOrder(1);
-//		freeMarkerViewResolver.setSuffix(".ftl");
-//		freeMarkerViewResolver.setPrefix("");
-//		return freeMarkerViewResolver;
-//	}
-
-//    @Bean
-//    public FreeMarkerConfigurer freemarkerConfig() {
-//        FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
-//        freeMarkerConfigurer.setTemplateLoaderPath("/views/");
-//        return freeMarkerConfigurer;
-//    }
-
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
@@ -47,37 +29,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
     }
 
-
-
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/doLogin").setViewName("doLogin");
-//    }
-
-
-//    @Bean(name="jsConfig")
-//    public InternalResourceViewResolver getInternalResourceViewResolverJS(){
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/js/");
-//        resolver.setSuffix(".js");
-//        return resolver;
-//    }
-//    
-//    @Bean(name="cssConfig")
-//    public InternalResourceViewResolver getInternalResourceViewResolverCSS(){
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/css/");
-//        resolver.setSuffix(".css");
-//        return resolver;
-//    }
-	
-//    @Bean(name="propertiesConfig")
-//    public InternalResourceViewResolver getInternalResourceViewResolverProperty(){
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/");
-//        resolver.setSuffix(".properties");
-//        return resolver;
-//    }
-    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
@@ -86,18 +37,11 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/javascript/**")
                 .addResourceLocations("/javascript/");
-//
-//        registry.addResourceHandler("/**")
-//        .addResourceLocations("/");
     }
 
     public void addInterceptors (InterceptorRegistry registry) {
         registry.addInterceptor(new LocaleInterceptor());
         registry.addInterceptor(new CharsetSetter());
     }
-
-//
-//	@Bean
-//	public LoggingAspect getLoggingAspect(){return new LoggingAspect();}
 
 }
